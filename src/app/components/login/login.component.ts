@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-login',
+  selector: 'login-component',
   imports: [],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
-
+  title: string = 'ZYTAPP';
+  subtitle: string = 'SOLUCIONES PARA ORGANIZAR TUS CITAS';
 }
