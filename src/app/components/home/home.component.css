@@ -1,0 +1,65 @@
+.container {
+  min-height: calc(100vh - 200px);
+}
+
+.form-control {
+  background: white;
+  border-radius: 3vh;
+  height: 5vh;
+  padding: 12px 15px;
+  font-size: 1.5vh;
+  color: #002741;
+}
+
+.form-control::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+  font-style: italic;
+}
+
+.bg-success-subtle {
+  background-color: #ffffff !important;
+  border-radius: 15px;
+  border: 1px solid #dbdbdb6f;
+}
+
+.appointment-edit {
+  background-color: #ffffff !important;
+  border-radius: 15px;
+  border: 1px solid #dbdbdb6f;
+  display: inline-block;
+}
+
+.btn-dark {
+  background-color: #3498DB !important;
+  border: none;
+}
+
+.home-container {
+  height: calc(100vh - 100px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 0.9rem;
+}

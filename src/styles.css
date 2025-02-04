@@ -1,3 +1,17 @@
 body {
   font-family: 'Inter', sans-serif;
 }
+
+.form-control {
+  background: white;
+  border-radius: 3vh;
+  height: 5vh;
+  padding: 12px 15px;
+  font-size: 1.5vh;
+  color: #002741;
+}
+
+.form-control::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+  font-style: italic;
+}

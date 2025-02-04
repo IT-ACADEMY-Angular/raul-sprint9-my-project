@@ -1,0 +1,12 @@
+.navbar {
+  height: 100px;
+}
+
+.color-navbar {
+  background-color: #3498DB;
+}
+
+.size-avatar {
+  width: 5vh;
+  height: 5vh;
+}

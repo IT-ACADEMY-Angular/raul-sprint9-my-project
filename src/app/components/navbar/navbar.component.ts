@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'navbar-component',
@@ -7,5 +8,24 @@ import { Component } from '@angular/core';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
+  title: string = 'ZYTAPP';
 
+  constructor(private router: Router) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.updateTitle(event.url);
+      }
+    });
+  }
+
+  updateTitle(url: string) {
+    switch (url) {
+      case '/editar-perfil':
+        this.title = 'EDITAR PERFIL';
+        break;
+      default:
+        this.title = 'ZYTAPP';
+        break;
+    }
+  }
 }
