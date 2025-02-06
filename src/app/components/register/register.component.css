@@ -25,11 +25,14 @@
 
 .login-title {
   font-size: 8vh;
-  margin-bottom: -15px;
 }
 
-.login-subtitle {
-  font-size: 1.4vh;
+.form-control {
+  background: white;
+  border: none;
+  border-radius: 20px;
+  padding: 12px 15px;
+  color: #002741;
 }
 
 .btn-login {
@@ -37,6 +40,5 @@
   color: white;
   border: 1px solid white;
   width: 50%;
-  border-radius: 3vh;
-  height: 5vh;
+  border-radius: 20px;
 }

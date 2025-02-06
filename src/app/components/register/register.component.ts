@@ -8,5 +8,4 @@ import { Component } from '@angular/core';
 })
 export class RegisterComponent {
   title: string = 'ZYTAPP';
-  subtitle: string = 'SOLUCIONES PARA ORGANIZAR TUS CITAS';
 }

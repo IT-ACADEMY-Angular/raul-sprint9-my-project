@@ -9,5 +9,8 @@ import { Component } from '@angular/core';
 })
 export class HomeComponent {
   titulo: string = '¿ DÓNDE TE GUSTARÍA PEDIR CITA ?';
-  citasPendientes: number = 3;
+  citasPendientes: number = 0;
+  crearEmpresa: string = '¡ REGISTRA TU EMPRESA !';
+  user: string = 'raulraul@gmail.com'
+  citasPendientesText: string = 'CITAS PENDIENTES'
 }

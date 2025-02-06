@@ -1,12 +1,15 @@
 .navbar {
-  height: 100px;
+  height: 12%;
 }
 
 .color-navbar {
   background-color: #3498DB;
 }
 
-.size-avatar {
-  width: 5vh;
-  height: 5vh;
+.responsive-icon {
+  font-size: 13vw;
+}
+
+.style-title {
+  bottom: 0;
 }

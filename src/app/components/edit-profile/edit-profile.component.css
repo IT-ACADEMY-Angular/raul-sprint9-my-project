@@ -9,3 +9,7 @@
   width: 50%;
   border-radius: 20px;
 }
+
+.form-control {
+  font-size: small;
+}

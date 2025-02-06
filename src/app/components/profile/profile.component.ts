@@ -7,5 +7,8 @@ import { Component } from '@angular/core';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
-
+  perfil: string = 'PERFIL'
+  goBack() {
+    // window.history.back();
+  }
 }
