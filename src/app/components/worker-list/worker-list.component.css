@@ -1,0 +1,29 @@
+.btn-edit,
+.btn-delete {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #c6c6c6;
+  color: #000000;
+}
+
+.btn-edit {
+  background-color: #B5FFC2;
+}
+
+.btn-delete {
+  background-color: #FFAEAE;
+}
+
+.worker-name {
+  font-weight: bold;
+}
+
+.worker-tasks {
+  margin-left: 8px;
+  font-size: 0.9rem;
+  color: #555;
+}
