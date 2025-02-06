@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class EditProfileComponent {
 
-  perfil: string = 'EDITAR PERFIL';
+  breadcrumb: string = 'Editar perfil';
   nombre: string = 'Raul';
   apellidos: string = 'Garcia Gutierrez';
   mail: string = 'raulgarcia@gmail.com';

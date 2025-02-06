@@ -6,15 +6,13 @@ html {
   padding: 0;
   /* overflow: hidden; */
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-
 }
 
 .form-control {
   background: white;
-  border-radius: 3vh;
-  height: 5vh;
-  padding: 12px 15px;
-  font-size: 1.5vh;
+  border-radius: 20px;
+  padding: 10px 10px;
+  font-size: small;
   color: #002741;
 }
 

@@ -7,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './edit-worker.component.css'
 })
 export class EditWorkerComponent {
+  breadcrumb: string = 'Editar trabajador';
 
+  goBack() {
+    window.history.back();
+  }
 }

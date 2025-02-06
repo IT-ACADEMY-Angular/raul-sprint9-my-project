@@ -2,20 +2,6 @@
   min-height: calc(100vh - 200px);
 }
 
-.form-control {
-  background: white;
-  border-radius: 3vh;
-  height: 5vh;
-  padding: 12px 15px;
-  font-size: 1.5vh;
-  color: #002741;
-}
-
-.form-control::placeholder {
-  color: rgba(0, 0, 0, 0.4);
-  font-style: italic;
-}
-
 .bg-success-subtle {
   background-color: #ffffff !important;
   border-radius: 15px;

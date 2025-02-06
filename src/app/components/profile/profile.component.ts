@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
-  perfil: string = 'PERFIL'
+  breadcrumb: string = 'Perfil'
   goBack() {
     // window.history.back();
   }
