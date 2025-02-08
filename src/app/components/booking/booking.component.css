@@ -1,0 +1,140 @@
+.custom-icon-profile {
+  color: #3498DB;
+}
+
+.btn-login {
+  background-color: #002741;
+  color: white;
+  border: 1px solid white;
+  width: 50%;
+  border-radius: 20px;
+}
+
+.custom-color-options {
+  color: #002741;
+}
+
+.dropdown-toggle::after {
+  margin-left: 0.255em;
+  vertical-align: 0.255em;
+  content: "";
+  border-top: 0.3em solid;
+  border-right: 0.3em solid transparent;
+  border-left: 0.3em solid transparent;
+  transition: transform 0.15s ease-in-out;
+}
+
+.dropdown-toggle[aria-expanded="true"]::after {
+  transform: rotate(180deg);
+}
+
+.form-select {
+  background: white;
+  border-radius: 20px;
+  padding: 10px;
+  font-size: small;
+  color: #9b9b9b;
+  border: 1px solid #9b9b9b;
+}
+
+.dropdown-toggle {
+  text-align: left;
+  padding-right: 2.5rem;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-toggle::after {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  content: "";
+  border-top: 0.3em solid;
+  border-right: 0.3em solid transparent;
+  border-left: 0.3em solid transparent;
+  transition: transform 0.15s ease-in-out;
+  color: #000000;
+}
+
+.dropdown-toggle[aria-expanded="true"]::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.time-pill {
+  border-radius: 20px;
+  font-size: small;
+  padding: 0.5rem 1rem;
+}
+
+.time-pill.active {
+  background-color: #002741;
+  color: white;
+  border-color: #002741;
+}
+
+.dropdown-item {
+  white-space: normal;
+  word-break: break-word;
+  padding: 0.75rem 1.25rem;
+}
+
+ul.dropdown-menu>li>a.dropdown-item {
+  border-bottom: 1px solid #c5c5c5 !important;
+}
+
+ul.dropdown-menu>li:last-child>a.dropdown-item {
+  border-bottom: none !important;
+}
+
+mat-calendar {
+  display: block;
+  max-width: 400px;
+  margin: 0 auto 1rem auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+mat-calendar .mat-calendar-header {
+  background-color: #002741 !important;
+  color: #fff !important;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  text-align: center;
+}
+
+mat-calendar .mat-calendar-header .mat-calendar-period-button {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff !important;
+}
+
+mat-calendar .mat-calendar-header .mat-calendar-previous-button,
+mat-calendar .mat-calendar-header .mat-calendar-next-button {
+  color: #fff !important;
+}
+
+.mat-calendar-arrow polygon {
+  fill: #fff !important;
+}
+
+.form-select:hover,
+.dropdown-toggle:hover {
+  background: white !important;
+  color: #9b9b9b !important;
+  border-color: #9b9b9b !important;
+}
+
+.dropdown-item:hover {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+.btn-login:hover {
+  background-color: #002741 !important;
+  color: white !important;
+  border-color: white !important;
+}

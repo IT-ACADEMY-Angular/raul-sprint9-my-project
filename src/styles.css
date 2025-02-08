@@ -20,3 +20,6 @@ html {
   color: rgba(0, 0, 0, 0.4);
   font-style: italic;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
