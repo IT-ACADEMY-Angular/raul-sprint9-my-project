@@ -13,3 +13,14 @@
 .style-title {
   bottom: 0;
 }
+
+.style-title {
+  position: relative;
+  z-index: 1;
+}
+
+.clickable-icon {
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+}

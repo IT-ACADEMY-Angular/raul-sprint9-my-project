@@ -3,17 +3,17 @@
     <h1 class="text-center fw-bold">{{ titulo }}</h1>
 
     <div class="input-group w-75">
-      <input type="text" class="form-control" placeholder="Nombre de la empresa...">
-      <span class="input-group-text">
+      <input type="text" class="form-control" placeholder="Nombre de la empresa..." [(ngModel)]="searchText">
+      <span class="input-group-text" (click)="searchBooking()" style="cursor: pointer;">
         <i class="fa-solid fa-magnifying-glass responsive-icon"></i>
       </span>
     </div>
   </div>
 
   <div class="footer text-center">
-
-    <div class="position-relative fs-5 fw-bold mb-3 appointment-edit shadow py-2 px-3">
-      {{citasPendientesText}}
+    <div class="position-relative fs-5 fw-bold mb-3 appointment-edit shadow py-2 px-3 clickable"
+      (click)="goToPendingBooking()">
+      {{ citasPendientesText }}
       <span class="notification-badge"
         [ngClass]="{'bg-danger': citasPendientes > 0, 'bg-success': citasPendientes === 0}">
         {{ citasPendientes }}
@@ -22,16 +22,10 @@
 
     <div class="bg-success-subtle py-3 shadow">
       <p class="fw-bold fs-5 text-dark mb-2 px-2">{{ crearEmpresa }}</p>
-      <button class="btn btn-dark text-white px-4 py-2 fw-bold shadow">
+      <button class="btn btn-dark text-white px-4 py-2 fw-bold shadow" (click)="goToNewCompany()">
         9,99 €
       </button>
     </div>
   </div>
-
-  <!-- <div class="footer text-center">
-    <button class="btn btn-dark text-white px-4 py-2 fw-bold shadow">
-      LOGIN
-    </button>
-  </div> -->
 
 </div>

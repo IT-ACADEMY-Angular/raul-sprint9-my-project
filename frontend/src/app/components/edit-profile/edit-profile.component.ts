@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'edit-profile-component',
@@ -16,8 +17,10 @@ export class EditProfileComponent {
   mail: string = 'raulgarcia@gmail.com';
   telefono: string = '656458558';
 
+  constructor(private router: Router) { }
+
   goBack() {
-    window.history.back();
+    this.router.navigate(['/profile']);
   }
 
   guardarCambios() {

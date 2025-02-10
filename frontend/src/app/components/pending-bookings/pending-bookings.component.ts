@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'pending-bookings-component',
@@ -13,10 +14,10 @@ import { MatDialog } from '@angular/material/dialog';
 export class PendingBookingsComponent {
   breadcrumb: string = 'Citas pendientes';
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private router: Router) { }
 
   goBack() {
-    window.history.back();
+    this.router.navigate(['/']);
   }
 
   deleteBooking() {

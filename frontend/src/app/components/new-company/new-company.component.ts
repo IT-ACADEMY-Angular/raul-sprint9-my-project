@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { WorkerListComponent } from '../worker-list/worker-list.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'new-company-component',
@@ -12,8 +13,9 @@ import { WorkerListComponent } from '../worker-list/worker-list.component';
 export class NewCompanyComponent {
   breadcrumb: string = 'Registrar empresa';
 
-  goBack() {
-    window.history.back();
-  }
+  constructor(private router: Router) { }
 
+  goBack() {
+    this.router.navigate(['/']);
+  }
 }
