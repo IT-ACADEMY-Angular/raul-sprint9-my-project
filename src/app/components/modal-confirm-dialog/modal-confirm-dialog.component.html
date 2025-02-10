@@ -1,0 +1,8 @@
+<div class="container text-center py-5">
+  <h2 class="mb-3">{{ data.title }}</h2>
+  <p class="mb-4">{{ data.message }}</p>
+  <div class="d-flex justify-content-center">
+    <button class="btn custom-cancel-btn me-2" (click)="onCancel()">Cancelar</button>
+    <button class="btn custom-confirm-btn" (click)="onConfirm()">Confirmar</button>
+  </div>
+</div>

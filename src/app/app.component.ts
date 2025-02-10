@@ -9,10 +9,11 @@ import { EditProfileComponent } from './components/edit-profile/edit-profile.com
 import { NewCompanyComponent } from './components/new-company/new-company.component';
 import { EditWorkerComponent } from './components/edit-worker/edit-worker.component';
 import { BookingComponent } from './components/booking/booking.component';
+import { PendingBookingsComponent } from './components/pending-bookings/pending-bookings.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RegisterComponent, LoginComponent, NavbarComponent, HomeComponent, ProfileComponent, EditProfileComponent, NewCompanyComponent, EditWorkerComponent, BookingComponent],
+  imports: [RouterOutlet, RegisterComponent, LoginComponent, NavbarComponent, HomeComponent, ProfileComponent, EditProfileComponent, NewCompanyComponent, EditWorkerComponent, BookingComponent, PendingBookingsComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
