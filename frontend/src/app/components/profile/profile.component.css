@@ -9,3 +9,11 @@
   width: 50%;
   border-radius: 20px;
 }
+
+.btn-close-session {
+  background-color: #FFAEAE;
+  color: black;
+  border: 1px solid white;
+  width: 50%;
+  border-radius: 20px;
+}

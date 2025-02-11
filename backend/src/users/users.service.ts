@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './users.entity';
+import { UpdateUserDto } from 'src/auth/dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -28,6 +29,17 @@ export class UsersService {
       lastName,
       phone,
     });
+    return this.usersRepository.save(user);
+  }
+
+  async updateProfile(updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.findByEmail(updateUserDto.email);
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+    user.name = updateUserDto.name;
+    user.lastName = updateUserDto.lastName;
+    user.phone = updateUserDto.phone;
     return this.usersRepository.save(user);
   }
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { RegisterPayload } from '../../interfaces/auth.interfaces';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'register-component',
@@ -18,7 +19,7 @@ export class RegisterComponent {
   password: string = '';
   phone: string = '';
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   onRegister(): void {
     const payload: RegisterPayload = {
@@ -32,11 +33,15 @@ export class RegisterComponent {
     this.authService.register(payload).subscribe(
       (response) => {
         console.log('Usuario registrado CORRECTAMENTE:', response);
-        // Redirige o muestra un mensaje de éxito
+        this.router.navigate(['/login']);
       },
       (error) => {
         console.error('Error en el registro:', error);
       }
     );
+  }
+
+  close(): void {
+    this.router.navigate(['/']);
   }
 }

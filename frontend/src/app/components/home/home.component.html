@@ -1,5 +1,8 @@
 <div class="home-container">
   <div class="content d-flex flex-column align-items-center justify-content-center">
+        <div *ngIf="isLoggedIn" class="greeting mb-3">
+          Hola, <strong>{{ user?.name }}</strong>.
+        </div>
     <h1 class="text-center fw-bold">{{ titulo }}</h1>
 
     <div class="input-group w-75">
@@ -11,21 +14,27 @@
   </div>
 
   <div class="footer text-center">
-    <div class="position-relative fs-5 fw-bold mb-3 appointment-edit shadow py-2 px-3 clickable"
-      (click)="goToPendingBooking()">
-      {{ citasPendientesText }}
-      <span class="notification-badge"
-        [ngClass]="{'bg-danger': citasPendientes > 0, 'bg-success': citasPendientes === 0}">
-        {{ citasPendientes }}
-      </span>
-    </div>
+    <ng-container *ngIf="isLoggedIn; else showLogin">
+      <div class="position-relative fs-5 fw-bold mb-3 appointment-edit shadow py-2 px-3 clickable"
+           (click)="goToPendingBooking()">
+        {{ citasPendientesText }}
+        <span class="notification-badge"
+              [ngClass]="{'bg-danger': citasPendientes > 0, 'bg-success': citasPendientes === 0}">
+          {{ citasPendientes }}
+        </span>
+      </div>
+      <div class="bg-success-subtle py-3 shadow">
+        <p class="fw-bold fs-5 text-dark mb-2 px-2">{{ crearEmpresa }}</p>
+        <button class="btn btn-dark text-white px-4 py-2 fw-bold shadow" (click)="goToNewCompany()">
+          9,99 €
+        </button>
+      </div>
+    </ng-container>
 
-    <div class="bg-success-subtle py-3 shadow">
-      <p class="fw-bold fs-5 text-dark mb-2 px-2">{{ crearEmpresa }}</p>
-      <button class="btn btn-dark text-white px-4 py-2 fw-bold shadow" (click)="goToNewCompany()">
-        9,99 €
+    <ng-template #showLogin>
+      <button class="btn btn-dark text-white px-4 py-2 fw-bold shadow" (click)="goToLogin()">
+        LOGIN
       </button>
-    </div>
+    </ng-template>
   </div>
-
 </div>

@@ -31,3 +31,18 @@
   width: 50%;
   border-radius: 20px;
 }
+
+.close-button {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+}
+
+.close-button button {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #000;
+  cursor: pointer;
+}

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'profile-component',
@@ -8,10 +9,23 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
-  breadcrumb: string = 'Perfil'
-  constructor(private router: Router) { }
+  breadcrumb: string = 'Perfil';
+  user: any = null;
 
-  goBack() {
+  constructor(private router: Router, private authService: AuthService) { }
+
+  ngOnInit(): void {
+    this.authService.currentUser$.subscribe((user) => {
+      this.user = user;
+    });
+  }
+
+  goBack(): void {
+    this.router.navigate(['/']);
+  }
+
+  logout(): void {
+    this.authService.logout();
     this.router.navigate(['/']);
   }
 }

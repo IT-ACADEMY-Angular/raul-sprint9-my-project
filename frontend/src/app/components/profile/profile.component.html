@@ -5,11 +5,9 @@
         <i class="fa-solid fa-arrow-left fs-1"></i>
       </button>
     </div>
-
     <div class="flex-grow-1 text-end">
       <p class="mb-0 fw-bold">{{ breadcrumb }}</p>
     </div>
-
   </div>
 
   <div class="d-flex justify-content-center mt-3">
@@ -19,22 +17,24 @@
   <div class="profile-info ps-4 pt-4">
     <div class="mb-3">
       <label class="fw-bold">Nombre</label>
-      <p class="mb-0">Raul</p>
+      <p class="mb-0">{{ user?.name }}</p>
     </div>
     <div class="mb-3">
       <label class="fw-bold">Apellidos</label>
-      <p class="mb-0">Garcia Gutierrez</p>
+      <p class="mb-0">{{ user?.lastName }}</p>
     </div>
     <div class="mb-3">
       <label class="fw-bold">Mail</label>
-      <p class="mb-0">raulgarcia&#64;gmail.com</p>
+      <p class="mb-0">{{ user?.email }}</p>
     </div>
     <div class="mb-3">
       <label class="fw-bold">Teléfono</label>
-      <p class="mb-0">656458558</p>
+      <p class="mb-0">{{ user?.phone }}</p>
     </div>
   </div>
 
-  <button type="submit" class="btn btn-login mt-4 d-block mx-auto" routerLink="/edit-profile">EDITAR PERFIL</button>
-
+  <div class="d-flex justify-content-center mt-5">
+    <button type="button" class="btn btn-login mx-2" routerLink="/edit-profile">EDITAR PERFIL</button>
+    <button type="button" class="btn btn-close-session mx-2" (click)="logout()">CERRAR SESIÓN</button>
+  </div>
 </div>

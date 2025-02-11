@@ -1,5 +1,4 @@
 <div class="profile-container p-3">
-
   <div class="d-flex justify-content-between align-items-center">
     <div class="back-arrow">
       <button class="btn btn-link text-black p-0" (click)="goBack()">
@@ -20,25 +19,24 @@
     </div>
   </div>
 
-  <div class="profile-info px-4 pt-4">
+  <div class="profile-info ps-4 pt-4">
     <div class="mb-3">
       <label class="fw-bold">Nombre</label>
-      <input type="text" class="form-control" [(ngModel)]="nombre" placeholder="Nombre">
+      <input type="text" class="form-control" [(ngModel)]="nombre" placeholder="Nombre" required>
     </div>
     <div class="mb-3">
       <label class="fw-bold">Apellidos</label>
-      <input type="text" class="form-control" [(ngModel)]="apellidos" placeholder="Apellidos">
+      <input type="text" class="form-control" [(ngModel)]="apellidos" placeholder="Apellidos" required>
     </div>
     <div class="mb-3">
       <label class="fw-bold">Mail</label>
-      <input type="email" class="form-control" [(ngModel)]="mail" placeholder="Mail">
+      <input type="email" class="form-control" [(ngModel)]="mail" placeholder="Mail" required>
     </div>
     <div class="mb-3">
       <label class="fw-bold">Teléfono</label>
-      <input type="text" class="form-control" [(ngModel)]="telefono" placeholder="Teléfono">
+      <input type="text" class="form-control" [(ngModel)]="telefono" placeholder="Teléfono" required>
     </div>
   </div>
 
-  <button type="submit" class="btn btn-login mt-4 d-block mx-auto">GUARDAR</button>
-
+  <button type="button" class="btn btn-login mt-4 d-block mx-auto" (click)="guardarCambios()">GUARDAR</button>
 </div>

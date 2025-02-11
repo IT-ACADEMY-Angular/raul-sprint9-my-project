@@ -7,10 +7,11 @@ import { NewCompanyComponent } from './components/new-company/new-company.compon
 import { PendingBookingsComponent } from './components/pending-bookings/pending-bookings.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'edit-profile', component: EditProfileComponent },
   { path: 'booking', component: BookingComponent },
   { path: 'new-company', component: NewCompanyComponent },
