@@ -29,10 +29,9 @@ export class AuthService {
   }
 
   async register(registerDto: RegisterDto): Promise<Omit<User, 'password'>> {
-    // Hashea la contraseña con 10 rondas de salt
+    // hash del password
     const hashedPassword = await bcrypt.hash(registerDto.password, 10);
 
-    // Crea el usuario usando el UsersService. Asegúrate de que este método acepte los nuevos campos.
     const createdUser = await this.usersService.createUser(
       registerDto.email,
       hashedPassword,

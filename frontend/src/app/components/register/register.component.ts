@@ -18,7 +18,7 @@ export class RegisterComponent {
   password: string = '';
   phone: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   onRegister(): void {
     const payload: RegisterPayload = {
@@ -31,7 +31,7 @@ export class RegisterComponent {
 
     this.authService.register(payload).subscribe(
       (response) => {
-        console.log('Usuario registrado:', response);
+        console.log('Usuario registrado CORRECTAMENTE:', response);
         // Redirige o muestra un mensaje de éxito
       },
       (error) => {

@@ -19,8 +19,7 @@ export class LoginComponent {
   onLogin(): void {
     this.authService.login(this.email, this.password).subscribe(
       response => {
-        console.log('Login exitoso:', response);
-        // Aquí puedes, por ejemplo, guardar un token y redirigir al usuario.
+        console.log('Login CORRECTO!:', response);
       },
       error => {
         console.error('Error en el login:', error);

@@ -24,7 +24,6 @@ export class CreateUserDto {
 }
 
 export class RegisterDto {
-  // Define aquí los campos del DTO
   name: string;
   lastName: string;
   email: string;

@@ -12,6 +12,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimationsAsync(),
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
-    importProvidersFrom(HttpClientModule) // Agrega HttpClientModule aquí
+    importProvidersFrom(HttpClientModule)
   ]
 };
