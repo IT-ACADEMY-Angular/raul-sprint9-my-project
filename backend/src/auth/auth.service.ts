@@ -12,7 +12,6 @@ export class AuthService {
     pass: string,
   ): Promise<Omit<User, 'password'> | null> {
     const user = await this.usersService.findByEmail(email);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     if (user && (await bcrypt.compare(pass, user.password))) {
       const { password: _password, ...result } = user;
       void _password;
