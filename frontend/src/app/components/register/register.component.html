@@ -1,29 +1,23 @@
 <div class="main-container">
   <div class="form-wrapper text-center">
     <h1 class="login-title">{{ title }}</h1>
-
     <div class="login-container mt-5">
-      <form>
+      <form (ngSubmit)="onRegister()">
         <div class="mb-3">
-          <input type="text" class="form-control" placeholder="Nombre" />
+          <input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="name" name="name" required />
         </div>
-
         <div class="mb-3">
-          <input type="text" class="form-control" placeholder="Apellidos" />
+          <input type="text" class="form-control" placeholder="Apellidos" [(ngModel)]="lastName" name="lastName" required />
         </div>
-
         <div class="mb-3">
-          <input type="email" class="form-control" placeholder="Mail" />
+          <input type="email" class="form-control" placeholder="Mail" [(ngModel)]="email" name="email" required />
         </div>
-
         <div class="mb-3">
-          <input type="password" class="form-control" placeholder="Contraseña" />
+          <input type="password" class="form-control" placeholder="Contraseña" [(ngModel)]="password" name="password" required />
         </div>
-
         <div class="mb-3">
-          <input type="tel" class="form-control" placeholder="Teléfono" />
+          <input type="tel" class="form-control" placeholder="Teléfono" [(ngModel)]="phone" name="phone" required />
         </div>
-
         <button type="submit" class="btn btn-login my-3">REGISTRO</button>
       </form>
     </div>
