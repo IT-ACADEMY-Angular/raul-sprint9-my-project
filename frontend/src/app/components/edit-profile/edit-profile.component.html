@@ -12,10 +12,21 @@
 
   <div class="d-flex justify-content-center mt-3">
     <div class="position-relative d-inline-block">
-      <i class="fa-solid fa-circle-user fa-7x custom-icon-profile"></i>
-      <button class="btn btn-link position-absolute" style="bottom: 0; right: 0;">
+      <ng-container *ngIf="previewPhotoUrl; else showCurrentPhoto">
+        <img [src]="previewPhotoUrl" alt="Foto de perfil" class="custom-photo">
+      </ng-container>
+      <ng-template #showCurrentPhoto>
+        <ng-container *ngIf="user?.photoUrl; else defaultPhoto">
+          <img [src]="user?.photoUrl" alt="Foto de perfil" class="custom-photo" (error)="onImageError($event)">
+        </ng-container>
+        <ng-template #defaultPhoto>
+          <i class="fa-solid fa-circle-user fa-7x custom-icon-profile"></i>
+        </ng-template>
+      </ng-template>
+      <button class="btn btn-link position-absolute camera-button" (click)="triggerFileInput()">
         <i class="fa-solid fa-camera fs-3 text-black"></i>
       </button>
+      <input type="file" #fileInput (change)="onFileSelected($event)" hidden>
     </div>
   </div>
 

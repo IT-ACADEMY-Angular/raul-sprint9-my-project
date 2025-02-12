@@ -10,12 +10,46 @@ import { RegisterComponent } from './components/register/register.component';
 import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-  { path: 'edit-profile', component: EditProfileComponent },
-  { path: 'booking', component: BookingComponent },
-  { path: 'new-company', component: NewCompanyComponent },
-  { path: 'pending-booking', component: PendingBookingsComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent }
+  {
+    path: '',
+    component: HomeComponent,
+    data: { hideProfileIcon: false, title: 'ZYTAPP' }
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [AuthGuard],
+    data: { hideProfileIcon: true, title: 'PERFIL' }
+  },
+  {
+    path: 'edit-profile',
+    component: EditProfileComponent,
+    canActivate: [AuthGuard],
+    data: { hideProfileIcon: true, title: 'EDITAR PERFIL' }
+  },
+  {
+    path: 'booking',
+    component: BookingComponent,
+    data: { hideProfileIcon: false }
+  },
+  {
+    path: 'new-company',
+    component: NewCompanyComponent,
+    data: { hideProfileIcon: false }
+  },
+  {
+    path: 'pending-booking',
+    component: PendingBookingsComponent,
+    data: { hideProfileIcon: false }
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    data: { hideProfileIcon: true, title: 'LOGIN' }
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    data: { hideProfileIcon: true, title: 'REGISTRARSE' }
+  }
 ];

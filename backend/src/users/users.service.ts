@@ -9,7 +9,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
-  ) {}
+  ) { }
 
   async findByEmail(email: string): Promise<User | null> {
     return this.usersRepository.findOne({ where: { email } });
@@ -40,6 +40,15 @@ export class UsersService {
     user.name = updateUserDto.name;
     user.lastName = updateUserDto.lastName;
     user.phone = updateUserDto.phone;
+    return this.usersRepository.save(user);
+  }
+
+  async updatePhoto(id: number, photoUrl: string): Promise<User> {
+    const user = await this.usersRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+    user.photoUrl = photoUrl;
     return this.usersRepository.save(user);
   }
 }

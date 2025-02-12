@@ -17,3 +17,15 @@
   width: 50%;
   border-radius: 20px;
 }
+
+.custom-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #3498db88;
+}
+
+.custom-icon-profile {
+  color: #3498DB;
+}

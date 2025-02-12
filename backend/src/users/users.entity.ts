@@ -19,4 +19,7 @@ export class User {
 
   @Column()
   phone: string;
+
+  @Column({ nullable: true })
+  photoUrl?: string;
 }

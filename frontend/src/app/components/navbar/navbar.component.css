@@ -24,3 +24,10 @@
   z-index: 2;
   cursor: pointer;
 }
+
+.navbar-photo {
+  width: 13vw;
+  height: 13vw;
+  border-radius: 50%;
+  object-fit: cover;
+}

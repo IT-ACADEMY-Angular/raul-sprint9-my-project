@@ -11,7 +11,12 @@
   </div>
 
   <div class="d-flex justify-content-center mt-3">
-    <i class="fa-solid fa-circle-user fa-7x custom-icon-profile"></i>
+    <ng-container *ngIf="user?.photoUrl; else defaultPhoto">
+      <img [src]="user?.photoUrl" alt="Foto de perfil" class="custom-photo">
+    </ng-container>
+    <ng-template #defaultPhoto>
+      <i class="fa-solid fa-circle-user fa-7x custom-icon-profile"></i>
+    </ng-template>
   </div>
 
   <div class="profile-info ps-4 pt-4">
