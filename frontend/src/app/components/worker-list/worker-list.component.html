@@ -7,7 +7,7 @@
         <span class="worker-tasks">({{ worker.tasks ? worker.tasks.length : 0 }} tareas)</span>
       </span>
       <div class="d-flex flex-shrink-0">
-        <button class="btn btn-sm me-2 btn-edit">
+        <button class="btn btn-sm me-2 btn-edit" (click)="onEditWorker(worker, i)">
           <i class="fa-solid fa-pencil"></i>
         </button>
         <button class="btn btn-sm btn-delete" (click)="removeWorker(i)">

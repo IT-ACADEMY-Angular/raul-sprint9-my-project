@@ -1,0 +1,30 @@
+<div class="modal-overlay">
+  <div class="modal-content">
+    <h3 class="modal-title">Editar trabajador</h3>
+
+    <div class="form-group">
+      <label class="form-label">Nombre del trabajador</label>
+      <input type="text" [(ngModel)]="worker.name" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Añade tarea y duración</label>
+      <div class="vertical-input-group">
+        <div class="input-fields">
+          <input type="text" placeholder="Nombre de la tarea" [(ngModel)]="newTaskName" class="form-control">
+          <input type="number" placeholder="Minutos" [(ngModel)]="newTaskDuration" class="form-control">
+        </div>
+        <button class="btn btn-outline-secondary btn-add-task" type="button" (click)="addTask()">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+    </div>
+
+    <task-list-component [tasks]="worker.tasks || []" (removeTask)="onRemoveTask($event)"></task-list-component>
+
+    <div class="d-flex justify-content-center mt-4">
+      <button class="btn custom-cancel-btn me-2" (click)="cancel()">Cancelar</button>
+      <button class="btn custom-confirm-btn" (click)="save()">Guardar</button>
+    </div>
+  </div>
+</div>

@@ -46,9 +46,16 @@
       </div>
     </div>
 
-    <worker-list-component [workers]="workerData" (workersChange)="updateWorkers($event)"></worker-list-component>
+    <worker-list-component [workers]="workerData" (workersChange)="updateWorkers($event)"
+      (editWorker)="editWorker($event)">
+    </worker-list-component>
 
     <button type="button" class="btn btn-login mt-4 d-block mx-auto" (click)="registrarEmpresa()">REGISTRAR
       EMPRESA</button>
+
+    <edit-worker-modal-component *ngIf="showEditWorkerModal" [worker]="workerToEdit"
+      (closeModal)="onWorkerModalClose($event)" (cancelModal)="onWorkerModalCancel()">
+    </edit-worker-modal-component>
+
   </div>
 </div>

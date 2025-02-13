@@ -7,10 +7,11 @@ import { CompanyService, CreateCompanyPayload, Company } from '../../services/co
 import { WorkerData } from '../../models/worker.model';
 import { map, Observable, switchMap } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import { EditWorkerModalComponent } from '../edit-worker-modal/edit-worker-modal.component';
 
 @Component({
   selector: 'new-company-component',
-  imports: [FormsModule, CommonModule, WorkerListComponent],
+  imports: [FormsModule, CommonModule, WorkerListComponent, EditWorkerModalComponent],
   templateUrl: './new-company.component.html',
   styleUrl: './new-company.component.css'
 })
@@ -23,6 +24,10 @@ export class NewCompanyComponent {
 
   workerData: WorkerData[] = [];
   newWorkerName: string = '';
+
+  showEditWorkerModal: boolean = false;
+  workerToEdit!: WorkerData;
+  workerToEditIndex: number = -1;
 
   @ViewChild('fileInput') fileInput!: ElementRef;
 
@@ -76,6 +81,23 @@ export class NewCompanyComponent {
 
   updateWorkers(workers: WorkerData[]): void {
     this.workerData = workers;
+  }
+
+  editWorker(event: { worker: WorkerData; index: number }): void {
+    this.workerToEdit = { ...event.worker };
+    this.workerToEditIndex = event.index;
+    this.showEditWorkerModal = true;
+  }
+
+  onWorkerModalClose(updatedWorker: WorkerData): void {
+    if (this.workerToEditIndex > -1) {
+      this.workerData[this.workerToEditIndex] = updatedWorker;
+    }
+    this.showEditWorkerModal = false;
+  }
+
+  onWorkerModalCancel(): void {
+    this.showEditWorkerModal = false;
   }
 
   registrarEmpresa(): void {
