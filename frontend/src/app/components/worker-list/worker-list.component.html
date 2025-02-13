@@ -1,62 +1,16 @@
 <div class="mt-4">
   <h5 class="fw-bold">Lista de trabajadores</h5>
   <div class="list-group">
-
-    <div class="list-group-item d-flex align-items-center">
+    <div class="list-group-item d-flex align-items-center" *ngFor="let worker of workers; let i = index">
       <span class="flex-grow-1">
-        <span class="worker-name">Miguel Angel Moner Alvarez</span>
-        <span class="worker-tasks">(3 tareas)</span>
+        <span class="worker-name">{{ worker.name }}</span>
+        <span class="worker-tasks">({{ worker.tasks ? worker.tasks.length : 0 }} tareas)</span>
       </span>
       <div class="d-flex flex-shrink-0">
         <button class="btn btn-sm me-2 btn-edit">
           <i class="fa-solid fa-pencil"></i>
         </button>
-        <button class="btn btn-sm btn-delete">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-    </div>
-
-    <div class="list-group-item d-flex align-items-center">
-      <span class="flex-grow-1">
-        <span class="worker-name">Raul Garcia</span>
-        <span class="worker-tasks">(0 tareas)</span>
-      </span>
-      <div class="d-flex flex-shrink-0">
-        <button class="btn btn-sm me-2 btn-edit">
-          <i class="fa-solid fa-pencil"></i>
-        </button>
-        <button class="btn btn-sm btn-delete">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-    </div>
-
-    <div class="list-group-item d-flex align-items-center">
-      <span class="flex-grow-1">
-        <span class="worker-name">Judith</span>
-        <span class="worker-tasks">(0 tareas)</span>
-      </span>
-      <div class="d-flex flex-shrink-0">
-        <button class="btn btn-sm me-2 btn-edit">
-          <i class="fa-solid fa-pencil"></i>
-        </button>
-        <button class="btn btn-sm btn-delete">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-    </div>
-
-    <div class="list-group-item d-flex align-items-center">
-      <span class="flex-grow-1">
-        <span class="worker-name">Rosa Maria del Carmen</span>
-        <span class="worker-tasks">(0 tareas)</span>
-      </span>
-      <div class="d-flex flex-shrink-0">
-        <button class="btn btn-sm me-2 btn-edit">
-          <i class="fa-solid fa-pencil"></i>
-        </button>
-        <button class="btn btn-sm btn-delete">
+        <button class="btn btn-sm btn-delete" (click)="removeWorker(i)">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
