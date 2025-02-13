@@ -11,7 +11,8 @@ import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, data: { hideProfileIcon: false, title: 'ZYTAPP' } },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard], data: { hideProfileIcon: true, title: 'PERFIL' } },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard], data: { hideProfileIcon: true} },
+  // { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard], data: { hideProfileIcon: true, title: 'PERFIL' } },
   { path: 'edit-profile', component: EditProfileComponent, canActivate: [AuthGuard], data: { hideProfileIcon: true, title: 'EDITAR PERFIL' } },
   { path: 'booking', component: BookingComponent, data: { hideProfileIcon: false } },
   { path: 'new-company', component: NewCompanyComponent, data: { hideProfileIcon: false } },
