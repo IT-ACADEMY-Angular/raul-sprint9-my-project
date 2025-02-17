@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Company } from '../companies/company.entity';
+import { User } from 'src/users/users.entity';
 
 @Entity()
 export class Booking {
@@ -24,4 +25,8 @@ export class Booking {
     @ManyToOne(() => Company, { eager: true })
     @JoinColumn({ name: 'companyId' })
     company: Company;
+
+    @ManyToOne(() => User, { eager: true })
+    @JoinColumn({ name: 'userId' })
+    user: User;
 }

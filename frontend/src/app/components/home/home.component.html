@@ -27,9 +27,8 @@
       <div class="position-relative fs-5 fw-bold mb-3 appointment-edit shadow py-2 px-3 clickable"
         (click)="goToPendingBooking()">
         {{ citasPendientesText }}
-        <span class="notification-badge"
-          [ngClass]="{'bg-danger': citasPendientes > 0, 'bg-success': citasPendientes === 0}">
-          {{ citasPendientes }}
+        <span class="notification-badge" [ngClass]="{'bg-danger': bookingCount > 0, 'bg-success': bookingCount === 0}">
+          {{ bookingCount }}
         </span>
       </div>
       <div class="bg-success-subtle py-3 shadow">
@@ -39,6 +38,7 @@
         </button>
       </div>
     </ng-container>
+
     <ng-template #showLogin>
       <button class="btn btn-dark text-white px-4 py-2 fw-bold shadow" (click)="goToLogin()">
         LOGIN

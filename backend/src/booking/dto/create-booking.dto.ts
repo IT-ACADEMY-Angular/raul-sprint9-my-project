@@ -4,5 +4,6 @@ export class CreateBookingDto {
     selectedTask: string;
     selectedSchedule: string;
     selectedHour: string;
+    userId: number;
     companyId: number;
 }  

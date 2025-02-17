@@ -13,6 +13,7 @@ import { CompanyService } from '../../services/company.service';
 import { Booking } from '../../interfaces/booking.interface';
 import { BookingService } from '../../services/booking.service';
 import { CreateBookingPayload } from '../../interfaces/create-booking-payload.interface';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'booking-component',
@@ -45,7 +46,8 @@ export class BookingComponent {
     private route: ActivatedRoute,
     private companyService: CompanyService,
     private dialog: MatDialog,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -135,13 +137,20 @@ export class BookingComponent {
   }
 
   confirmBooking(): void {
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) {
+      console.error('Usuario no autenticado');
+      return;
+    }
+
     const payload: CreateBookingPayload = {
-      bookingDate: this.selectedDate as Date,
+      bookingDate: this.selectedDate!,
       selectedWorker: this.selectedWorker,
       selectedTask: this.selectedTask,
       selectedSchedule: this.selectedSchedule,
       selectedHour: this.selectedHour,
-      companyId: this.company.id
+      companyId: this.company.id,
+      userId: currentUser.id
     };
 
     this.bookingService.createBooking(payload).subscribe(

@@ -1,0 +1,16 @@
+<div class="pending-bookings mt-4">
+  <h5 class="mt-5 fw-bold">Próximas citas:</h5>
+  <div *ngIf="bookings && bookings.length > 0; else noBookings">
+    <div class="booking-item d-flex justify-content-between align-items-center mt-3" *ngFor="let booking of bookings">
+      <span>
+        {{ booking.company.name }} - {{ booking.bookingDate | date:'dd/MM/yyyy' }} - {{ booking.selectedHour }}
+      </span>
+      <button class="btn btn-sm btn-delete" (click)="deleteBooking(booking.id)">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  </div>
+  <ng-template #noBookings>
+    <p>No tienes citas pendientes.</p>
+  </ng-template>
+</div>

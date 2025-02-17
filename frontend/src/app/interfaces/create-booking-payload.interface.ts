@@ -5,4 +5,5 @@ export interface CreateBookingPayload {
   selectedSchedule: string;
   selectedHour: string;
   companyId: number;
+  userId: number;
 }

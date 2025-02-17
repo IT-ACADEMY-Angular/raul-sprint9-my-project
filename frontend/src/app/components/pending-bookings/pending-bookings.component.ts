@@ -1,44 +1,44 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confirm-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { BookingListComponent } from '../booking-list/booking-list.component';
+import { Booking } from '../../interfaces/booking.interface';
+import { BookingService } from '../../services/booking.service';
+import { User } from '../../interfaces/auth.interfaces';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'pending-bookings-component',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, BookingListComponent],
   templateUrl: './pending-bookings.component.html',
   styleUrl: './pending-bookings.component.css'
 })
 export class PendingBookingsComponent {
   breadcrumb: string = 'Citas pendientes';
+  bookings: Booking[] = [];
+  currentUser: User | null = null;
 
-  constructor(private dialog: MatDialog, private router: Router) { }
+  constructor(private router: Router, private bookingService: BookingService, private authService: AuthService) { }
 
-  goBack() {
-    this.router.navigate(['/']);
+  ngOnInit(): void {
+    this.currentUser = this.authService.getCurrentUser();
+    if (this.currentUser) {
+      this.bookingService.getBookingsByUser(this.currentUser.id).subscribe(
+        (bookings: Booking[]) => {
+          this.bookings = bookings;
+        },
+        error => {
+          console.error('Error al cargar las reservas:', error);
+        }
+      );
+    } else {
+      console.error('Usuario no autenticado');
+      this.router.navigate(['/login']);
+    }
   }
 
-  deleteBooking() {
-    const dialogData = {
-      title: 'Eliminar cita',
-      message: '¿Estás seguro que deseas eliminar la cita seleccionada?'
-    };
-
-    const dialogRef = this.dialog.open(ModalConfirmDialogComponent, {
-      width: '300px',
-      data: dialogData,
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        // confirma la eliminacion
-        console.log('Cita eliminada.');
-        // logica para eliminar cita, para hacer un DELETE en bbdd desde servicio
-      } else {
-        console.log('Eliminación cancelada.');
-      }
-    });
+  goBack(): void {
+    this.router.navigate(['/']);
   }
 }

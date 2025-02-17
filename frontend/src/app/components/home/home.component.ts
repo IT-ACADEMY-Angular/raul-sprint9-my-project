@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user.model';
 import { debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
 import { Company, CompanyService } from '../../services/company.service';
+import { BookingService } from '../../services/booking.service';
 
 @Component({
   selector: 'home-component',
@@ -17,25 +18,40 @@ export class HomeComponent implements OnInit {
   titulo: string = '¿ DÓNDE TE GUSTARÍA PEDIR CITA ?';
   citasPendientes: number = 0;
   crearEmpresa: string = '¡ REGISTRA TU EMPRESA !';
-  user: User | null = null; citasPendientesText: string = 'CITAS PENDIENTES'
+  user: User | null = null;
+  citasPendientesText: string = 'CITAS PENDIENTES';
   searchText: string = '';
   isLoggedIn: boolean = false;
 
   searchControl = new FormControl('');
   searchResults: Company[] = [];
 
+  bookingCount: number = 0;
+
   @ViewChild('searchContainer') searchContainer!: ElementRef;
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    private companyService: CompanyService
+    private companyService: CompanyService,
+    private bookingService: BookingService
   ) { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
       this.isLoggedIn = !!user;
       this.user = user;
+
+      if (user) {
+        this.bookingService.getBookingsByUser(user.id).subscribe(
+          bookings => {
+            this.bookingCount = bookings.length;
+          },
+          error => {
+            console.error('Error al obtener reservas:', error);
+          }
+        );
+      }
     });
 
     this.searchControl.valueChanges.pipe(

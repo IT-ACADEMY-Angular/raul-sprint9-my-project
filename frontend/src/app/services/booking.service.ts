@@ -15,4 +15,12 @@ export class BookingService {
   createBooking(payload: CreateBookingPayload): Observable<Booking> {
     return this.http.post<Booking>(this.baseUrl, payload);
   }
+
+  getBookingsByUser(userId: number): Observable<Booking[]> {
+    return this.http.get<Booking[]>(`${this.baseUrl}/user/${userId}`);
+  }
+
+  deleteBooking(bookingId: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${bookingId}`);
+  }
 }

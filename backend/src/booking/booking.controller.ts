@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Delete } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 
@@ -14,5 +14,15 @@ export class BookingController {
   @Get(':id')
   async getBooking(@Param('id') id: number) {
     return this.bookingService.getBooking(id);
+  }
+
+  @Get('user/:userId')
+  async getBookingsByUser(@Param('userId') userId: number) {
+    return this.bookingService.getBookingsByUser(userId);
+  }
+
+  @Delete(':id')
+  async deleteBooking(@Param('id') id: number) {
+    return this.bookingService.deleteBooking(id);
   }
 }

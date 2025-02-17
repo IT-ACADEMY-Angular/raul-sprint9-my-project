@@ -1,5 +1,4 @@
 <div class="profile-container p-3">
-
   <div class="d-flex justify-content-between align-items-center">
     <div class="back-arrow">
       <button class="btn btn-link text-black p-0" (click)="goBack()">
@@ -11,14 +10,5 @@
     </div>
   </div>
 
-  <div class="pending-bookings mt-4">
-    <h5 class="mt-5 fw-bold">Próximas citas:</h5>
-    <div class="booking-item d-flex justify-content-between align-items-center mt-3">
-      <span>Stone barber - 28/03/2025 - 11:00</span>
-      <button class="btn btn-sm btn-delete" (click)="deleteBooking()">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-    </div>
-  </div>
-
+  <booking-list-component [bookings]="bookings"></booking-list-component>
 </div>

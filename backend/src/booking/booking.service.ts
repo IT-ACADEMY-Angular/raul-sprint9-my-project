@@ -15,7 +15,7 @@ export class BookingService {
   ) { }
 
   async createBooking(createBookingDto: CreateBookingDto): Promise<Booking> {
-    const { companyId, bookingDate, selectedWorker, selectedTask, selectedSchedule, selectedHour } = createBookingDto;
+    const { companyId, userId, bookingDate, selectedWorker, selectedTask, selectedSchedule, selectedHour } = createBookingDto;
 
     const company = await this.companyRepository.findOne({ where: { id: companyId } });
     if (!company) {
@@ -29,6 +29,8 @@ export class BookingService {
       selectedSchedule,
       selectedHour,
       company,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      user: { id: userId } as any,
     });
 
     return this.bookingRepository.save(booking);
@@ -40,5 +42,22 @@ export class BookingService {
       throw new NotFoundException('Reserva no encontrada');
     }
     return booking;
+  }
+
+  async getAllBookings(): Promise<Booking[]> {
+    return this.bookingRepository.find();
+  }
+
+  async deleteBooking(id: number): Promise<void> {
+    const result = await this.bookingRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException('Reserva no encontrada');
+    }
+  }
+
+  async getBookingsByUser(userId: number): Promise<Booking[]> {
+    return this.bookingRepository.find({
+      where: { user: { id: userId } },
+    });
   }
 }
