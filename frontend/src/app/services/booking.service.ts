@@ -1,0 +1,18 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { CreateBookingPayload } from '../interfaces/create-booking-payload.interface';
+import { Booking } from '../interfaces/booking.interface';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class BookingService {
+  private baseUrl = '/booking';
+
+  constructor(private http: HttpClient) { }
+
+  createBooking(payload: CreateBookingPayload): Observable<Booking> {
+    return this.http.post<Booking>(this.baseUrl, payload);
+  }
+}

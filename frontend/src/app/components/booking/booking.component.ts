@@ -10,6 +10,9 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogData, ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confirm-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyService } from '../../services/company.service';
+import { Booking } from '../../interfaces/booking.interface';
+import { BookingService } from '../../services/booking.service';
+import { CreateBookingPayload } from '../../interfaces/create-booking-payload.interface';
 
 @Component({
   selector: 'booking-component',
@@ -30,7 +33,8 @@ export class BookingComponent {
   selectedSchedule: string = '';
   selectedHour: string = '';
 
-  selectedDate: Date | null = new Date();
+  selectedDate: Date | null = null;
+  minDate: Date = new Date();
   morningTimes: string[] = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00'];
   afternoonTimes: string[] = ['15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00'];
 
@@ -40,7 +44,8 @@ export class BookingComponent {
     private router: Router,
     private route: ActivatedRoute,
     private companyService: CompanyService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private bookingService: BookingService
   ) { }
 
   ngOnInit(): void {
@@ -114,7 +119,7 @@ export class BookingComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Reserva confirmada');
+        this.confirmBooking();
       } else {
         console.log('Reserva cancelada');
       }
@@ -127,5 +132,26 @@ export class BookingComponent {
       this.selectedTask !== '' &&
       this.selectedSchedule !== '' &&
       this.selectedHour !== '';
+  }
+
+  confirmBooking(): void {
+    const payload: CreateBookingPayload = {
+      bookingDate: this.selectedDate as Date,
+      selectedWorker: this.selectedWorker,
+      selectedTask: this.selectedTask,
+      selectedSchedule: this.selectedSchedule,
+      selectedHour: this.selectedHour,
+      companyId: this.company.id
+    };
+
+    this.bookingService.createBooking(payload).subscribe(
+      (booking: Booking) => {
+        console.log('Reserva creada:', booking);
+        this.router.navigate(['/pending-booking']);
+      },
+      error => {
+        console.error('Error al crear la reserva:', error);
+      }
+    );
   }
 }
