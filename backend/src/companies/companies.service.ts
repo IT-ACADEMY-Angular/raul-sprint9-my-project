@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Company } from './company.entity';
 import { Worker } from './worker.entity';
 
@@ -48,5 +48,12 @@ export class CompaniesService {
     }
     company.photoUrl = photoUrl;
     return this.companyRepository.save(company);
+  }
+
+  async searchCompanies(query: string): Promise<Company[]> {
+    if (!query) return [];
+    return this.companyRepository.find({
+      where: { name: Like(`%${query}%`) },
+    });
   }
 }

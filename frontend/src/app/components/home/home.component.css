@@ -2,25 +2,6 @@
   min-height: calc(100vh - 200px);
 }
 
-.bg-success-subtle {
-  background-color: #ffffff !important;
-  border-radius: 15px;
-  border: 1px solid #dbdbdb6f;
-}
-
-.appointment-edit {
-  background-color: #ffffff !important;
-  border-radius: 15px;
-  border: 1px solid #dbdbdb6f;
-  display: inline-block;
-}
-
-.btn-dark {
-  background-color: #3498DB !important;
-  border: none;
-  border-radius: 15px;
-}
-
 .home-container {
   height: 88%;
   display: flex;
@@ -35,6 +16,47 @@
   align-items: center;
   justify-content: center;
   flex-grow: 1;
+}
+
+.greeting {
+  margin-bottom: 10px;
+}
+
+.search-container {
+  position: relative;
+  width: 75%;
+  height: 50px;
+}
+
+.search-results {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.list-group-item {
+  cursor: pointer;
+  padding: 8px 12px;
+  transition: background-color 0.2s ease;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
+.footer {
+  width: 100%;
+  text-align: center;
+  margin-top: auto;
 }
 
 .notification-badge {
@@ -53,4 +75,23 @@
 
 .responsive-icon {
   font-size: 4vw;
+}
+
+.bg-success-subtle {
+  background-color: #ffffff !important;
+  border-radius: 15px;
+  border: 1px solid #dbdbdb6f;
+}
+
+.appointment-edit {
+  background-color: #ffffff !important;
+  border-radius: 15px;
+  border: 1px solid #dbdbdb6f;
+  display: inline-block;
+}
+
+.btn-dark {
+  background-color: #3498DB !important;
+  border: none;
+  border-radius: 15px;
 }

@@ -34,4 +34,8 @@ export class CompanyService {
   getCompany(id: number): Observable<Company> {
     return this.http.get<Company>(`${this.baseUrl}/${id}`);
   }
+
+  searchCompanies(query: string): Observable<Company[]> {
+    return this.http.get<Company[]>(`${this.baseUrl}/search`, { params: { q: query } });
+  }
 }

@@ -8,6 +8,7 @@ import {
   NotFoundException,
   UploadedFile,
   UseInterceptors,
+  Query,
 } from '@nestjs/common';
 import { CompaniesService } from './companies.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -37,6 +38,11 @@ export class CompaniesController {
   ) {
     const { ownerId, name, photoUrl, workerData } = body;
     return this.companiesService.createCompany(ownerId, name, photoUrl || '', workerData || []);
+  }
+
+  @Get('search')
+  async searchCompanies(@Query('q') query: string) {
+    return this.companiesService.searchCompanies(query);
   }
 
   @Get(':id')

@@ -1,13 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user.model';
+import { debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
+import { Company, CompanyService } from '../../services/company.service';
 
 @Component({
   selector: 'home-component',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -19,17 +21,52 @@ export class HomeComponent implements OnInit {
   searchText: string = '';
   isLoggedIn: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService) { }
+  searchControl = new FormControl('');
+  searchResults: Company[] = [];
+
+  @ViewChild('searchContainer') searchContainer!: ElementRef;
+
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private companyService: CompanyService
+  ) { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
       this.isLoggedIn = !!user;
       this.user = user;
     });
+
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((query: string | null) => {
+        const term = query || '';
+        if (term.trim() !== '') {
+          return this.companyService.searchCompanies(term);
+        }
+        return of([]);
+      })
+    ).subscribe((results: Company[]) => {
+      this.searchResults = results;
+    });
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    if (this.searchContainer && !this.searchContainer.nativeElement.contains(event.target)) {
+      this.searchResults = [];
+    }
   }
 
   searchBooking(): void {
-    this.router.navigate(['/booking']);
+    console.log('Buscar empresa:', this.searchControl.value);
+  }
+
+  selectCompany(company: Company): void {
+    console.log('Empresa seleccionada:', company);
+    this.router.navigate(['/booking'], { state: { company } });
   }
 
   goToPendingBooking(): void {
