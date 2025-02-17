@@ -95,3 +95,9 @@
   border: none;
   border-radius: 15px;
 }
+
+.btn-success {
+  background-color: #002741 !important;
+  border: none;
+  border-radius: 15px;
+}

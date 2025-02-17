@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 import { WorkerData } from '../models/worker.model';
 import { Company } from '../interfaces/company.interface';
 import { CreateCompanyPayload } from '../interfaces/create-company-payload.interface';
@@ -27,6 +27,14 @@ export class CompanyService {
 
   searchCompanies(query: string): Observable<Company[]> {
     return this.http.get<Company[]>(`${this.baseUrl}/search`, { params: { q: query } });
+  }
+
+  getCompanyByUserId(userId: number): Promise<Company | null> {
+    return lastValueFrom(this.http.get<Company>(`${this.baseUrl}/user/${userId}`))
+      .catch(error => {
+        console.error('Error al obtener empresa por usuario:', error);
+        return null;
+      });
   }
 }
 

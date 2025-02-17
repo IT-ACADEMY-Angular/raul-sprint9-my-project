@@ -18,14 +18,13 @@ export class HomeComponent implements OnInit {
   titulo: string = '¿ DÓNDE TE GUSTARÍA PEDIR CITA ?';
   citasPendientes: number = 0;
   crearEmpresa: string = '¡ REGISTRA TU EMPRESA !';
+  userHasCompany: boolean = false;
   user: User | null = null;
   citasPendientesText: string = 'CITAS PENDIENTES';
-  searchText: string = '';
   isLoggedIn: boolean = false;
 
   searchControl = new FormControl('');
   searchResults: Company[] = [];
-
   bookingCount: number = 0;
 
   @ViewChild('searchContainer') searchContainer!: ElementRef;
@@ -51,6 +50,15 @@ export class HomeComponent implements OnInit {
             console.error('Error al obtener reservas:', error);
           }
         );
+
+        this.companyService.getCompanyByUserId(user.id)
+          .then(company => {
+            this.userHasCompany = !!company;
+          })
+          .catch(error => {
+            console.error('Error al obtener la empresa del usuario:', error);
+            this.userHasCompany = false;
+          });
       }
     });
 
@@ -87,6 +95,10 @@ export class HomeComponent implements OnInit {
 
   goToPendingBooking(): void {
     this.router.navigate(['/pending-booking']);
+  }
+
+  goToManageCompany(): void {
+    this.router.navigate(['/profile']);
   }
 
   goToNewCompany(): void {

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository } from 'typeorm';
+import { FindOneOptions, Like, Repository } from 'typeorm';
 import { Company } from './company.entity';
 import { Worker } from './worker.entity';
 
@@ -55,5 +55,13 @@ export class CompaniesService {
     return this.companyRepository.find({
       where: { name: Like(`%${query}%`) },
     });
+  }
+
+  async getCompanyByUserId(userId: number): Promise<Company | null> {
+    const options: FindOneOptions<Company> = {
+      where: { owner: { id: userId } },
+    };
+    const company = await this.companyRepository.findOne(options);
+    return company || null;
   }
 }

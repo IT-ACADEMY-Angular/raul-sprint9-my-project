@@ -31,12 +31,22 @@
           {{ bookingCount }}
         </span>
       </div>
-      <div class="bg-success-subtle py-3 shadow">
-        <p class="fw-bold fs-5 text-dark mb-2 px-2">{{ crearEmpresa }}</p>
-        <button class="btn btn-dark text-white px-4 py-2 fw-bold shadow" (click)="goToNewCompany()">
-          9,99 €
-        </button>
-      </div>
+      <ng-container *ngIf="userHasCompany; else noCompany">
+        <div class="bg-success-subtle py-3 shadow">
+          <p class="fs-5 text-dark mb-2 px-2">¡ OBSERVA Y MANIPULA LAS CITAS QUE HAY EN TU EMPRESA !</p>
+          <button class="btn btn-success text-white px-4 py-2 fw-bold shadow" (click)="goToManageCompany()">
+            GESTIONAR EMPRESA
+          </button>
+        </div>
+      </ng-container>
+      <ng-template #noCompany>
+        <div class="bg-success-subtle py-3 shadow">
+          <p class="fw-bold fs-5 text-dark mb-2 px-2">{{ crearEmpresa }}</p>
+          <button class="btn btn-dark text-white px-4 py-2 fw-bold shadow" (click)="goToNewCompany()">
+            9,99 €
+          </button>
+        </div>
+      </ng-template>
     </ng-container>
 
     <ng-template #showLogin>

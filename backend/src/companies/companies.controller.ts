@@ -61,4 +61,9 @@ export class CompaniesController {
     const photoUrl = `http://localhost:3000/uploads/${file.filename}`;
     return { photoUrl };
   }
+
+  @Get('user/:userId')
+  async getCompanyByUser(@Param('userId') userId: number) {
+    return this.companiesService.getCompanyByUserId(userId);
+  }
 }
