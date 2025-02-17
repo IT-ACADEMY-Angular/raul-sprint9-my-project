@@ -138,3 +138,55 @@ mat-calendar .mat-calendar-header .mat-calendar-next-button {
   color: white !important;
   border-color: white !important;
 }
+
+.profile-container {
+  padding: 20px;
+}
+
+.back-arrow button {
+  background: none;
+  border: none;
+}
+
+.custom-icon-profile {
+  color: #3498DB;
+}
+
+.custom-photo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.appointment-edit {
+  background-color: #ffffff !important;
+  border-radius: 15px;
+  border: 1px solid #dbdbdb6f;
+  display: inline-block;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.time-pills .btn {
+  margin: 0.2rem;
+}
+
+.btn-login:disabled {
+  background-color: #cccccc !important;
+  border-color: #cccccc !important;
+  color: #666666 !important;
+  cursor: not-allowed;
+}

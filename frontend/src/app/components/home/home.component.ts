@@ -66,7 +66,7 @@ export class HomeComponent implements OnInit {
 
   selectCompany(company: Company): void {
     console.log('Empresa seleccionada:', company);
-    this.router.navigate(['/booking'], { state: { company } });
+    this.router.navigate(['/booking', company.id]);
   }
 
   goToPendingBooking(): void {

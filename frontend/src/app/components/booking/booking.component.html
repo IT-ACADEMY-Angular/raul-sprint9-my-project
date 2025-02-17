@@ -1,5 +1,4 @@
 <div class="profile-container p-3">
-
   <div class="d-flex justify-content-between align-items-center">
     <div class="back-arrow">
       <button class="btn btn-link text-black p-0" (click)="goBack()">
@@ -13,13 +12,15 @@
 
   <div class="d-flex align-items-center mt-3">
     <div class="position-relative">
-      <i class="fa-solid fa-circle-user fa-7x custom-icon-profile"></i>
-      <button class="btn btn-link position-absolute" style="bottom: 0; right: 0;">
-        <i class="fa-solid fa-camera fs-3 text-black"></i>
-      </button>
+      <ng-container *ngIf="company?.photoUrl; else defaultCompanyPhoto">
+        <img [src]="company.photoUrl" alt="Foto de empresa" class="custom-photo">
+      </ng-container>
+      <ng-template #defaultCompanyPhoto>
+        <i class="fa-solid fa-circle-user fa-7x custom-icon-profile"></i>
+      </ng-template>
     </div>
     <div class="ms-3">
-      <h2 class="m-0 fw-bold text-break">Stone Barber Shop</h2>
+      <h2 class="m-0 fw-bold text-break">{{ company?.name }}</h2>
     </div>
   </div>
 
@@ -32,45 +33,41 @@
   </div>
 
   <div class="profile-info px-4 pt-4">
-    <div class="mb-3 dropdown">
+    <div *ngIf="workers && workers.length > 0; else noWorkers" class="mb-3 dropdown">
       <button class="btn form-select dropdown-toggle" type="button" id="workerDropdown" data-bs-toggle="dropdown"
         aria-expanded="false" [ngStyle]="{'color': selectedWorker ? '#000000' : '#9b9b9b'}">
         {{ selectedWorker || 'Selecciona un trabajador...' }}
       </button>
       <ul class="dropdown-menu" aria-labelledby="workerDropdown">
-        <li><a class="dropdown-item" (click)="selectWorker('Miguel')">Miguel</a></li>
-        <li><a class="dropdown-item" (click)="selectWorker('Raul')">Raul</a></li>
-        <li><a class="dropdown-item" (click)="selectWorker('Judit')">Judit</a></li>
-        <li><a class="dropdown-item" (click)="selectWorker('Rosa')">Rosa</a></li>
-      </ul>
-    </div>
-
-    <div class="mb-3 dropdown">
-      <button class="btn form-select dropdown-toggle" type="button" id="serviceDropdown" data-bs-toggle="dropdown"
-        aria-expanded="false" [ngStyle]="{'color': selectedService ? '#000000' : '#9b9b9b'}">
-        {{ selectedService || 'Selecciona un servicio...' }}
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="serviceDropdown">
-        <li>
-          <a class="dropdown-item" (click)="selectService('Corte de pelo hombre + barba + lavado + secado')">
-            Corte de pelo hombre + barba + lavado + secado + noseque
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item" (click)="selectService('Corte de pelo hombre')">
-            Corte de pelo hombre
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item" (click)="selectService('Corte de pelo hombre + barba')">
-            Corte de pelo hombre + barba
-          </a>
+        <li *ngFor="let worker of workers">
+          <a class="dropdown-item" (click)="selectWorker(worker.name)">{{ worker.name }}</a>
         </li>
       </ul>
     </div>
+    <ng-template #noWorkers>
+      <p>No hay trabajadores asignados a esta empresa.</p>
+    </ng-template>
 
+    <div *ngIf="selectedWorker">
+      <div *ngIf="tasksForSelectedWorker && tasksForSelectedWorker.length > 0; else noTasks" class="mb-3 dropdown">
+        <button class="btn form-select dropdown-toggle" type="button" id="taskDropdown" data-bs-toggle="dropdown"
+          aria-expanded="false" [ngStyle]="{'color': selectedTask ? '#000000' : '#9b9b9b'}">
+          {{ selectedTask || 'Selecciona una tarea...' }}
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="taskDropdown">
+          <li *ngFor="let task of tasksForSelectedWorker">
+            <a class="dropdown-item" (click)="selectTask(task)">
+              <strong>{{ task.name }}</strong> ({{ task.duration }} min)
+            </a>
+          </li>
+        </ul>
+      </div>
+      <ng-template #noTasks>
+        <p>No hay tareas para este trabajador.</p>
+      </ng-template>
+    </div>
 
-    <div class="mb-3 dropdown">
+    <div *ngIf="tasksForSelectedWorker && tasksForSelectedWorker.length > 0" class="mb-3 dropdown">
       <button class="btn form-select dropdown-toggle" type="button" id="scheduleDropdown" data-bs-toggle="dropdown"
         aria-expanded="false" [ngStyle]="{'color': selectedSchedule ? '#000000' : '#9b9b9b'}">
         {{ selectedSchedule || 'Selecciona una franja horaria...' }}
@@ -83,18 +80,20 @@
 
     <div *ngIf="selectedSchedule === '09:00 - 14:00'" class="time-pills d-flex flex-wrap gap-2 mt-3">
       <button *ngFor="let time of morningTimes" class="btn btn-outline-secondary time-pill"
-        [ngClass]="{'active': selectedTime === time}" (click)="selectTime(time)">
+        [ngClass]="{'active': selectedHour === time}" (click)="selectHour(time)">
         {{ time }}
       </button>
     </div>
     <div *ngIf="selectedSchedule === '15:00 - 20:00'" class="time-pills d-flex flex-wrap gap-2 mt-3">
       <button *ngFor="let time of afternoonTimes" class="btn btn-outline-secondary time-pill"
-        [ngClass]="{'active': selectedTime === time}" (click)="selectTime(time)">
+        [ngClass]="{'active': selectedHour === time}" (click)="selectHour(time)">
         {{ time }}
       </button>
     </div>
 
-    <button type="button" class="btn btn-login mt-4 d-block mx-auto" (click)="openConfirmModal()">RESERVAR</button>
+    <button type="button" class="btn btn-login mt-4 d-block mx-auto" (click)="openConfirmModal()"
+      [disabled]="!isFormComplete">
+      RESERVAR
+    </button>
   </div>
-
 </div>

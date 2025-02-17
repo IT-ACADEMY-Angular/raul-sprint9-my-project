@@ -1,19 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-export interface Company {
-  id: number;
-  name: string;
-  photoUrl?: string;
-}
-
-export interface CreateCompanyPayload {
-  ownerId: number;
-  name: string;
-  photoUrl?: string;
-  workerData?: { name: string; tasks?: { name: string; duration: number }[] }[];
-}
+import { WorkerData } from '../models/worker.model';
+import { Company } from '../interfaces/company.interface';
+import { CreateCompanyPayload } from '../interfaces/create-company-payload.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -39,3 +29,6 @@ export class CompanyService {
     return this.http.get<Company[]>(`${this.baseUrl}/search`, { params: { q: query } });
   }
 }
+
+export type { Company };
+export type { CreateCompanyPayload };
