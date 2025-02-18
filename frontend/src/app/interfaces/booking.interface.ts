@@ -8,4 +8,5 @@ export interface Booking {
   selectedSchedule: string;
   selectedHour: string;
   company: Company;
+  user?: { id: number; name: string; phone?: string };
 }

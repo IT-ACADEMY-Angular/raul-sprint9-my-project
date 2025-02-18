@@ -98,7 +98,7 @@ export class HomeComponent implements OnInit {
   }
 
   goToManageCompany(): void {
-    this.router.navigate(['/profile']);
+    this.router.navigate(['/company-management']);
   }
 
   goToNewCompany(): void {

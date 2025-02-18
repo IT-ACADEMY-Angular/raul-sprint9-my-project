@@ -1,0 +1,78 @@
+.booking-modal-container {
+  padding: 20px;
+  text-align: left;
+}
+
+.booking-details p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-delete {
+  background-color: #FFAEAE;
+  border: 1px solid #c6c6c6;
+  border-radius: 15px;
+}
+
+.btn-save {
+  background-color: #B5FFC2;
+  border: 1px solid #c6c6c6;
+  border-radius: 15px;
+}
+
+.modal-call {
+  margin-top: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-call {
+  background-color: #cce5ff;
+  color: #0056b3;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #0056b3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.btn-whatsapp {
+  background-color: #25D366;
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #1ebe57;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+
+.modal-input {
+  border-radius: 10px;
+  padding: 5px 15px;
+  border: 1px solid #c6c6c6;
+  width: 100%;
+}

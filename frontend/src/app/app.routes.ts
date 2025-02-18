@@ -8,6 +8,8 @@ import { PendingBookingsComponent } from './components/pending-bookings/pending-
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AuthGuard } from './guards/auth.guard';
+import { CompanyManagementComponent } from './components/company-management/company-management.component';
+import { BookingsResultsComponent } from './components/bookings-results/bookings-results.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, data: { hideProfileIcon: false, title: 'ZYTAPP' } },
@@ -19,4 +21,6 @@ export const routes: Routes = [
   { path: 'pending-booking', component: PendingBookingsComponent, data: { hideProfileIcon: false } },
   { path: 'login', component: LoginComponent, data: { hideProfileIcon: true, title: 'LOGIN' } },
   { path: 'register', component: RegisterComponent, data: { hideProfileIcon: true, title: 'REGISTRARSE' } },
+  { path: 'company-management', component: CompanyManagementComponent, data: { hideProfileIcon: true } },
+  { path: 'bookings-results', component: BookingsResultsComponent, data: { hideProfileIcon: true } },
 ];

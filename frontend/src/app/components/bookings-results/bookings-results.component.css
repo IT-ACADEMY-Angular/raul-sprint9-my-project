@@ -1,0 +1,81 @@
+.profile-container {
+  padding: 20px;
+}
+
+.time-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.time-slot {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  position: relative;
+  transition: background-color 0.2s;
+}
+
+.time-slot:hover {
+  background-color: #f0f0f0;
+}
+
+.slot-label {
+  font-weight: bold;
+}
+
+.slot-event {
+  margin-top: 5px;
+  background-color: #e0ffe0;
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 0.9rem;
+}
+
+.calendar-container {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  position: relative;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.time-labels {
+  border-right: 1px solid #ccc;
+  padding: 5px;
+}
+
+.time-label {
+  height: 25px;
+  font-size: 0.7rem;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #eee;
+}
+
+.events-area {
+  position: relative;
+}
+
+.event {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  background-color: #c2e4ff80;
+  border: 1px solid #acacac;
+  border-radius: 4px;
+  padding: 5px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.event-time {
+  display: block;
+  font-size: 0.7rem;
+  color: #333;
+  margin-top: 4px;
+}

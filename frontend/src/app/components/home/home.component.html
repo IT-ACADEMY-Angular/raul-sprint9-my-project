@@ -33,9 +33,10 @@
       </div>
       <ng-container *ngIf="userHasCompany; else noCompany">
         <div class="bg-success-subtle py-3 shadow">
-          <p class="fs-5 text-dark mb-2 px-2">¡ OBSERVA Y MANIPULA LAS CITAS QUE HAY EN TU EMPRESA !</p>
+          <p class="fs-5 text-dark mb-2 px-2">¡ OBSERVA Y EDITA LAS CITAS QUE HAY EN <span class="fw-bold">TU
+              EMPRESA</span> !</p>
           <button class="btn btn-success text-white px-4 py-2 fw-bold shadow" (click)="goToManageCompany()">
-            GESTIONAR EMPRESA
+            GESTIONAR MI EMPRESA
           </button>
         </div>
       </ng-container>

@@ -1,0 +1,28 @@
+<div class="booking-modal-container">
+  <div class="booking-details">
+    <p><strong>Cliente:</strong> {{ data.customerName }}</p>
+    <p><strong>Tarea:</strong> {{ data.task }}</p>
+    <p>
+      <strong>Fecha: </strong>
+      <input type="date" [(ngModel)]="editableDate" class="modal-input" />
+    </p>
+    <p>
+      <strong>Hora: </strong>
+      <input type="time" [(ngModel)]="editableTime" class="modal-input" />
+    </p>
+  </div>
+
+  <div class="modal-actions">
+    <button class="btn btn-delete fw-bold" (click)="onDelete()">ELIMINAR</button>
+    <button class="btn btn-save fw-bold" (click)="onSave()">GUARDAR</button>
+  </div>
+
+  <div class="modal-call">
+    <button class="btn btn-call fw-bold" (click)="onCall()">
+      <i class="fa-solid fa-phone"></i>
+    </button>
+    <button class="btn btn-whatsapp fw-bold" (click)="onWhatsapp()">
+      <i class="fa-brands fa-whatsapp"></i>
+    </button>
+  </div>
+</div>

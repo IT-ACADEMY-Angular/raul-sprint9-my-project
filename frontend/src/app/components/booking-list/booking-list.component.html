@@ -2,8 +2,12 @@
   <h5 class="mt-5 fw-bold">Próximas citas:</h5>
   <div *ngIf="bookings && bookings.length > 0; else noBookings">
     <div class="booking-item d-flex justify-content-between align-items-center mt-3" *ngFor="let booking of bookings">
-      <span>
-        {{ booking.company.name }} - {{ booking.bookingDate | date:'dd/MM/yyyy' }} - {{ booking.selectedHour }}
+      <span class="tarea-ok me-2">
+        Cita en <span class="fw-bold">{{ booking.company.name }}</span> el día
+        <span class="fw-bold">{{ booking.bookingDate | date:'dd/MM/yyyy' }}</span> a las
+        <span class="fw-bold">{{ booking.selectedHour }}</span> para
+        <span class="fw-bold">{{ booking.selectedTask.split('(')[0].trim() }}</span> con
+        <span class="fw-bold">{{ booking.selectedWorker }}</span>
       </span>
       <button class="btn btn-sm btn-delete" (click)="deleteBooking(booking.id)">
         <i class="fa-solid fa-xmark"></i>

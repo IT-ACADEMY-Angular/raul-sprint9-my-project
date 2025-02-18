@@ -1,6 +1,7 @@
-import { Controller, Post, Body, Get, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Delete, Put } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
+import { UpdateBookingDto } from './dto/update-booking.dto';
 
 @Controller('booking')
 export class BookingController {
@@ -9,6 +10,11 @@ export class BookingController {
   @Post()
   async createBooking(@Body() createBookingDto: CreateBookingDto) {
     return this.bookingService.createBooking(createBookingDto);
+  }
+
+  @Get('all')
+  async getAllBookings() {
+    return this.bookingService.getAllBookings();
   }
 
   @Get(':id')
@@ -24,5 +30,10 @@ export class BookingController {
   @Delete(':id')
   async deleteBooking(@Param('id') id: number) {
     return this.bookingService.deleteBooking(id);
+  }
+
+  @Put(':id')
+  async updateBooking(@Param('id') id: number, @Body() updateBookingDto: UpdateBookingDto) {
+    return this.bookingService.updateBooking(id, updateBookingDto);
   }
 }

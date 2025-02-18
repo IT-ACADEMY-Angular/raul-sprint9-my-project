@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Booking } from './booking.entity';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { Company } from '../companies/company.entity';
+import { UpdateBookingDto } from './dto/update-booking.dto';
 
 @Injectable()
 export class BookingService {
@@ -59,5 +60,15 @@ export class BookingService {
     return this.bookingRepository.find({
       where: { user: { id: userId } },
     });
+  }
+
+  async updateBooking(id: number, updateBookingDto: UpdateBookingDto): Promise<Booking> {
+    const booking = await this.bookingRepository.findOne({ where: { id } });
+    if (!booking) {
+      throw new NotFoundException('Reserva no encontrada');
+    }
+    booking.bookingDate = updateBookingDto.bookingDate;
+    booking.selectedHour = updateBookingDto.selectedHour;
+    return this.bookingRepository.save(booking);
   }
 }
