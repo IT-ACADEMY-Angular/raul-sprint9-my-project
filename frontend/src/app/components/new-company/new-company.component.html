@@ -50,8 +50,10 @@
       (editWorker)="editWorker($event)">
     </worker-list-component>
 
-    <button type="button" class="btn btn-login mt-4 d-block mx-auto" (click)="registrarEmpresa()">REGISTRAR
-      EMPRESA</button>
+    <button type="button" class="btn btn-login mt-4 d-block mx-auto" (click)="registrarEmpresa()"
+      [disabled]="!isFormComplete">
+      REGISTRAR EMPRESA
+    </button>
 
     <edit-worker-modal-component *ngIf="showEditWorkerModal" [worker]="workerToEdit"
       (closeModal)="onWorkerModalClose($event)" (cancelModal)="onWorkerModalCancel()">

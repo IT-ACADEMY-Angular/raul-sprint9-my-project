@@ -89,8 +89,12 @@ export class HomeComponent implements OnInit {
   }
 
   selectCompany(company: Company): void {
-    console.log('Empresa seleccionada:', company);
-    this.router.navigate(['/booking', company.id]);
+    if (!this.isLoggedIn) {
+      this.router.navigate(['/login']);
+    } else {
+      console.log('Empresa seleccionada:', company);
+      this.router.navigate(['/booking', company.id]);
+    }
   }
 
   goToPendingBooking(): void {
@@ -102,6 +106,7 @@ export class HomeComponent implements OnInit {
   }
 
   goToNewCompany(): void {
+    alert("¡Pago realizado!");
     this.router.navigate(['/new-company']);
   }
 

@@ -6,6 +6,8 @@ import { User } from '../../interfaces/auth.interfaces';
 import { AuthService } from '../../services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, tap, switchMap } from 'rxjs';
+import { ConfirmDialogData, ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'edit-profile-component',
@@ -20,6 +22,7 @@ export class EditProfileComponent {
   mail: string = '';
   telefono: string = '';
   user: User | null = null;
+  originalUser: User | null = null;
 
   selectedFile: File | null = null;
   previewPhotoUrl: string | null = null;
@@ -29,13 +32,15 @@ export class EditProfileComponent {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private http: HttpClient
+    private http: HttpClient,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user: User | null) => {
       if (user) {
         this.user = user;
+        this.originalUser = { ...user };
         this.nombre = user.name;
         this.apellidos = user.lastName;
         this.mail = user.email;
@@ -45,7 +50,23 @@ export class EditProfileComponent {
   }
 
   goBack(): void {
-    this.router.navigate(['/profile']);
+    if (this.isFormModified) {
+      const confirmData: ConfirmDialogData = {
+        title: 'Salir sin guardar',
+        message: 'No se van a guardar los cambios. ¿Desea salir?'
+      };
+      const dialogRef = this.dialog.open(ModalConfirmDialogComponent, {
+        width: '300px',
+        data: confirmData
+      });
+      dialogRef.afterClosed().subscribe((result: boolean) => {
+        if (result === true) {
+          this.router.navigate(['/profile']);
+        }
+      });
+    } else {
+      this.router.navigate(['/profile']);
+    }
   }
 
   onFileSelected(event: Event): void {
@@ -58,12 +79,14 @@ export class EditProfileComponent {
         return;
       }
       this.selectedFile = file;
-      this.previewPhotoUrl = URL.createObjectURL(this.selectedFile);
+      this.previewPhotoUrl = URL.createObjectURL(file);
     }
   }
 
   onImageError(event: Event): void {
-    this.user!.photoUrl = undefined;
+    if (this.user) {
+      this.user.photoUrl = undefined;
+    }
   }
 
   uploadPhoto(file: File): Observable<User> {
@@ -124,5 +147,18 @@ export class EditProfileComponent {
 
   triggerFileInput(): void {
     this.fileInput.nativeElement.click();
+  }
+
+  get isFormModified(): boolean {
+    if (!this.originalUser) {
+      return false;
+    }
+    return (
+      this.nombre !== this.originalUser.name ||
+      this.apellidos !== this.originalUser.lastName ||
+      this.mail !== this.originalUser.email ||
+      this.telefono !== this.originalUser.phone ||
+      !!this.selectedFile
+    );
   }
 }

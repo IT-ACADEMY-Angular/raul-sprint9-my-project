@@ -15,5 +15,4 @@ export class TaskListComponent {
   onRemoveTask(index: number): void {
     this.removeTask.emit(index);
   }
-
 }

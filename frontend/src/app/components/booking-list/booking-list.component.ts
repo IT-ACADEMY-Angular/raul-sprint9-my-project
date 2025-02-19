@@ -13,9 +13,24 @@ import { BookingService } from '../../services/booking.service';
   styleUrl: './booking-list.component.css'
 })
 export class BookingListComponent {
-  @Input() bookings: Booking[] = [];
+  private _bookings: Booking[] = [];
 
-  constructor(private dialog: MatDialog, private router: Router, private bookingService: BookingService) { }
+  @Input()
+  set bookings(value: Booking[]) {
+    this._bookings = value.sort((a, b) => {
+      return new Date(a.bookingDate).getTime() - new Date(b.bookingDate).getTime();
+    });
+  }
+
+  get bookings(): Booking[] {
+    return this._bookings;
+  }
+
+  constructor(
+    private dialog: MatDialog,
+    private router: Router,
+    private bookingService: BookingService
+  ) { }
 
   deleteBooking(bookingId: number): void {
     const dialogData: ConfirmDialogData = {
@@ -31,7 +46,7 @@ export class BookingListComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.bookingService.deleteBooking(bookingId).subscribe(() => {
-          this.bookings = this.bookings.filter(b => b.id !== bookingId);
+          this._bookings = this._bookings.filter(b => b.id !== bookingId);
           console.log('Reserva eliminada.');
         }, error => {
           console.error('Error al eliminar la reserva:', error);

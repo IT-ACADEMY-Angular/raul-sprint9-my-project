@@ -42,4 +42,8 @@ export class EditWorkerModalComponent {
       this.worker.tasks.splice(index, 1);
     }
   }
+
+  get isSaveEnabled(): boolean {
+    return (this.worker.tasks?.length || 0) > 0;
+  }
 }

@@ -79,13 +79,13 @@
         </ul>
       </div>
 
-      <div *ngIf="selectedSchedule === '09:00 - 14:00'" class="time-pills d-flex flex-wrap gap-2 mt-3">
+      <div *ngIf="selectedSchedule === '09:00 - 14:00'" class="time-pills d-flex flex-wrap mt-3">
         <button *ngFor="let time of morningTimes" class="btn btn-outline-secondary time-pill"
           [ngClass]="{'active': selectedHour === time}" (click)="selectHour(time)">
           {{ time }}
         </button>
       </div>
-      <div *ngIf="selectedSchedule === '15:00 - 20:00'" class="time-pills d-flex flex-wrap gap-2 mt-3">
+      <div *ngIf="selectedSchedule === '15:00 - 20:00'" class="time-pills d-flex flex-wrap mt-3">
         <button *ngFor="let time of afternoonTimes" class="btn btn-outline-secondary time-pill"
           [ngClass]="{'active': selectedHour === time}" (click)="selectHour(time)">
           {{ time }}

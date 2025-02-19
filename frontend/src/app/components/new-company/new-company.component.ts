@@ -8,6 +8,8 @@ import { WorkerData } from '../../models/worker.model';
 import { map, Observable, switchMap } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { EditWorkerModalComponent } from '../edit-worker-modal/edit-worker-modal.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogData, ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confirm-dialog.component';
 
 @Component({
   selector: 'new-company-component',
@@ -34,11 +36,28 @@ export class NewCompanyComponent {
   constructor(
     private router: Router,
     private companyService: CompanyService,
-    private authService: AuthService
+    private authService: AuthService,
+    private dialog: MatDialog
   ) { }
 
   goBack(): void {
-    this.router.navigate(['/']);
+    if (this.isFormModified()) {
+      const confirmData: ConfirmDialogData = {
+        title: 'Salir sin guardar',
+        message: 'No se van a guardar los cambios. ¿Desea salir?'
+      };
+      const dialogRef = this.dialog.open(ModalConfirmDialogComponent, {
+        width: '300px',
+        data: confirmData
+      });
+      dialogRef.afterClosed().subscribe((result: boolean) => {
+        if (result === true) {
+          this.router.navigate(['/']);
+        }
+      });
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 
   triggerFileInput(): void {
@@ -100,6 +119,22 @@ export class NewCompanyComponent {
     this.showEditWorkerModal = false;
   }
 
+  isFormModified(): boolean {
+    const hasName = this.companyName.trim().length > 0;
+    const hasPhoto = !!this.selectedFile || !!this.companyPhotoUrl;
+    const hasWorkers = this.workerData.length > 0;
+    const atLeastOneWorkerHasTask = this.workerData.some(worker => worker.tasks && worker.tasks.length > 0);
+    return hasName || hasPhoto || hasWorkers || atLeastOneWorkerHasTask;
+  }
+
+  get isFormComplete(): boolean {
+    const hasName = this.companyName.trim().length > 0;
+    const hasPhoto = !!this.selectedFile || !!this.companyPhotoUrl;
+    const hasWorkers = this.workerData.length > 0;
+    const atLeastOneWorkerHasTask = this.workerData.some(worker => worker.tasks && worker.tasks.length > 0);
+    return hasName && hasPhoto && hasWorkers && atLeastOneWorkerHasTask;
+  }
+
   registrarEmpresa(): void {
     const currentUser = this.authService.getCurrentUser();
     if (!currentUser) {
@@ -127,7 +162,7 @@ export class NewCompanyComponent {
       ).subscribe(
         (company: Company) => {
           console.log('Empresa creada correctamente:', company);
-          this.router.navigate(['/profile']);
+          this.router.navigate(['/']);
         },
         (error) => {
           console.error('Error al crear la empresa:', error);
@@ -137,7 +172,7 @@ export class NewCompanyComponent {
       register$().subscribe(
         (company: Company) => {
           console.log('Empresa creada correctamente:', company);
-          this.router.navigate(['/profile']);
+          this.router.navigate(['/']);
         },
         (error) => {
           console.error('Error al crear la empresa:', error);

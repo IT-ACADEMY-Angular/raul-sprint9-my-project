@@ -49,5 +49,8 @@
     </div>
   </div>
 
-  <button type="button" class="btn btn-login mt-4 d-block mx-auto" (click)="guardarCambios()">GUARDAR</button>
+  <button type="button" class="btn btn-login mt-4 d-block mx-auto" (click)="guardarCambios()"
+    [disabled]="!isFormModified">
+    GUARDAR
+  </button>
 </div>

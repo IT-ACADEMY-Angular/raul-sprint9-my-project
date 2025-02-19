@@ -10,8 +10,11 @@
   border-radius: 20px;
 }
 
-.custom-icon-profile {
-  color: #3498DB;
+.btn-login:disabled {
+  background-color: #cccccc;
+  border-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
 }
 
 .custom-photo {
@@ -20,10 +23,6 @@
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid #3498db88;
-}
-
-.custom-icon-profile {
-  color: #3498DB;
 }
 
 .camera-button {
@@ -40,7 +39,7 @@
   color: black;
   text-shadow:
     -1px -1px 0 white,
-     1px -1px 0 white,
-    -1px  1px 0 white,
-     1px  1px 0 white;
+    1px -1px 0 white,
+    -1px 1px 0 white,
+    1px 1px 0 white;
 }
