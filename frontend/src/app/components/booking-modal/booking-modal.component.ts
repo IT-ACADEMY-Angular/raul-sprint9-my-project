@@ -4,7 +4,8 @@ import { BookingModalData } from '../../interfaces/booking-modal-data.interface'
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BookingService } from '../../services/booking.service';
-import { ConfirmDialogData, ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confirm-dialog.component';
+import { ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confirm-dialog.component';
+import { ConfirmDialogData } from '../../interfaces/confirm-dialog-data.interface';
 
 @Component({
   selector: 'app-booking-modal',

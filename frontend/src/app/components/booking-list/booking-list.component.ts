@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { ConfirmDialogData, ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confirm-dialog.component';
+import { ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Booking } from '../../interfaces/booking.interface';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { BookingService } from '../../services/booking.service';
+import { ConfirmDialogData } from '../../interfaces/confirm-dialog-data.interface';
 
 @Component({
   selector: 'booking-list-component',

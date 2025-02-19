@@ -6,8 +6,9 @@ import { User } from '../../interfaces/auth.interfaces';
 import { AuthService } from '../../services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, tap, switchMap } from 'rxjs';
-import { ConfirmDialogData, ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confirm-dialog.component';
+import { ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogData } from '../../interfaces/confirm-dialog-data.interface';
 
 @Component({
   selector: 'edit-profile-component',

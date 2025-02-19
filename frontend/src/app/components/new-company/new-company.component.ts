@@ -9,7 +9,8 @@ import { map, Observable, switchMap } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { EditWorkerModalComponent } from '../edit-worker-modal/edit-worker-modal.component';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogData, ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confirm-dialog.component';
+import { ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confirm-dialog.component';
+import { ConfirmDialogData } from '../../interfaces/confirm-dialog-data.interface';
 
 @Component({
   selector: 'new-company-component',
