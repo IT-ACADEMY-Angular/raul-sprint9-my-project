@@ -16,7 +16,23 @@
 </head>
 
 <body class="mat-typography">
+  <div class="unsupported-message">
+    <div>
+      <span class="zytapp-title">ZYTAPP</span> is a mobile device-based app.<br>
+    You can resize the window to view the demo.
+    </div>
+    <button id="mobileBtn" class="btn btn-customized btn-lg mt-3 fw-bold">OPEN DEMO</button>
+  </div>
   <app-root></app-root>
+
+  <script>
+    document.getElementById('mobileBtn')?.addEventListener('click', function () {
+      const url = window.location.href;
+      const mobileWidth = 385;
+      const mobileHeight = 812;
+      window.open(url, 'vistaMovil', `width=${mobileWidth},height=${mobileHeight}`);
+    });
+  </script>
 </body>
 
 </html>
