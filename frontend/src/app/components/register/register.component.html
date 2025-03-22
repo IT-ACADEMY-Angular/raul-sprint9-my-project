@@ -59,6 +59,18 @@
           </div>
         </div>
 
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="dataProtectionCheck" [(ngModel)]="dataProtectionAccepted"
+            name="dataProtectionAccepted" required />
+          <label class="form-check-label" for="dataProtectionCheck">
+            Acepto la <a class="text-white" href="../../../assets/privacy-policy.html" target="_blank">política de
+              protección de datos</a>.
+          </label>
+        </div>
+        <div *ngIf="submitted && !dataProtectionAccepted" class="alert alert-danger mt-1">
+          Debes aceptar la política de protección de datos.
+        </div>
+
         <button type="submit" class="btn btn-login my-3">REGISTRO</button>
       </form>
     </div>

@@ -20,12 +20,17 @@ export class RegisterComponent {
   password: string = '';
   phone: string = '';
 
+  dataProtectionAccepted: boolean = false;
+
   submitted: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) { }
 
   onRegister(form: NgForm): void {
     this.submitted = true;
+    if (!this.dataProtectionAccepted) {
+      return;
+    }
     if (form.invalid) {
       return;
     }
