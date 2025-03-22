@@ -17,19 +17,25 @@ export class LoginComponent {
   password: string = '';
   errorMessage: string = '';
 
+  keepLoggedIn: boolean = false;
+
   constructor(private authService: AuthService, private router: Router) { }
 
   onLogin(): void {
     this.authService.login(this.email, this.password).subscribe(
-      (response) => {
+      (response: any) => {
         console.log('Login CORRECTO:', response);
         this.errorMessage = '';
+        if (this.keepLoggedIn) {
+          localStorage.setItem('authToken', response.token);
+        } else {
+          sessionStorage.setItem('authToken', response.token);
+        }
         this.router.navigate(['/']);
       },
       (error) => {
         console.error('Error en el login:', error);
         this.errorMessage = '¡UPS! El mail o la contraseña no son correctos.';
-
       }
     );
   }

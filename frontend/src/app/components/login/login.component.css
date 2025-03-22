@@ -59,3 +59,9 @@
   color: #000;
   cursor: pointer;
 }
+
+.form-check-input,
+.form-check-label {
+  vertical-align: middle;
+  margin-top: 0;
+}
