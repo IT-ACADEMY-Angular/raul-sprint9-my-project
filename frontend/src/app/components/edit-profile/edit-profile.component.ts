@@ -22,6 +22,8 @@ export class EditProfileComponent {
   apellidos: string = '';
   mail: string = '';
   telefono: string = '';
+  newPassword: string = '';
+  confirmPassword: string = '';
   user: User | null = null;
   originalUser: User | null = null;
 
@@ -109,12 +111,20 @@ export class EditProfileComponent {
   }
 
   guardarCambios(): void {
+    if (this.newPassword || this.confirmPassword) {
+      if (this.newPassword !== this.confirmPassword) {
+        alert('Las contraseñas no coinciden.');
+        return;
+      }
+    }
+
     const updateProfile$ = () => {
       const payload = {
         name: this.nombre,
         lastName: this.apellidos,
         email: this.mail,
         phone: this.telefono,
+        password: this.newPassword ? this.newPassword : undefined
       };
       return this.authService.updateProfile(payload).pipe(
         tap((updatedUser: User) => {
@@ -159,7 +169,9 @@ export class EditProfileComponent {
       this.apellidos !== this.originalUser.lastName ||
       this.mail !== this.originalUser.email ||
       this.telefono !== this.originalUser.phone ||
-      !!this.selectedFile
+      !!this.selectedFile ||
+      this.newPassword.trim() !== '' ||
+      this.confirmPassword.trim() !== ''
     );
   }
 }

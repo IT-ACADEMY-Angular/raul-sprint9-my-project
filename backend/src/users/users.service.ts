@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './users.entity';
@@ -40,6 +41,10 @@ export class UsersService {
     user.name = updateUserDto.name;
     user.lastName = updateUserDto.lastName;
     user.phone = updateUserDto.phone;
+    if (updateUserDto.password && updateUserDto.password.trim() !== '') {
+      const hashedPassword = await bcrypt.hash(updateUserDto.password, 10);
+      user.password = hashedPassword;
+    }
     return this.usersRepository.save(user);
   }
 

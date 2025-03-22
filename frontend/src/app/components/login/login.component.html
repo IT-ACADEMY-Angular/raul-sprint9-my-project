@@ -11,33 +11,19 @@
     <div class="login-container mt-5">
       <form (ngSubmit)="onLogin()">
         <div class="mb-3">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Mail"
-            [(ngModel)]="email"
-            name="email"
-            required
-            email
-            #emailInput="ngModel"
-          />
+          <input type="text" class="form-control" placeholder="Mail" [(ngModel)]="email" name="email" required
+            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #emailInput="ngModel" />
           <div *ngIf="emailInput.touched && emailInput.invalid" class="alert alert-danger mt-1">
             <div *ngIf="emailInput.errors?.['required']">El mail es obligatorio.</div>
-            <div *ngIf="emailInput.errors?.['email']">El mail debe tener el formato: ejemplo&#64;mail.com.</div>
+            <div *ngIf="emailInput.errors?.['pattern']">
+              El mail debe tener el formato correcto: ejemplo&#64;mail.com.
+            </div>
           </div>
         </div>
 
         <div class="mb-3">
-          <input
-            type="password"
-            class="form-control"
-            placeholder="Contraseña"
-            [(ngModel)]="password"
-            name="password"
-            required
-            minlength="6"
-            #passwordInput="ngModel"
-          />
+          <input type="password" class="form-control" placeholder="Contraseña" [(ngModel)]="password" name="password"
+            required minlength="6" #passwordInput="ngModel" />
           <div *ngIf="passwordInput.touched && passwordInput.invalid" class="alert alert-danger mt-1">
             <div *ngIf="passwordInput.errors?.['required']">La contraseña es obligatoria.</div>
             <div *ngIf="passwordInput.errors?.['minlength']">La contraseña debe tener al menos 6 carácteres.</div>

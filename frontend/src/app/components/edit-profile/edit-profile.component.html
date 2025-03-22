@@ -47,6 +47,16 @@
       <label class="fw-bold">Teléfono</label>
       <input type="text" class="form-control" [(ngModel)]="telefono" placeholder="Teléfono" required>
     </div>
+    <div class="mb-3">
+      <label class="fw-bold">Nueva Contraseña</label>
+      <input type="password" class="form-control" [(ngModel)]="newPassword" name="newPassword"
+        placeholder="Nueva contraseña">
+    </div>
+    <div class="mb-3">
+      <label class="fw-bold">Confirmar Contraseña</label>
+      <input type="password" class="form-control" [(ngModel)]="confirmPassword" name="confirmPassword"
+        placeholder="Confirmar contraseña">
+    </div>
   </div>
 
   <button type="button" class="btn btn-login mt-4 d-block mx-auto" (click)="guardarCambios()"
