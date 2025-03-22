@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { RegisterPayload } from '../../interfaces/auth.interfaces';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'register-component',
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -19,9 +20,15 @@ export class RegisterComponent {
   password: string = '';
   phone: string = '';
 
+  submitted: boolean = false;
+
   constructor(private authService: AuthService, private router: Router) { }
 
-  onRegister(): void {
+  onRegister(form: NgForm): void {
+    this.submitted = true;
+    if (form.invalid) {
+      return;
+    }
     const payload: RegisterPayload = {
       name: this.name,
       lastName: this.lastName,

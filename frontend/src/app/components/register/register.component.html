@@ -8,24 +8,56 @@
   <div class="form-wrapper text-center">
     <h1 class="login-title">{{ title }}</h1>
     <div class="login-container mt-5">
-      <form (ngSubmit)="onRegister()">
+      <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)">
         <div class="mb-3">
-          <input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="name" name="name" required />
+          <input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="name" name="name" required
+            minlength="3" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" #nameInput="ngModel" />
+          <div *ngIf="submitted && nameInput.invalid" class="alert alert-danger mt-1">
+            <div *ngIf="nameInput.errors?.['required']">El nombre es obligatorio.</div>
+            <div *ngIf="nameInput.errors?.['minlength']">El nombre debe tener al menos 3 carácteres.</div>
+            <div *ngIf="nameInput.errors?.['pattern']">El nombre solo puede contener letras.</div>
+          </div>
         </div>
+
         <div class="mb-3">
           <input type="text" class="form-control" placeholder="Apellidos" [(ngModel)]="lastName" name="lastName"
-            required />
+            required minlength="3" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" #lastNameInput="ngModel" />
+          <div *ngIf="submitted && lastNameInput.invalid" class="alert alert-danger mt-1">
+            <div *ngIf="lastNameInput.errors?.['required']">Los apellidos son obligatorios.</div>
+            <div *ngIf="lastNameInput.errors?.['minlength']">Los apellidos deben tener al menos 3 carácteres.</div>
+            <div *ngIf="lastNameInput.errors?.['pattern']">Los apellidos solo pueden contener letras.</div>
+          </div>
         </div>
+
         <div class="mb-3">
-          <input type="email" class="form-control" placeholder="Mail" [(ngModel)]="email" name="email" required />
+          <input type="email" class="form-control" placeholder="Mail" [(ngModel)]="email" name="email" required
+            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #emailInput="ngModel" />
+          <div *ngIf="submitted && emailInput.invalid" class="alert alert-danger mt-1">
+            <div *ngIf="emailInput.errors?.['required']">El mail es obligatorio.</div>
+            <div *ngIf="emailInput.errors?.['pattern']">El mail debe tener el formato correcto: ejemplo&#64;mail.com.
+            </div>
+          </div>
         </div>
+
         <div class="mb-3">
           <input type="password" class="form-control" placeholder="Contraseña" [(ngModel)]="password" name="password"
-            required />
+            required minlength="6" #passwordInput="ngModel" />
+          <div *ngIf="submitted && passwordInput.invalid" class="alert alert-danger mt-1">
+            <div *ngIf="passwordInput.errors?.['required']">La contraseña es obligatoria.</div>
+            <div *ngIf="passwordInput.errors?.['minlength']">La contraseña debe tener al menos 6 carácteres.</div>
+          </div>
         </div>
+
         <div class="mb-3">
-          <input type="tel" class="form-control" placeholder="Teléfono" [(ngModel)]="phone" name="phone" required />
+          <input type="tel" class="form-control" placeholder="Teléfono" [(ngModel)]="phone" name="phone" required
+            pattern="^[0-9]+$" minlength="6" #phoneInput="ngModel" />
+          <div *ngIf="submitted && phoneInput.invalid" class="alert alert-danger mt-1">
+            <div *ngIf="phoneInput.errors?.['required']">El teléfono es obligatorio.</div>
+            <div *ngIf="phoneInput.errors?.['pattern']">El teléfono solo puede contener números.</div>
+            <div *ngIf="phoneInput.errors?.['minlength']">El teléfono debe tener al menos 6 carácteres.</div>
+          </div>
         </div>
+
         <button type="submit" class="btn btn-login my-3">REGISTRO</button>
       </form>
     </div>
