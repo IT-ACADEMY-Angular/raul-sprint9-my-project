@@ -62,7 +62,6 @@ export class CompanyManagementComponent implements OnInit {
 
   dateChanged(date: Date): void {
     this.selectedDate = date;
-    console.log('Fecha seleccionada:', date);
   }
 
   selectWorker(name: string): void {
@@ -70,9 +69,6 @@ export class CompanyManagementComponent implements OnInit {
   }
 
   viewBookings(): void {
-    console.log('Ver reservas para empresa:', this.company.id);
-    console.log('Fecha:', this.selectedDate);
-    console.log('Trabajador seleccionado:', this.selectedWorker);
     this.router.navigate(['/bookings-results'], {
       queryParams: {
         companyId: this.company.id,

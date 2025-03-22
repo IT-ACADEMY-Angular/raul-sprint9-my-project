@@ -101,7 +101,6 @@ export class EditProfileComponent {
     const url = `http://localhost:3000/users/${this.user.id}/photo`;
     return this.http.put<User>(url, formData).pipe(
       tap((response: User) => {
-        console.log('Foto subida:', response);
         if (response.photoUrl) {
           this.user!.photoUrl = response.photoUrl;
           this.authService.updateCurrentUser(this.user!);
@@ -128,7 +127,6 @@ export class EditProfileComponent {
       };
       return this.authService.updateProfile(payload).pipe(
         tap((updatedUser: User) => {
-          console.log('Cambios guardados:', updatedUser);
         })
       );
     };

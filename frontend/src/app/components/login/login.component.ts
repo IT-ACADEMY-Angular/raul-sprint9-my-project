@@ -24,7 +24,6 @@ export class LoginComponent {
   onLogin(): void {
     this.authService.login(this.email, this.password).subscribe(
       (response: any) => {
-        console.log('Login CORRECTO:', response);
         this.errorMessage = '';
         if (this.keepLoggedIn) {
           localStorage.setItem('authToken', response.token);

@@ -106,7 +106,6 @@ export class BookingComponent {
 
   dateChanged(date: Date): void {
     this.selectedDate = date;
-    console.log('Fecha seleccionada:', date);
   }
 
   openConfirmModal(): void {
@@ -124,7 +123,6 @@ export class BookingComponent {
       if (result) {
         this.confirmBooking();
       } else {
-        console.log('Reserva cancelada');
       }
     });
   }
@@ -156,7 +154,6 @@ export class BookingComponent {
 
     this.bookingService.createBooking(payload).subscribe(
       (booking: Booking) => {
-        console.log('Reserva creada:', booking);
         this.router.navigate(['/pending-booking']);
       },
       error => {

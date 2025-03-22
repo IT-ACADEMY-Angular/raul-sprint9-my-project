@@ -142,20 +142,17 @@ export class BookingsResultsComponent {
       if (result) {
         if (result.action === 'save') {
           this.bookingService.updateBooking(result.bookingId, result.payload).subscribe(updatedBooking => {
-            console.log('Reserva actualizada:', updatedBooking);
             this.loadBookings();
           }, error => {
             console.error('Error al actualizar la reserva:', error);
           });
         } else if (result.action === 'delete') {
           this.bookingService.deleteBooking(result.booking.id).subscribe(() => {
-            console.log('Reserva eliminada:', result.booking.id);
             this.loadBookings();
           }, error => {
             console.error('Error al eliminar reserva:', error);
           });
         } else if (result.action === 'call') {
-          console.log('Llamar al cliente:', (booking as any).user?.phone);
 
         }
       }

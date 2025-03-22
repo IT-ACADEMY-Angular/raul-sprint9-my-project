@@ -162,7 +162,6 @@ export class NewCompanyComponent {
         })
       ).subscribe(
         (company: Company) => {
-          console.log('Empresa creada correctamente:', company);
           this.router.navigate(['/']);
         },
         (error) => {
@@ -172,7 +171,6 @@ export class NewCompanyComponent {
     } else {
       register$().subscribe(
         (company: Company) => {
-          console.log('Empresa creada correctamente:', company);
           this.router.navigate(['/']);
         },
         (error) => {

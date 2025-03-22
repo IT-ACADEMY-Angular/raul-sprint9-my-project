@@ -48,12 +48,10 @@ export class BookingListComponent {
       if (result) {
         this.bookingService.deleteBooking(bookingId).subscribe(() => {
           this._bookings = this._bookings.filter(b => b.id !== bookingId);
-          console.log('Reserva eliminada.');
         }, error => {
           console.error('Error al eliminar la reserva:', error);
         });
       } else {
-        console.log('Eliminación cancelada.');
       }
     });
   }

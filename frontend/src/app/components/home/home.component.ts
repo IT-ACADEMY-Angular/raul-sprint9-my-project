@@ -85,14 +85,12 @@ export class HomeComponent implements OnInit {
   }
 
   searchBooking(): void {
-    console.log('Buscar empresa:', this.searchControl.value);
   }
 
   selectCompany(company: Company): void {
     if (!this.isLoggedIn) {
       this.router.navigate(['/login']);
     } else {
-      console.log('Empresa seleccionada:', company);
       this.router.navigate(['/booking', company.id]);
     }
   }
