@@ -7,17 +7,47 @@
 <div class="main-container">
   <div class="form-wrapper text-center">
     <h1 class="login-title">{{ title }}</h1>
+
     <div class="login-container mt-5">
       <form (ngSubmit)="onLogin()">
         <div class="mb-3">
-          <input type="text" class="form-control" placeholder="Mail" [(ngModel)]="email" name="email" required />
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Mail"
+            [(ngModel)]="email"
+            name="email"
+            required
+            email
+            #emailInput="ngModel"
+          />
+          <div *ngIf="emailInput.touched && emailInput.invalid" class="alert alert-danger mt-1">
+            <div *ngIf="emailInput.errors?.['required']">El mail es obligatorio.</div>
+            <div *ngIf="emailInput.errors?.['email']">El mail debe tener el formato: ejemplo&#64;mail.com.</div>
+          </div>
         </div>
+
         <div class="mb-3">
-          <input type="password" class="form-control" placeholder="Contraseña" [(ngModel)]="password" name="password"
-            required />
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Contraseña"
+            [(ngModel)]="password"
+            name="password"
+            required
+            minlength="6"
+            #passwordInput="ngModel"
+          />
+          <div *ngIf="passwordInput.touched && passwordInput.invalid" class="alert alert-danger mt-1">
+            <div *ngIf="passwordInput.errors?.['required']">La contraseña es obligatoria.</div>
+            <div *ngIf="passwordInput.errors?.['minlength']">La contraseña debe tener al menos 6 carácteres.</div>
+          </div>
         </div>
         <button type="submit" class="btn btn-login my-3">ENTRAR</button>
       </form>
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+        {{ errorMessage }}
+      </div>
       <p class="register-link">
         No tienes cuenta? <a routerLink="/register" class="text-black fw-bold">Regístrate</a>
       </p>
