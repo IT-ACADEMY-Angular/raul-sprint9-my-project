@@ -19,18 +19,17 @@
   <div class="unsupported-message">
     <div>
       <span class="zytapp-title">ZYTAPP</span> is a mobile device-based app.<br>
-    You can resize the window to view the demo.
+    You have to resize this window (F12) or just click to open the demo.
     </div>
-    <button id="mobileBtn" class="btn btn-customized btn-lg mt-3 fw-bold">OPEN DEMO</button>
+    <button id="mobileBtn" class="btn btn-customized btn-lg mt-3 fw-bold">OPEN PHONE DEMO</button>
   </div>
   <app-root></app-root>
 
   <script>
     document.getElementById('mobileBtn')?.addEventListener('click', function () {
-      const url = window.location.href;
-      const mobileWidth = 385;
-      const mobileHeight = 812;
-      window.open(url, 'vistaMovil', `width=${mobileWidth},height=${mobileHeight}`);
+      // Abrir el demo en una nueva ventana con el marco de iPhone
+      const url = 'assets/mobile-demo.html'; // Asegúrate de que la ruta sea correcta
+      window.open(url, 'vistaMovil', 'width=440,height=956');
     });
   </script>
 </body>

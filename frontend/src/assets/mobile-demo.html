@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Demo en iPhone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    /* Marco que simula un iPhone */
+    .iphone-frame {
+      width: 390px;  /* Tamaño fijo */
+      height: 900px;
+      border: 16px solid #1d1d1d;
+      border-top: 20px solid #1d1d1d;
+      border-bottom: 20px solid #1d1d1d;
+      border-radius: 50px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Notch que simula el altavoz/cámara frontal */
+    .iphone-notch {
+      position: absolute;
+      top: -10px; /* Se superpone ligeramente al borde superior */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 40px;
+      background: #1d1d1d;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      z-index: 2;
+    }
+    /* Pseudo-elemento para simular el altavoz */
+    .iphone-notch::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 4px;
+      background: #535353;
+      border-radius: 2px;
+      z-index: 3;
+    }
+
+    .iphone-camera {
+      position: absolute;
+      top: 50%;
+      left: 140px;
+      transform: translateY(-50%);
+      right: 20px;
+      width: 12px;
+      height: 12px;
+      background: #535353;
+      border-radius: 50%;
+      z-index: 3;
+    }
+    /* Área de la pantalla */
+    .iphone-screen {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    .iphone-screen iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="iphone-frame">
+    <div class="iphone-notch">
+      <div class="iphone-camera"></div>
+
+    </div>
+
+    <div class="iphone-screen">
+      <!-- Aquí se carga tu aplicación. Asegúrate de que la URL sea correcta -->
+      <iframe src="http://localhost:4200"></iframe>
+    </div>
+  </div>
+</body>
+</html>
