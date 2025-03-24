@@ -77,7 +77,7 @@ $ ng serve -o
 
 ## ✨ Características
 
-- No he podido cumplir con todos los requisitos que dice el Sprint 9, porque por ejemplo no veo necesario usar una API externa en mi APP.
-- He intentado hacer los commits lo mas pequeños (por funcionalidades). Si que es verdad, que debería haber commiteado back y front por separado.
-- La APP es una V1, tiene muchas carencias y debe seguir desarrollándose.
-- He estructurado bien la APP para tener un orden visual.
+- ZYTAPP es una APP que simula una "Agenda Virtual".
+- Un usuario debe registrarse para poder pedir citas.
+- Un usuario podrá crear una empresa en ZYTAPP para que el resto de usuarios puedan pedir "cita" en ésta empresa.
+- El dueño de una empresa podrá manipular y observar las citas que tiene en ésta misma.
