@@ -56,4 +56,13 @@ export class UsersService {
     user.photoUrl = photoUrl;
     return this.usersRepository.save(user);
   }
+
+  async markUserAsVerified(email: string): Promise<User> {
+    const user = await this.findByEmail(email);
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+    user.isVerified = true;
+    return this.usersRepository.save(user);
+  }
 }

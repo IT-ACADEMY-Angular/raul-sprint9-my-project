@@ -34,7 +34,11 @@ export class LoginComponent {
       },
       (error) => {
         console.error('Error en el login:', error);
-        this.errorMessage = '¡UPS! El mail o la contraseña no son correctos.';
+        if (error.error && error.error.message) {
+          this.errorMessage = error.error.message;
+        } else {
+          this.errorMessage = '¡UPS! El mail o la contraseña no son correctos.';
+        }
       }
     );
   }

@@ -24,6 +24,9 @@ export class User {
   @Column({ nullable: true })
   photoUrl?: string;
 
+  @Column({ default: false })
+  isVerified: boolean;
+
   @OneToMany(() => Company, company => company.owner)
   companies: Company[];
 }
