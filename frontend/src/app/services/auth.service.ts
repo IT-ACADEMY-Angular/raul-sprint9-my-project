@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { LoginResponse, RegisterPayload } from '../interfaces/auth.interfaces';
-import { User } from '../models/user.model';
+import { User } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -37,15 +37,6 @@ export class AuthService {
     return this.http.post<Omit<User, 'password'>>(`${this.baseUrl}/register`, payload);
   }
 
-  updateProfile(payload: { name: string; lastName: string; email: string; phone: string }): Observable<User> {
-    return this.http.put<User>('/users/profile', payload).pipe(
-      tap(updatedUser => {
-        this.currentUserSubject.next(updatedUser);
-        localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-      })
-    );
-  }
-
   updateCurrentUser(user: User): void {
     this.currentUserSubject.next(user);
     localStorage.setItem('currentUser', JSON.stringify(user));
@@ -55,7 +46,5 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  deleteAccount(id: number): Observable<{ message: string }> {
-    return this.http.delete<{ message: string }>(`/users/${id}`);
-  }
+  // Los métodos updateProfile y deleteAccount se han movido a UsersService
 }

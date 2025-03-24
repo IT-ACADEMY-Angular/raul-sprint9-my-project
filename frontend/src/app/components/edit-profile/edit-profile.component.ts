@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { User } from '../../interfaces/auth.interfaces';
+import { User } from '../../interfaces/user.interface';
 import { AuthService } from '../../services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, tap, switchMap } from 'rxjs';
@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogData } from '../../interfaces/confirm-dialog-data.interface';
 import { PhotoService } from '../../services/photo.service';
 import { PhotoCropModalComponent } from '../photo-crop-modal/photo-crop-modal.component';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'edit-profile-component',
@@ -39,7 +40,8 @@ export class EditProfileComponent {
     private authService: AuthService,
     private http: HttpClient,
     private dialog: MatDialog,
-    private photoService: PhotoService
+    private photoService: PhotoService,
+    private usersService: UsersService
   ) { }
 
   ngOnInit(): void {
@@ -125,8 +127,9 @@ export class EditProfileComponent {
         phone: this.telefono,
         password: this.newPassword ? this.newPassword : undefined
       };
-      return this.authService.updateProfile(payload).pipe(
+      return this.usersService.updateProfile(payload).pipe(
         tap((updatedUser: User) => {
+          this.authService.updateCurrentUser(updatedUser);
         })
       );
     };

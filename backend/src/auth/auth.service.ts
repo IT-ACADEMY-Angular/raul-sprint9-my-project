@@ -9,7 +9,8 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService,
+  constructor(
+    private usersService: UsersService,
     private configService: ConfigService
   ) { }
 
@@ -29,7 +30,6 @@ export class AuthService {
     }
     return null;
   }
-
 
   login(user: Omit<User, 'password'>) {
     return {
@@ -74,7 +74,7 @@ export class AuthService {
     });
 
     const baseUrl = this.configService.get<string>('BASE_URL', 'http://localhost:3000');
-    const verificationUrl = `${baseUrl}/auth/verify?token=${token}`;
+    const verificationUrl = `${baseUrl}/auth/verify?token=${encodeURIComponent(token)}`;
 
     const mailOptions = {
       from: '"ZYTAPP" <zytapp.help@gmail.com>',

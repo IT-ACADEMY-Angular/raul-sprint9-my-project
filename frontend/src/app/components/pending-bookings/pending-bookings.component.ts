@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { BookingListComponent } from '../booking-list/booking-list.component';
 import { Booking } from '../../interfaces/booking.interface';
 import { BookingService } from '../../services/booking.service';
-import { User } from '../../interfaces/auth.interfaces';
+import { User } from '../../interfaces/user.interface';
 import { AuthService } from '../../services/auth.service';
 
 @Component({

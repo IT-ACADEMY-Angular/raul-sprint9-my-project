@@ -1,11 +1,4 @@
-export interface User {
-  id: number;
-  email: string;
-  name: string;
-  lastName: string;
-  phone: string;
-  photoUrl?: string;
-}
+import { User } from "./user.interface";
 
 export interface LoginResponse {
   message: string;

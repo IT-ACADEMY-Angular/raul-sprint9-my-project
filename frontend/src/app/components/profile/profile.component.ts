@@ -3,6 +3,7 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { CompanyService } from '../../services/company.service';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'profile-component',
@@ -18,7 +19,8 @@ export class ProfileComponent {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private companyService: CompanyService
+    private companyService: CompanyService,
+    private usersService: UsersService
   ) { }
 
   ngOnInit(): void {
@@ -66,7 +68,7 @@ export class ProfileComponent {
     const confirmDelete = confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción es irreversible.');
     if (!confirmDelete) return;
 
-    this.authService.deleteAccount(this.user.id).subscribe({
+    this.usersService.deleteAccount(this.user.id).subscribe({
       next: (response) => {
         alert(response.message);
         this.authService.logout();
