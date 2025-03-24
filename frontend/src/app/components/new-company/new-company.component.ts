@@ -5,7 +5,7 @@ import { WorkerListComponent } from '../worker-list/worker-list.component';
 import { Router } from '@angular/router';
 import { CompanyService, CreateCompanyPayload, Company } from '../../services/company.service';
 import { WorkerData } from '../../models/worker.model';
-import { map, Observable, switchMap } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { EditWorkerModalComponent } from '../edit-worker-modal/edit-worker-modal.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -13,7 +13,6 @@ import { ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confi
 import { ConfirmDialogData } from '../../interfaces/confirm-dialog-data.interface';
 import { PhotoService } from '../../services/photo.service';
 import { PhotoCropModalComponent } from '../photo-crop-modal/photo-crop-modal.component';
-import { BrowserModule } from '@angular/platform-browser';
 
 @Component({
   selector: 'new-company-component',

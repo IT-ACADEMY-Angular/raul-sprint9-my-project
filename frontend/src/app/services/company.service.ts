@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom, Observable } from 'rxjs';
-import { WorkerData } from '../models/worker.model';
 import { Company } from '../interfaces/company.interface';
 import { CreateCompanyPayload } from '../interfaces/create-company-payload.interface';
 
