@@ -54,4 +54,8 @@ export class AuthService {
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }
+
+  deleteAccount(id: number): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`/users/${id}`);
+  }
 }

@@ -44,3 +44,18 @@
   color: #666666 !important;
   cursor: not-allowed;
 }
+
+.btn-delete-account {
+  background-color: #8B0000;
+  color: white;
+  border: 1px solid white;
+  width: 50%;
+  border-radius: 20px;
+}
+
+.btn-delete-account:disabled {
+  background-color: #cccccc !important;
+  border-color: #cccccc !important;
+  color: #666666 !important;
+  cursor: not-allowed;
+}

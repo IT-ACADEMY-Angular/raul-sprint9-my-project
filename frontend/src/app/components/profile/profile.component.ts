@@ -59,4 +59,23 @@ export class ProfileComponent {
       }
     });
   }
+
+  deleteAccount(): void {
+    if (!this.user) return;
+
+    const confirmDelete = confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción es irreversible.');
+    if (!confirmDelete) return;
+
+    this.authService.deleteAccount(this.user.id).subscribe({
+      next: (response) => {
+        alert(response.message);
+        this.authService.logout();
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        console.error('Error al eliminar la cuenta:', error);
+        alert('No se pudo eliminar la cuenta.');
+      }
+    });
+  }
 }

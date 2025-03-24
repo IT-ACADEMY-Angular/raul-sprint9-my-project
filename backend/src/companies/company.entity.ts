@@ -13,7 +13,7 @@ export class Company {
   @Column({ nullable: true })
   photoUrl?: string;
 
-  @ManyToOne(() => User, user => user.companies, { eager: true })
+  @ManyToOne(() => User, user => user.companies, { eager: true, onDelete: 'CASCADE' })
   owner: User;
 
   @OneToMany(() => Worker, worker => worker.company, { cascade: true, eager: true })

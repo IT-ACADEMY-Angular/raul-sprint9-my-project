@@ -8,6 +8,8 @@ import {
   NotFoundException,
   UploadedFile,
   UseInterceptors,
+  Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from '../auth/dto/register.dto';
@@ -64,5 +66,14 @@ export class UsersController {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     const photoUrl = `http://localhost:3000/uploads/${file.filename}`;
     return this.usersService.updatePhoto(id, photoUrl);
+  }
+
+  @Delete(':id')
+  async deleteUser(@Param('id', ParseIntPipe) id: number) {
+    const deleted = await this.usersService.deleteUser(id);
+    if (!deleted) {
+      throw new NotFoundException('Usuario no encontrado o no se pudo eliminar');
+    }
+    return { message: 'Cuenta eliminada correctamente' };
   }
 }

@@ -65,4 +65,13 @@ export class UsersService {
     user.isVerified = true;
     return this.usersRepository.save(user);
   }
+
+  async deleteUser(id: number): Promise<boolean> {
+    const user = await this.usersRepository.findOne({ where: { id } });
+    if (!user) {
+      return false;
+    }
+    await this.usersRepository.remove(user);
+    return true;
+  }
 }

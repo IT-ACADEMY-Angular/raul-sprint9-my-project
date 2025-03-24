@@ -22,11 +22,11 @@ export class Booking {
     @Column()
     selectedHour: string;
 
-    @ManyToOne(() => Company, { eager: true })
+    @ManyToOne(() => Company, { eager: true, onDelete: 'CASCADE' })
     @JoinColumn({ name: 'companyId' })
     company: Company;
 
-    @ManyToOne(() => User, { eager: true })
+    @ManyToOne(() => User, { eager: true, onDelete: 'CASCADE' })
     @JoinColumn({ name: 'userId' })
     user: User;
 }
