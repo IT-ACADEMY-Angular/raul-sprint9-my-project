@@ -42,4 +42,11 @@
     <button type="button" class="btn btn-login mx-2" routerLink="/edit-profile">EDITAR PERFIL</button>
     <button type="button" class="btn btn-close-session mx-2" (click)="logout()">CERRAR SESIÓN</button>
   </div>
+
+  <div class="text-center mt-4">
+    <button type="button" class="btn btn-delete-company" (click)="deleteCompany()" [disabled]="!company">
+      ELIMINAR EMPRESA
+    </button>
+  </div>
+
 </div>

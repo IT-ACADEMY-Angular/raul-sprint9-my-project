@@ -14,7 +14,7 @@ export class Worker {
   @Column({ nullable: true })
   photoUrl?: string;
 
-  @ManyToOne(() => Company, company => company.workers)
+  @ManyToOne(() => Company, company => company.workers, { onDelete: 'CASCADE' })
   company: Company;
 
   @OneToMany(() => Task, task => task.worker, { cascade: true, eager: true })

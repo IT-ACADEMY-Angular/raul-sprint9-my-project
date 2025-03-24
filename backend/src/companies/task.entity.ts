@@ -12,6 +12,6 @@ export class Task {
   @Column('int')
   duration: number;
 
-  @ManyToOne(() => Worker, worker => worker.tasks)
+  @ManyToOne(() => Worker, worker => worker.tasks, { onDelete: 'CASCADE' })
   worker: Worker;
 }

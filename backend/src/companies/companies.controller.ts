@@ -9,6 +9,8 @@ import {
   UploadedFile,
   UseInterceptors,
   Query,
+  Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { CompaniesService } from './companies.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -65,5 +67,14 @@ export class CompaniesController {
   @Get('user/:userId')
   async getCompanyByUser(@Param('userId') userId: number) {
     return this.companiesService.getCompanyByUserId(userId);
+  }
+
+  @Delete('owner/:ownerId')
+  async deleteCompanyByOwner(@Param('ownerId', ParseIntPipe) ownerId: number) {
+    const deleted = await this.companiesService.deleteCompanyByOwnerId(ownerId);
+    if (!deleted) {
+      throw new NotFoundException('No se encontró la empresa para este usuario');
+    }
+    return { message: 'Empresa eliminada correctamente' };
   }
 }

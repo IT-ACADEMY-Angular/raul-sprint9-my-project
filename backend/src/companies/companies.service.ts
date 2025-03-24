@@ -64,4 +64,16 @@ export class CompaniesService {
     const company = await this.companyRepository.findOne(options);
     return company || null;
   }
+
+  async deleteCompanyByOwnerId(ownerId: number): Promise<boolean> {
+    const company = await this.companyRepository.findOne({
+      where: { owner: { id: ownerId } },
+    });
+
+    if (!company) {
+      return false;
+    }
+    await this.companyRepository.remove(company);
+    return true;
+  }
 }

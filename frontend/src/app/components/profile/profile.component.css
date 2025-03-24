@@ -29,3 +29,18 @@
 .custom-icon-profile {
   color: #3498DB;
 }
+
+.btn-delete-company {
+  background-color: #744c1e;
+  color: white;
+  border: 1px solid white;
+  width: 50%;
+  border-radius: 20px;
+}
+
+.btn-delete-company:disabled {
+  background-color: #cccccc !important;
+  border-color: #cccccc !important;
+  color: #666666 !important;
+  cursor: not-allowed;
+}
