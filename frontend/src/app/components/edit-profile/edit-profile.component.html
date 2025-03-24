@@ -23,7 +23,7 @@
           <i class="fa-solid fa-circle-user fa-7x custom-icon-profile"></i>
         </ng-template>
       </ng-template>
-      <button class="btn btn-link position-absolute camera-button" (click)="triggerFileInput()">
+      <button class="btn btn-link position-absolute camera-button" (click)="openCropModal()">
         <i class="fa-solid fa-camera fs-3 text-black"></i>
       </button>
       <input type="file" #fileInput (change)="onFileSelected($event)" hidden>

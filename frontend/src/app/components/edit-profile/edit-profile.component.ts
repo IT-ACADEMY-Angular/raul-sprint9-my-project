@@ -9,6 +9,8 @@ import { Observable, of, tap, switchMap } from 'rxjs';
 import { ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogData } from '../../interfaces/confirm-dialog-data.interface';
+import { PhotoService } from '../../services/photo.service';
+import { PhotoCropModalComponent } from '../photo-crop-modal/photo-crop-modal.component';
 
 @Component({
   selector: 'edit-profile-component',
@@ -36,7 +38,8 @@ export class EditProfileComponent {
     private router: Router,
     private authService: AuthService,
     private http: HttpClient,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private photoService: PhotoService
   ) { }
 
   ngOnInit(): void {
@@ -72,41 +75,38 @@ export class EditProfileComponent {
     }
   }
 
-  onFileSelected(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    if (target.files && target.files.length > 0) {
-      const file = target.files[0];
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/bmp', 'image/gif', 'image/webp'];
-      if (!allowedTypes.includes(file.type)) {
-        alert('Formato de imagen no permitido. Por favor sube un JPG, PNG o BMP.');
-        return;
+  openCropModal(): void {
+    const dialogRef = this.dialog.open(PhotoCropModalComponent, {
+      width: '600px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const file = this.base64ToFile(result, 'cropped-image.png');
+        this.selectedFile = file;
+        this.previewPhotoUrl = result;
       }
-      this.selectedFile = file;
-      this.previewPhotoUrl = URL.createObjectURL(file);
-    }
+    });
   }
 
-  onImageError(event: Event): void {
-    if (this.user) {
-      this.user.photoUrl = undefined;
+  private base64ToFile(data: string, filename: string): File {
+    const arr = data.split(',');
+    const mime = arr[0].match(/:(.*?);/)![1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
     }
+    return new File([u8arr], filename, { type: mime });
   }
 
-  uploadPhoto(file: File): Observable<User> {
+  uploadPhoto(file: File): Observable<string> {
     if (!this.user) {
       throw new Error('User not defined');
     }
-    const formData = new FormData();
-    formData.append('file', file);
-    const url = `http://localhost:3000/users/${this.user.id}/photo`;
-    return this.http.put<User>(url, formData).pipe(
-      tap((response: User) => {
-        if (response.photoUrl) {
-          this.user!.photoUrl = response.photoUrl;
-          this.authService.updateCurrentUser(this.user!);
-        }
-      })
-    );
+    const uploadUrl = `http://localhost:3000/users/${this.user.id}/photo`;
+    return this.photoService.uploadPhoto(file, uploadUrl);
   }
 
   guardarCambios(): void {
@@ -156,6 +156,16 @@ export class EditProfileComponent {
 
   triggerFileInput(): void {
     this.fileInput.nativeElement.click();
+  }
+
+  onFileSelected(event: Event): void {
+    console.warn('File input seleccionado (fallback). Implementa lógica si lo requieres.');
+  }
+
+  onImageError(event: Event): void {
+    if (this.user) {
+      this.user.photoUrl = undefined;
+    }
   }
 
   get isFormModified(): boolean {

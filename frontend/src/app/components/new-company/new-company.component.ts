@@ -8,13 +8,18 @@ import { WorkerData } from '../../models/worker.model';
 import { map, Observable, switchMap } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { EditWorkerModalComponent } from '../edit-worker-modal/edit-worker-modal.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confirm-dialog.component';
 import { ConfirmDialogData } from '../../interfaces/confirm-dialog-data.interface';
+import { PhotoService } from '../../services/photo.service';
+import { PhotoCropModalComponent } from '../photo-crop-modal/photo-crop-modal.component';
+import { BrowserModule } from '@angular/platform-browser';
 
 @Component({
   selector: 'new-company-component',
-  imports: [FormsModule, CommonModule, WorkerListComponent, EditWorkerModalComponent],
+  standalone: true,
+
+  imports: [FormsModule, CommonModule, WorkerListComponent, EditWorkerModalComponent, MatDialogModule],
   templateUrl: './new-company.component.html',
   styleUrl: './new-company.component.css'
 })
@@ -38,7 +43,9 @@ export class NewCompanyComponent {
     private router: Router,
     private companyService: CompanyService,
     private authService: AuthService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private photoService: PhotoService
+
   ) { }
 
   goBack(): void {
@@ -84,12 +91,8 @@ export class NewCompanyComponent {
   }
 
   uploadPhoto(file: File): Observable<string> {
-    const formData = new FormData();
-    formData.append('file', file);
-    const url = `http://localhost:3000/companies/photo`;
-    return this.companyService.uploadCompanyPhoto(url, formData).pipe(
-      map((response: { photoUrl: string }) => response.photoUrl)
-    );
+    const uploadUrl = 'http://localhost:3000/companies/photo';
+    return this.photoService.uploadPhoto(file, uploadUrl);
   }
 
   addWorker(): void {
@@ -178,5 +181,31 @@ export class NewCompanyComponent {
         }
       );
     }
+  }
+
+  private base64ToFile(data: string, filename: string): File {
+    const arr = data.split(',');
+    const mime = arr[0].match(/:(.*?);/)![1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  }
+
+  openCropModal(): void {
+    const dialogRef = this.dialog.open(PhotoCropModalComponent, {
+      width: '600px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const file = this.base64ToFile(result, 'cropped-image.png');
+        this.selectedFile = file;
+        this.previewPhotoUrl = result;
+      }
+    });
   }
 }

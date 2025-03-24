@@ -1,0 +1,22 @@
+<h2 class="modal-title text-center pt-3">Editar Imagen</h2>
+<mat-dialog-content>
+  <div class="mb-3">
+    <label class="form-label">Selecciona una imagen:</label>
+    <input type="file" class="form-control" (change)="fileChangeEvent($event)" accept="image/*">
+  </div>
+
+  <div *ngIf="imageChangedEvent" class="mb-3">
+    <div class="border p-2 rounded">
+      <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false" format="png"
+        (imageCropped)="imageCropped($event)" [resizeToWidth]="300">
+      </image-cropper>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="d-flex justify-content-center mt-3 mb-3">
+  <button mat-button class="btn me-2 btn-delete" (click)="onCancel()">Cancelar</button>
+  <button mat-button class="btn btn-save" (click)="onConfirm()" [disabled]="!croppedImage">
+    Confirmar
+  </button>
+</mat-dialog-actions>

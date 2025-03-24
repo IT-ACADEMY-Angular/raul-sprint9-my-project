@@ -1,0 +1,18 @@
+.btn-delete {
+  background-color: #FFAEAE;
+  border: 1px solid #c6c6c6;
+  border-radius: 15px;
+}
+
+.btn-save {
+  background-color: #B5FFC2;
+  border: 1px solid #c6c6c6;
+  border-radius: 15px;
+}
+
+.btn-save:disabled {
+  background-color: #d3d3d3;
+  color: #6c757d;
+  opacity: 1;
+  cursor: not-allowed;
+}
