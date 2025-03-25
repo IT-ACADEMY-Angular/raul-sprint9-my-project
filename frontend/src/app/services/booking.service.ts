@@ -32,4 +32,9 @@ export class BookingService {
   updateBooking(id: number, payload: UpdateBookingPayload): Observable<Booking> {
     return this.http.put<Booking>(`${this.baseUrl}/${id}`, payload);
   }
+
+  getAppointments(companyId: number, date: Date): Observable<Booking[]> {
+    const formattedDate = date.toISOString();
+    return this.http.get<Booking[]>(`${this.baseUrl}/appointments/${companyId}?date=${formattedDate}`);
+  }
 }

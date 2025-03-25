@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confirm-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyService } from '../../services/company.service';
 import { Booking } from '../../interfaces/booking.interface';
@@ -37,7 +38,13 @@ export class BookingComponent {
   selectedDate: Date | null = null;
   minDate: Date = new Date();
 
+  selectedDuration: number = 0;
+
+  allSlots: string[] = [];
+
   availableSlots: string[] = [];
+
+  reservedSlots: string[] = [];
 
   tasksForSelectedWorker: any[] = [];
 
@@ -54,7 +61,8 @@ export class BookingComponent {
     private companyService: CompanyService,
     private dialog: MatDialog,
     private bookingService: BookingService,
-    private authService: AuthService
+    private authService: AuthService,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -63,6 +71,7 @@ export class BookingComponent {
       this.company = (nav.extras.state as any).company;
       this.workers = this.company.workers || [];
       this.generateSlots();
+      this.fetchReservedSlots();
     } else {
       this.route.paramMap.subscribe(params => {
         const id = params.get('id');
@@ -71,6 +80,7 @@ export class BookingComponent {
             this.company = company;
             this.workers = company.workers || [];
             this.generateSlots();
+            this.fetchReservedSlots();
           }, error => {
             console.error('Error al obtener la empresa:', error);
             this.router.navigate(['/']);
@@ -105,12 +115,18 @@ export class BookingComponent {
       if (this.extraDropdownsContainer) {
         this.extraDropdownsContainer.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
       }
+      this.fetchReservedSlots();
       this.checkFormCompletionAndScroll();
     }, 0);
   }
 
   selectTask(task: any): void {
     this.selectedTask = `${task.name} (${task.duration} min)`;
+    this.selectedDuration = task.duration;
+
+    this.generateSlots();
+    this.fetchReservedSlots();
+
     setTimeout(() => {
       this.scrollToSlots();
     }, 0);
@@ -118,12 +134,17 @@ export class BookingComponent {
   }
 
   selectHour(slot: string): void {
+    if (this.reservedSlots.includes(slot)) {
+      return;
+    }
     this.selectedHour = slot;
     this.checkFormCompletionAndScroll();
   }
 
   dateChanged(date: Date): void {
     this.selectedDate = date;
+    this.generateSlots();
+    this.fetchReservedSlots();
     this.checkFormCompletionAndScroll();
   }
 
@@ -166,7 +187,8 @@ export class BookingComponent {
       selectedSchedule: this.selectedSchedule,
       selectedHour: this.selectedHour,
       companyId: this.company.id,
-      userId: currentUser.id
+      userId: currentUser.id,
+      duration: this.selectedDuration
     };
 
     this.bookingService.createBooking(payload).subscribe(
@@ -174,6 +196,10 @@ export class BookingComponent {
         this.router.navigate(['/pending-booking']);
       },
       error => {
+        this.snackBar.open('No se pudo crear la reserva porque se solapa con otra cita.', 'Cerrar', {
+          duration: 8000,
+          panelClass: ['snackbar-info']
+        });
         console.error('Error al crear la reserva:', error);
       }
     );
@@ -181,13 +207,14 @@ export class BookingComponent {
 
   generateSlots(): void {
     if (this.company && this.company.startTime && this.company.endTime && this.company.appointmentInterval) {
-      this.availableSlots = this.generateTimeSlots(
+      this.allSlots = this.generateTimeSlots(
         this.company.startTime,
         this.company.endTime,
         this.company.appointmentInterval,
         this.company.breakStart,
         this.company.breakEnd
       );
+      this.availableSlots = [...this.allSlots];
     }
   }
 
@@ -217,9 +244,65 @@ export class BookingComponent {
           continue;
         }
       }
+      if (this.selectedDuration > 0 && (m + this.selectedDuration > endMinutes)) {
+        continue;
+      }
       slots.push(minutesToTime(m));
     }
     return slots;
+  }
+
+  applyDurationFilter(): void {
+    if (this.company && this.company.breakStart && this.selectedDuration > 0) {
+      const breakStartMinutes = this.timeToMinutes(this.company.breakStart);
+      this.availableSlots = this.allSlots.filter(slot => {
+        const slotMinutes = this.timeToMinutes(slot);
+        if (slotMinutes < breakStartMinutes) {
+          return (slotMinutes + this.selectedDuration) <= breakStartMinutes;
+        }
+        return true;
+      });
+    }
+  }
+
+  fetchReservedSlots(): void {
+    if (this.company && this.selectedDate) {
+      this.bookingService.getAppointments(this.company.id, this.selectedDate).subscribe((appointments: Booking[]) => {
+        this.reservedSlots = [];
+        appointments
+          .filter(app => app.selectedWorker.trim().toLowerCase() === this.selectedWorker.trim().toLowerCase())
+          .forEach(app => {
+            const appStart = this.timeToMinutes(app.selectedHour);
+            const appDuration = app.duration || 0;
+            for (let m = appStart; m < appStart + appDuration; m += this.company.appointmentInterval) {
+              this.reservedSlots.push(this.minutesToTime(m));
+            }
+          });
+
+        this.availableSlots = this.allSlots.filter(slot => {
+          const notReserved = !this.reservedSlots.includes(slot);
+          if (this.company.breakStart && this.selectedDuration > 0) {
+            const slotMinutes = this.timeToMinutes(slot);
+            const breakStartMinutes = this.timeToMinutes(this.company.breakStart);
+            if (slotMinutes < breakStartMinutes) {
+              return notReserved && ((slotMinutes + this.selectedDuration) <= breakStartMinutes);
+            }
+          }
+          return notReserved;
+        });
+      });
+    }
+  }
+
+  timeToMinutes(time: string): number {
+    const parts = time.split(':');
+    return Number(parts[0]) * 60 + Number(parts[1]);
+  }
+
+  minutesToTime(minutes: number): string {
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
   }
 
   scrollToSlots(): void {

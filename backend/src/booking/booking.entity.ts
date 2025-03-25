@@ -22,6 +22,9 @@ export class Booking {
     @Column()
     selectedHour: string;
 
+    @Column({ type: 'int' })
+    duration: number;
+
     @ManyToOne(() => Company, { eager: true, onDelete: 'CASCADE' })
     @JoinColumn({ name: 'companyId' })
     company: Company;

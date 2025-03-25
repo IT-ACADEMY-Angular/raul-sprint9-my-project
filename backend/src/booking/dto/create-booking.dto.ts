@@ -6,4 +6,5 @@ export class CreateBookingDto {
     selectedHour: string;
     userId: number;
     companyId: number;
-}  
+    duration: number;
+}

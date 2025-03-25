@@ -74,15 +74,17 @@
         <p class="fw-bold">Selecciona una hora:</p>
         <div class="d-flex flex-wrap">
           <button *ngFor="let slot of availableSlots" class="btn btn-outline-secondary time-pill mb-2 me-2"
-            [ngClass]="{'active': selectedHour === slot}" (click)="selectHour(slot)">
+            [ngClass]="{'active': selectedHour === slot, 'disabled': reservedSlots.includes(slot)}"
+            (click)="reservedSlots.includes(slot) ? null : selectHour(slot)">
             {{ slot }}
           </button>
         </div>
       </div>
-
-      <button #reserveButton type="button" class="btn btn-login mt-4 d-block mx-auto" (click)="openConfirmModal()"
-        [disabled]="!isFormComplete">
-        RESERVAR
-      </button>
     </div>
+
+    <button #reserveButton type="button" class="btn btn-login mt-4 d-block mx-auto" (click)="openConfirmModal()"
+      [disabled]="!isFormComplete">
+      RESERVAR
+    </button>
   </div>
+</div>

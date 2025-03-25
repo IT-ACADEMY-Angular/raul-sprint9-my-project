@@ -6,4 +6,5 @@ export interface CreateBookingPayload {
   selectedHour: string;
   companyId: number;
   userId: number;
+  duration: number;
 }

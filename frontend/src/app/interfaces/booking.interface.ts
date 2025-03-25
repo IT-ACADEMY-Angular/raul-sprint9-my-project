@@ -7,6 +7,7 @@ export interface Booking {
   selectedTask: string;
   selectedSchedule: string;
   selectedHour: string;
+  duration: number;
   company: Company;
   user?: { id: number; name: string; phone?: string };
 }
