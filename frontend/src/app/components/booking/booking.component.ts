@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -37,10 +37,33 @@ export class BookingComponent {
 
   selectedDate: Date | null = null;
   minDate: Date = new Date();
-  morningTimes: string[] = ['09:00', '09:15', '09:30', '09:45', '10:00', '10:15', '10:30', '10:45', '11:00', '11:15', '11:30', '11:45', '12:00', '12:15', '12:30', '12:45', '13:00', '13:15', '13:30', '13:45'];
-  afternoonTimes: string[] = ['15:00', '15:15', '15:30', '15:45', '16:00', '16:15', '16:30', '16:45', '17:00', '17:15', '17:30', '17:45', '18:00', '18:15', '18:30', '18:45', '19:00', '19:15', '19:30', '19:45'];
+
+  morningTimes: string[] = [
+    '08:00', '08:15', '08:30', '08:45',
+    '09:00', '09:15', '09:30', '09:45',
+    '10:00', '10:15', '10:30', '10:45',
+    '11:00', '11:15', '11:30', '11:45',
+    '12:00', '12:15', '12:30', '12:45',
+    '13:00', '13:15', '13:30', '13:45'
+  ];
+
+  afternoonTimes: string[] = [
+    '15:00', '15:15', '15:30', '15:45',
+    '16:00', '16:15', '16:30', '16:45',
+    '17:00', '17:15', '17:30', '17:45',
+    '18:00', '18:15', '18:30', '18:45',
+    '19:00', '19:15', '19:30', '19:45',
+    '20:00', '20:15', '20:30', '20:45'
+  ];
 
   tasksForSelectedWorker: any[] = [];
+
+  @ViewChild('timePillsContainer') timePillsContainer!: ElementRef;
+  @ViewChild('extraDropdownsContainer') extraDropdownsContainer!: ElementRef;
+  @ViewChild('workerDropdownContainer') workerDropdownContainer!: ElementRef;
+  @ViewChild('reserveButton') reserveButton!: ElementRef;
+
+  private reserveButtonScrolled = false;
 
   constructor(
     private router: Router,
@@ -74,6 +97,10 @@ export class BookingComponent {
     }
   }
 
+  ngAfterViewInit(): void {
+    this.reserveButtonScrolled = false;
+  }
+
   goBack(): void {
     this.router.navigate(['/']);
   }
@@ -89,23 +116,47 @@ export class BookingComponent {
     this.selectedTask = '';
     this.selectedSchedule = '';
     this.selectedHour = '';
+
+    setTimeout(() => {
+      this.scrollToExtraDropdowns();
+      this.checkFormCompletionAndScroll();
+    }, 0);
+  }
+
+  scrollToExtraDropdowns(): void {
+    if (this.extraDropdownsContainer) {
+      this.extraDropdownsContainer.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
   }
 
   selectTask(task: any): void {
     this.selectedTask = `${task.name} (${task.duration} min)`;
+    this.checkFormCompletionAndScroll();
   }
 
   selectSchedule(range: string): void {
     this.selectedSchedule = range;
     this.selectedHour = '';
+    setTimeout(() => {
+      this.scrollToTimePills();
+      this.checkFormCompletionAndScroll();
+    }, 0);
+  }
+
+  scrollToTimePills(): void {
+    if (this.timePillsContainer) {
+      this.timePillsContainer.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
   }
 
   selectHour(hour: string): void {
     this.selectedHour = hour;
+    this.checkFormCompletionAndScroll();
   }
 
   dateChanged(date: Date): void {
     this.selectedDate = date;
+    this.checkFormCompletionAndScroll();
   }
 
   openConfirmModal(): void {
@@ -122,7 +173,6 @@ export class BookingComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.confirmBooking();
-      } else {
       }
     });
   }
@@ -169,4 +219,15 @@ export class BookingComponent {
     const day = d.toLocaleDateString('en-US', { weekday: 'long' });
     return this.company.workingDays.includes(day);
   };
+
+  checkFormCompletionAndScroll(): void {
+    if (this.isFormComplete && !this.reserveButtonScrolled) {
+      setTimeout(() => {
+        if (this.reserveButton) {
+          this.reserveButton.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+          this.reserveButtonScrolled = true;
+        }
+      }, 0);
+    }
+  }
 }
