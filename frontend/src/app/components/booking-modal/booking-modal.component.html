@@ -1,4 +1,9 @@
 <div class="booking-modal-container">
+  <!-- Botón de cerrar (X) en la esquina superior derecha -->
+  <button class="close-button" (click)="onClose()">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+
   <div class="booking-details">
     <p><strong>Cliente:</strong> {{ data.customerName }}</p>
     <p><strong>Tarea:</strong> {{ data.task }}</p>
@@ -14,7 +19,7 @@
 
   <div class="modal-actions">
     <button class="btn btn-delete fw-bold" (click)="onDelete()">ELIMINAR</button>
-    <button class="btn btn-save fw-bold" (click)="onSave()">GUARDAR</button>
+    <button class="btn btn-save fw-bold" (click)="onSave()" [disabled]="!isModified">GUARDAR</button>
   </div>
 
   <div class="modal-call">

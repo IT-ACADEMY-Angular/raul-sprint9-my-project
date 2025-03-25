@@ -17,6 +17,8 @@ import { ConfirmDialogData } from '../../interfaces/confirm-dialog-data.interfac
 export class BookingModalComponent {
   editableDate: string;
   editableTime: string;
+  originalDate: string;
+  originalTime: string;
 
   constructor(
     public dialogRef: MatDialogRef<BookingModalComponent>,
@@ -30,6 +32,12 @@ export class BookingModalComponent {
     const day = bookingDate.getDate().toString().padStart(2, '0');
     this.editableDate = `${year}-${month}-${day}`;
     this.editableTime = data.booking.selectedHour;
+    this.originalDate = this.editableDate;
+    this.originalTime = this.editableTime;
+  }
+
+  get isModified(): boolean {
+    return this.editableDate !== this.originalDate || this.editableTime !== this.originalTime;
   }
 
   onDelete(): void {
@@ -66,6 +74,10 @@ export class BookingModalComponent {
         this.dialogRef.close({ action: 'save', bookingId: this.data.booking.id, payload: updatedPayload });
       }
     });
+  }
+
+  onClose(): void {
+    this.dialogRef.close();
   }
 
   onCall(): void {
