@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { User } from '../users/users.entity';
@@ -39,6 +39,11 @@ export class AuthService {
   }
 
   async register(registerDto: RegisterDto): Promise<Omit<User, 'password'>> {
+    const existingUser = await this.usersService.findByEmail(registerDto.email);
+    if (existingUser) {
+      throw new ConflictException('Ya existe un usuario registrado con este mail');
+    }
+
     const hashedPassword = await bcrypt.hash(registerDto.password, 10);
 
     const createdUser = await this.usersService.createUser(

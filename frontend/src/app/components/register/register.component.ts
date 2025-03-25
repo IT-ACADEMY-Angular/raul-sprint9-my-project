@@ -19,15 +19,16 @@ export class RegisterComponent {
   email: string = '';
   password: string = '';
   phone: string = '';
-
   dataProtectionAccepted: boolean = false;
-
   submitted: boolean = false;
+
+  emailError: string = '';
 
   constructor(private authService: AuthService, private router: Router) { }
 
   onRegister(form: NgForm): void {
     this.submitted = true;
+    this.emailError = '';
     if (!this.dataProtectionAccepted) {
       return;
     }
@@ -48,6 +49,11 @@ export class RegisterComponent {
       },
       (error) => {
         console.error('Error en el registro:', error);
+        if (error.status === 409 && error.error && error.error.message) {
+          this.emailError = error.error.message;
+        } else {
+          this.emailError = 'Ocurrió un error en el registro. Por favor, inténtelo de nuevo.';
+        }
       }
     );
   }
