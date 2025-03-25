@@ -32,6 +32,13 @@ export class NewCompanyComponent {
   workerData: WorkerData[] = [];
   newWorkerName: string = '';
 
+  startTime: string = '08:00';
+  endTime: string = '21:00';
+  appointmentInterval: number = 15;
+
+  breakStart: string = '';
+  breakEnd: string = '';
+
   showEditWorkerModal: boolean = false;
   workerToEdit!: WorkerData;
   workerToEditIndex: number = -1;
@@ -148,7 +155,8 @@ export class NewCompanyComponent {
     const hasPhoto = !!this.selectedFile || !!this.companyPhotoUrl;
     const hasWorkers = this.workerData.length > 0;
     const atLeastOneWorkerHasTask = this.workerData.some(worker => worker.tasks && worker.tasks.length > 0);
-    return hasName && hasPhoto && hasWorkers && atLeastOneWorkerHasTask && this.workingDays.length > 0;
+    return hasName && hasPhoto && hasWorkers && atLeastOneWorkerHasTask && this.workingDays.length > 0
+      && this.startTime !== '' && this.endTime !== '' && this.appointmentInterval > 0;
   }
 
   registrarEmpresa(): void {
@@ -165,7 +173,12 @@ export class NewCompanyComponent {
         name: this.companyName,
         photoUrl: this.companyPhotoUrl || '',
         workerData: this.workerData,
-        workingDays: this.workingDays
+        workingDays: this.workingDays,
+        startTime: this.startTime,
+        endTime: this.endTime,
+        appointmentInterval: this.appointmentInterval,
+        breakStart: this.breakStart || undefined,
+        breakEnd: this.breakEnd || undefined
       };
       return this.companyService.createCompany(payload);
     };

@@ -17,10 +17,24 @@ export class CompaniesService {
     ownerId: number,
     name: string,
     photoUrl: string,
-    workerData: { name: string, tasks?: { name: string; duration: number }[] }[],
-    workingDays: string[]
+    workerData: any[],
+    workingDays: string[],
+    startTime: string,
+    endTime: string,
+    appointmentInterval: number,
+    breakStart?: string,
+    breakEnd?: string
   ): Promise<Company> {
-    const company = this.companyRepository.create({ name, photoUrl, workingDays });
+    const company = this.companyRepository.create({
+      name,
+      photoUrl,
+      workingDays,
+      startTime,
+      endTime,
+      appointmentInterval,
+      breakStart,
+      breakEnd,
+    });
     company.owner = { id: ownerId } as any;
     if (workerData && workerData.length > 0) {
       company.workers = workerData.map(worker => {

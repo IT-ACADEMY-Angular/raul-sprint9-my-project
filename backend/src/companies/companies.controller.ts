@@ -37,8 +37,31 @@ export class CompaniesController {
 
   @Post()
   async createCompany(@Body() createCompanyDto: CreateCompanyDto) {
-    const { ownerId, name, photoUrl, workerData, workingDays } = createCompanyDto;
-    return this.companiesService.createCompany(ownerId, name, photoUrl || '', workerData || [], workingDays);
+    const {
+      ownerId,
+      name,
+      photoUrl,
+      workerData,
+      workingDays,
+      startTime,
+      endTime,
+      appointmentInterval,
+      breakStart,
+      breakEnd,
+    } = createCompanyDto;
+
+    return this.companiesService.createCompany(
+      ownerId,
+      name,
+      photoUrl || '',
+      workerData || [],
+      workingDays,
+      startTime,
+      endTime,
+      appointmentInterval,
+      breakStart,
+      breakEnd
+    );
   }
 
   @Get('search')

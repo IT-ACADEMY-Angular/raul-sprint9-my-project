@@ -68,36 +68,21 @@
         <ng-template #noTasks>
           <p>No hay tareas para este trabajador.</p>
         </ng-template>
+      </div>
 
-        <div class="mb-3 dropdown">
-          <button class="btn form-select dropdown-toggle" type="button" id="scheduleDropdown" data-bs-toggle="dropdown"
-            aria-expanded="false" [ngStyle]="{'color': selectedSchedule ? '#000000' : '#9b9b9b'}">
-            {{ selectedSchedule || 'Selecciona una franja horaria...' }}
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="scheduleDropdown">
-            <li><a class="dropdown-item" (click)="selectSchedule('08:00 - 15:00')">08:00 - 15:00</a></li>
-            <li><a class="dropdown-item" (click)="selectSchedule('15:00 - 21:00')">15:00 - 21:00</a></li>
-          </ul>
-        </div>
-
-        <div *ngIf="selectedSchedule === '09:00 - 14:00'" class="time-pills d-flex flex-wrap mt-3" #timePillsContainer>
-          <button *ngFor="let time of morningTimes" class="btn btn-outline-secondary time-pill"
-            [ngClass]="{'active': selectedHour === time}" (click)="selectHour(time)">
-            {{ time }}
-          </button>
-        </div>
-        <div *ngIf="selectedSchedule === '15:00 - 20:00'" class="time-pills d-flex flex-wrap mt-3" #timePillsContainer>
-          <button *ngFor="let time of afternoonTimes" class="btn btn-outline-secondary time-pill"
-            [ngClass]="{'active': selectedHour === time}" (click)="selectHour(time)">
-            {{ time }}
+      <div *ngIf="selectedTask && availableSlots.length > 0" #slotsContainer>
+        <p class="fw-bold">Selecciona una hora:</p>
+        <div class="d-flex flex-wrap">
+          <button *ngFor="let slot of availableSlots" class="btn btn-outline-secondary time-pill mb-2 me-2"
+            [ngClass]="{'active': selectedHour === slot}" (click)="selectHour(slot)">
+            {{ slot }}
           </button>
         </div>
       </div>
-    </div>
 
-    <button #reserveButton type="button" class="btn btn-login mt-4 d-block mx-auto" (click)="openConfirmModal()"
-      [disabled]="!isFormComplete">
-      RESERVAR
-    </button>
+      <button #reserveButton type="button" class="btn btn-login mt-4 d-block mx-auto" (click)="openConfirmModal()"
+        [disabled]="!isFormComplete">
+        RESERVAR
+      </button>
+    </div>
   </div>
-</div>

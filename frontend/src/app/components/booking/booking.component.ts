@@ -34,33 +34,16 @@ export class BookingComponent {
   selectedTask: string = '';
   selectedSchedule: string = '';
   selectedHour: string = '';
-
   selectedDate: Date | null = null;
   minDate: Date = new Date();
 
-  morningTimes: string[] = [
-    '08:00', '08:15', '08:30', '08:45',
-    '09:00', '09:15', '09:30', '09:45',
-    '10:00', '10:15', '10:30', '10:45',
-    '11:00', '11:15', '11:30', '11:45',
-    '12:00', '12:15', '12:30', '12:45',
-    '13:00', '13:15', '13:30', '13:45'
-  ];
-
-  afternoonTimes: string[] = [
-    '15:00', '15:15', '15:30', '15:45',
-    '16:00', '16:15', '16:30', '16:45',
-    '17:00', '17:15', '17:30', '17:45',
-    '18:00', '18:15', '18:30', '18:45',
-    '19:00', '19:15', '19:30', '19:45',
-    '20:00', '20:15', '20:30', '20:45'
-  ];
+  availableSlots: string[] = [];
 
   tasksForSelectedWorker: any[] = [];
 
-  @ViewChild('timePillsContainer') timePillsContainer!: ElementRef;
-  @ViewChild('extraDropdownsContainer') extraDropdownsContainer!: ElementRef;
+  @ViewChild('slotsContainer') slotsContainer!: ElementRef;
   @ViewChild('workerDropdownContainer') workerDropdownContainer!: ElementRef;
+  @ViewChild('extraDropdownsContainer') extraDropdownsContainer!: ElementRef;
   @ViewChild('reserveButton') reserveButton!: ElementRef;
 
   private reserveButtonScrolled = false;
@@ -79,6 +62,7 @@ export class BookingComponent {
     if (nav?.extras?.state && (nav.extras.state as any).company) {
       this.company = (nav.extras.state as any).company;
       this.workers = this.company.workers || [];
+      this.generateSlots();
     } else {
       this.route.paramMap.subscribe(params => {
         const id = params.get('id');
@@ -86,6 +70,7 @@ export class BookingComponent {
           this.companyService.getCompany(+id).subscribe(company => {
             this.company = company;
             this.workers = company.workers || [];
+            this.generateSlots();
           }, error => {
             console.error('Error al obtener la empresa:', error);
             this.router.navigate(['/']);
@@ -114,43 +99,26 @@ export class BookingComponent {
       this.tasksForSelectedWorker = [];
     }
     this.selectedTask = '';
-    this.selectedSchedule = '';
     this.selectedHour = '';
 
     setTimeout(() => {
-      this.scrollToExtraDropdowns();
+      if (this.extraDropdownsContainer) {
+        this.extraDropdownsContainer.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }
       this.checkFormCompletionAndScroll();
     }, 0);
-  }
-
-  scrollToExtraDropdowns(): void {
-    if (this.extraDropdownsContainer) {
-      this.extraDropdownsContainer.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
-    }
   }
 
   selectTask(task: any): void {
     this.selectedTask = `${task.name} (${task.duration} min)`;
+    setTimeout(() => {
+      this.scrollToSlots();
+    }, 0);
     this.checkFormCompletionAndScroll();
   }
 
-  selectSchedule(range: string): void {
-    this.selectedSchedule = range;
-    this.selectedHour = '';
-    setTimeout(() => {
-      this.scrollToTimePills();
-      this.checkFormCompletionAndScroll();
-    }, 0);
-  }
-
-  scrollToTimePills(): void {
-    if (this.timePillsContainer) {
-      this.timePillsContainer.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
-    }
-  }
-
-  selectHour(hour: string): void {
-    this.selectedHour = hour;
+  selectHour(slot: string): void {
+    this.selectedHour = slot;
     this.checkFormCompletionAndScroll();
   }
 
@@ -181,7 +149,6 @@ export class BookingComponent {
     return !!this.selectedDate &&
       this.selectedWorker !== '' &&
       this.selectedTask !== '' &&
-      this.selectedSchedule !== '' &&
       this.selectedHour !== '';
   }
 
@@ -212,13 +179,54 @@ export class BookingComponent {
     );
   }
 
-  dateFilter = (d: Date | null): boolean => {
-    if (!d || !this.company || !this.company.workingDays) {
-      return false;
+  generateSlots(): void {
+    if (this.company && this.company.startTime && this.company.endTime && this.company.appointmentInterval) {
+      this.availableSlots = this.generateTimeSlots(
+        this.company.startTime,
+        this.company.endTime,
+        this.company.appointmentInterval,
+        this.company.breakStart,
+        this.company.breakEnd
+      );
     }
-    const day = d.toLocaleDateString('en-US', { weekday: 'long' });
-    return this.company.workingDays.includes(day);
-  };
+  }
+
+  generateTimeSlots(start: string, end: string, interval: number, breakStart?: string, breakEnd?: string): string[] {
+    const slots: string[] = [];
+
+    const timeToMinutes = (time: string): number => {
+      const parts = time.split(':');
+      return Number(parts[0]) * 60 + Number(parts[1]);
+    };
+
+    const minutesToTime = (minutes: number): string => {
+      const h = Math.floor(minutes / 60);
+      const m = minutes % 60;
+      return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+    };
+
+    const startMinutes = timeToMinutes(start);
+    const endMinutes = timeToMinutes(end);
+    const breakStartMinutes = breakStart ? timeToMinutes(breakStart) : null;
+    const breakEndMinutes = breakEnd ? timeToMinutes(breakEnd) : null;
+
+    for (let m = startMinutes; m + interval <= endMinutes; m += interval) {
+      const slotEnd = m + interval;
+      if (breakStartMinutes !== null && breakEndMinutes !== null) {
+        if (m < breakEndMinutes && slotEnd > breakStartMinutes) {
+          continue;
+        }
+      }
+      slots.push(minutesToTime(m));
+    }
+    return slots;
+  }
+
+  scrollToSlots(): void {
+    if (this.slotsContainer) {
+      this.slotsContainer.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  }
 
   checkFormCompletionAndScroll(): void {
     if (this.isFormComplete && !this.reserveButtonScrolled) {
@@ -230,4 +238,12 @@ export class BookingComponent {
       }, 0);
     }
   }
+
+  dateFilter = (d: Date | null): boolean => {
+    if (!d || !this.company || !this.company.workingDays) {
+      return false;
+    }
+    const day = d.toLocaleDateString('en-US', { weekday: 'long' });
+    return this.company.workingDays.includes(day);
+  };
 }

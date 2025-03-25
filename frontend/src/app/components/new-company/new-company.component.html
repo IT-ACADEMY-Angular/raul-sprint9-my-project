@@ -48,6 +48,26 @@
     </div>
 
     <div class="mb-3">
+      <label class="fw-bold">Hora de inicio de trabajo</label>
+      <input type="time" class="form-control" [(ngModel)]="startTime" required>
+    </div>
+    <div class="mb-3">
+      <label class="fw-bold">Hora de fin de trabajo</label>
+      <input type="time" class="form-control" [(ngModel)]="endTime" required>
+    </div>
+    <div class="mb-3">
+      <label class="fw-bold">Intervalo de citas (minutos)</label>
+      <input type="number" class="form-control" [(ngModel)]="appointmentInterval" required>
+    </div>
+    <div class="mb-3">
+      <label class="fw-bold">Hora de descanso (opcional)</label>
+      <div class="d-flex">
+        <input type="time" class="form-control me-2" [(ngModel)]="breakStart" placeholder="Inicio">
+        <input type="time" class="form-control" [(ngModel)]="breakEnd" placeholder="Fin">
+      </div>
+    </div>
+
+    <div class="mb-3">
       <label class="fw-bold">Añade trabajadores</label>
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Escribe nombre del trabajador" [(ngModel)]="newWorkerName">
@@ -69,6 +89,5 @@
     <edit-worker-modal-component *ngIf="showEditWorkerModal" [worker]="workerToEdit"
       (closeModal)="onWorkerModalClose($event)" (cancelModal)="onWorkerModalCancel()">
     </edit-worker-modal-component>
-
   </div>
 </div>
