@@ -28,8 +28,10 @@
     <p class="mb-0">Rellena el formulario para ver disponibilidad!</p>
   </div>
 
-  <div class="mt-3">
-    <mat-calendar [(selected)]="selectedDate" (selectedChange)="dateChanged($event)" [minDate]="minDate"></mat-calendar>
+  <div class="mt-3" *ngIf="company">
+    <mat-calendar [(selected)]="selectedDate" (selectedChange)="dateChanged($event!)" [minDate]="minDate"
+      [dateFilter]="dateFilter">
+    </mat-calendar>
   </div>
 
   <div *ngIf="selectedDate">

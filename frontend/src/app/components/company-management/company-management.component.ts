@@ -26,6 +26,14 @@ export class CompanyManagementComponent implements OnInit {
   selectedDate: Date | null = new Date();
   minDate: Date = new Date();
 
+  dateFilter = (d: Date | null): boolean => {
+    if (!d || !this.company || !this.company.workingDays) {
+      return false;
+    }
+    const day = d.toLocaleDateString('en-US', { weekday: 'long' });
+    return this.company.workingDays.includes(day);
+  };
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,

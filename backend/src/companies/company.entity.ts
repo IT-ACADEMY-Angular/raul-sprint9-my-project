@@ -18,4 +18,7 @@ export class Company {
 
   @OneToMany(() => Worker, worker => worker.company, { cascade: true, eager: true })
   workers: Worker[];
+
+  @Column('simple-array', { nullable: true })
+  workingDays: string[];
 }

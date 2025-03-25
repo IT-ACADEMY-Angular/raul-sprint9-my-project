@@ -161,4 +161,12 @@ export class BookingComponent {
       }
     );
   }
+
+  dateFilter = (d: Date | null): boolean => {
+    if (!d || !this.company || !this.company.workingDays) {
+      return false;
+    }
+    const day = d.toLocaleDateString('en-US', { weekday: 'long' });
+    return this.company.workingDays.includes(day);
+  };
 }

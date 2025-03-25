@@ -3,4 +3,5 @@ export interface CreateCompanyPayload {
   name: string;
   photoUrl?: string;
   workerData?: { name: string; tasks?: { name: string; duration: number }[] }[];
+  workingDays: string[];
 }

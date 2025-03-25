@@ -13,17 +13,20 @@ export class CompaniesService {
     private readonly workerRepository: Repository<Worker>,
   ) { }
 
-  async createCompany(ownerId: number, name: string, photoUrl: string, workerData: { name: string, tasks?: { name: string; duration: number }[] }[]): Promise<Company> {
-    const company = this.companyRepository.create({ name, photoUrl });
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  async createCompany(
+    ownerId: number,
+    name: string,
+    photoUrl: string,
+    workerData: { name: string, tasks?: { name: string; duration: number }[] }[],
+    workingDays: string[]
+  ): Promise<Company> {
+    const company = this.companyRepository.create({ name, photoUrl, workingDays });
     company.owner = { id: ownerId } as any;
     if (workerData && workerData.length > 0) {
       company.workers = workerData.map(worker => {
         const newWorker = this.workerRepository.create({ name: worker.name });
         if (worker.tasks && worker.tasks.length > 0) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           newWorker.tasks = worker.tasks.map(task => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return { name: task.name, duration: task.duration } as any;
           });
         }

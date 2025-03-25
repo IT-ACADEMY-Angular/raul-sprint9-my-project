@@ -38,13 +38,26 @@ export class NewCompanyComponent {
 
   @ViewChild('fileInput') fileInput!: ElementRef;
 
+  weekDays = [
+    { label: 'Lunes', value: 'Monday', selected: false },
+    { label: 'Martes', value: 'Tuesday', selected: false },
+    { label: 'Miércoles', value: 'Wednesday', selected: false },
+    { label: 'Jueves', value: 'Thursday', selected: false },
+    { label: 'Viernes', value: 'Friday', selected: false },
+    { label: 'Sábado', value: 'Saturday', selected: false },
+    { label: 'Domingo', value: 'Sunday', selected: false },
+  ];
+
+  get workingDays(): string[] {
+    return this.weekDays.filter(day => day.selected).map(day => day.value);
+  }
+
   constructor(
     private router: Router,
     private companyService: CompanyService,
     private authService: AuthService,
     private dialog: MatDialog,
     private photoService: PhotoService
-
   ) { }
 
   goBack(): void {
@@ -135,7 +148,7 @@ export class NewCompanyComponent {
     const hasPhoto = !!this.selectedFile || !!this.companyPhotoUrl;
     const hasWorkers = this.workerData.length > 0;
     const atLeastOneWorkerHasTask = this.workerData.some(worker => worker.tasks && worker.tasks.length > 0);
-    return hasName && hasPhoto && hasWorkers && atLeastOneWorkerHasTask;
+    return hasName && hasPhoto && hasWorkers && atLeastOneWorkerHasTask && this.workingDays.length > 0;
   }
 
   registrarEmpresa(): void {
@@ -152,6 +165,7 @@ export class NewCompanyComponent {
         name: this.companyName,
         photoUrl: this.companyPhotoUrl || '',
         workerData: this.workerData,
+        workingDays: this.workingDays
       };
       return this.companyService.createCompany(payload);
     };

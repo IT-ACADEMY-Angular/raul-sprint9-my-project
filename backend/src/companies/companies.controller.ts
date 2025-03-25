@@ -15,6 +15,7 @@ import {
 import { CompaniesService } from './companies.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage, StorageEngine, File as MulterFile } from 'multer';
+import { CreateCompanyDto } from './dto/create-company-dto';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
 const storage: StorageEngine = diskStorage({
@@ -35,11 +36,9 @@ export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) { }
 
   @Post()
-  async createCompany(
-    @Body() body: { ownerId: number; name: string; photoUrl?: string; workerData?: { name: string; tasks?: { name: string; duration: number }[] }[] }
-  ) {
-    const { ownerId, name, photoUrl, workerData } = body;
-    return this.companiesService.createCompany(ownerId, name, photoUrl || '', workerData || []);
+  async createCompany(@Body() createCompanyDto: CreateCompanyDto) {
+    const { ownerId, name, photoUrl, workerData, workingDays } = createCompanyDto;
+    return this.companiesService.createCompany(ownerId, name, photoUrl || '', workerData || [], workingDays);
   }
 
   @Get('search')

@@ -36,6 +36,17 @@
       <input type="text" class="form-control" [(ngModel)]="companyName" placeholder="Escribe el nombre de tu empresa"
         required>
     </div>
+
+    <div class="mb-3">
+      <label class="fw-bold">Selecciona los días laborables de tu empresa</label>
+      <div class="d-flex flex-wrap">
+        <div class="form-check me-3" *ngFor="let day of weekDays">
+          <input type="checkbox" class="form-check-input" [id]="day.value" [(ngModel)]="day.selected">
+          <label class="form-check-label" [for]="day.value">{{ day.label }}</label>
+        </div>
+      </div>
+    </div>
+
     <div class="mb-3">
       <label class="fw-bold">Añade trabajadores</label>
       <div class="input-group mb-3">
