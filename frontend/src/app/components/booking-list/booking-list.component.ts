@@ -19,7 +19,15 @@ export class BookingListComponent {
   @Input()
   set bookings(value: Booking[]) {
     this._bookings = value.sort((a, b) => {
-      return new Date(a.bookingDate).getTime() - new Date(b.bookingDate).getTime();
+      const dateA = new Date(a.bookingDate);
+      const [hoursA, minutesA] = a.selectedHour.split(':').map(Number);
+      dateA.setHours(hoursA, minutesA, 0, 0);
+
+      const dateB = new Date(b.bookingDate);
+      const [hoursB, minutesB] = b.selectedHour.split(':').map(Number);
+      dateB.setHours(hoursB, minutesB, 0, 0);
+
+      return dateA.getTime() - dateB.getTime();
     });
   }
 
@@ -51,7 +59,6 @@ export class BookingListComponent {
         }, error => {
           console.error('Error al eliminar la reserva:', error);
         });
-      } else {
       }
     });
   }
