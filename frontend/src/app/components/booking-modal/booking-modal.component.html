@@ -8,17 +8,22 @@
     <p><strong>Tarea:</strong> {{ data.task }}</p>
     <p>
       <strong>Fecha: </strong>
-      <input type="date" [(ngModel)]="editableDate" class="modal-input" />
+      <input type="date" [(ngModel)]="editableDate" class="modal-input" (ngModelChange)="validateModification()" />
     </p>
     <p>
       <strong>Hora: </strong>
-      <input type="time" [(ngModel)]="editableTime" class="modal-input" />
+      <input type="time" [(ngModel)]="editableTime" class="modal-input" (ngModelChange)="validateModification()" />
     </p>
+    <div *ngIf="modificationError" class="error-message">
+      {{ modificationError }}
+    </div>
   </div>
 
   <div class="modal-actions">
     <button class="btn btn-delete fw-bold" (click)="onDelete()">ELIMINAR</button>
-    <button class="btn btn-save fw-bold" (click)="onSave()" [disabled]="!isModified">GUARDAR</button>
+    <button class="btn btn-save fw-bold" (click)="onSave()" [disabled]="!isModified || !isModificationValid">
+      GUARDAR
+    </button>
   </div>
 
   <div class="modal-call">

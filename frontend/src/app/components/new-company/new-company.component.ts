@@ -34,7 +34,7 @@ export class NewCompanyComponent {
 
   startTime: string = '08:00';
   endTime: string = '21:00';
-  appointmentInterval: number = 15;
+  appointmentInterval: number = 5;
 
   breakStart: string = '';
   breakEnd: string = '';
@@ -156,7 +156,7 @@ export class NewCompanyComponent {
     const hasWorkers = this.workerData.length > 0;
     const atLeastOneWorkerHasTask = this.workerData.some(worker => worker.tasks && worker.tasks.length > 0);
     return hasName && hasPhoto && hasWorkers && atLeastOneWorkerHasTask && this.workingDays.length > 0
-      && this.startTime !== '' && this.endTime !== '' && this.appointmentInterval > 0;
+      && this.startTime !== '' && this.endTime !== '';
   }
 
   registrarEmpresa(): void {
@@ -176,7 +176,7 @@ export class NewCompanyComponent {
         workingDays: this.workingDays,
         startTime: this.startTime,
         endTime: this.endTime,
-        appointmentInterval: this.appointmentInterval,
+        appointmentInterval: 5,
         breakStart: this.breakStart || undefined,
         breakEnd: this.breakEnd || undefined
       };

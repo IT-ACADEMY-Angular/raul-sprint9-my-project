@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Booking } from '../../interfaces/booking.interface';
 import { BookingService } from '../../services/booking.service';
 import { BookingModalComponent } from '../booking-modal/booking-modal.component';
+import { CompanyService } from '../../services/company.service';
 
 @Component({
   selector: 'app-bookings-results',
@@ -21,26 +22,34 @@ export class BookingsResultsComponent {
   datePipe: DatePipe = new DatePipe('en-US');
 
   intervals: string[] = [];
-  private pxPerMinute: number = 25 / 15;
+
+  private pxPerMinute: number = 25 / 5;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private bookingService: BookingService,
+    private companyService: CompanyService,
     private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
-    this.generateIntervals(7, 21, 15);
     this.route.queryParamMap.subscribe(params => {
-      const companyId = params.get('companyId');
+      const companyIdStr = params.get('companyId');
       const dateStr = params.get('date');
       const worker = params.get('worker');
-      if (companyId && dateStr && worker) {
-        this.company = { id: +companyId };
+      if (companyIdStr && dateStr && worker) {
+        const companyId = +companyIdStr;
         this.selectedDate = new Date(dateStr);
         this.selectedWorker = worker;
-        this.loadBookings();
+        this.companyService.getCompany(companyId).subscribe(company => {
+          this.company = company;
+          this.generateIntervalsFromCompany();
+          this.loadBookings();
+        }, error => {
+          console.error('Error al obtener la empresa:', error);
+          this.router.navigate(['/']);
+        });
       } else {
         console.error('Datos insuficientes en los query parameters');
         this.router.navigate(['/']);
@@ -48,16 +57,17 @@ export class BookingsResultsComponent {
     });
   }
 
-  private generateIntervals(startHour: number, endHour: number, stepMinutes: number): void {
-    this.intervals = [];
-    for (let hour = startHour; hour < endHour; hour++) {
-      for (let minute = 0; minute < 60; minute += stepMinutes) {
-        const hh = hour.toString().padStart(2, '0');
-        const mm = minute.toString().padStart(2, '0');
-        this.intervals.push(`${hh}:${mm}`);
+  private generateIntervalsFromCompany(): void {
+    if (this.company && this.company.startTime && this.company.endTime) {
+      const fixedInterval = 5;
+      this.intervals = [];
+      const startMinutes = this.timeToMinutes(this.company.startTime);
+      const endMinutes = this.timeToMinutes(this.company.endTime);
+      for (let m = startMinutes; m + fixedInterval <= endMinutes; m += fixedInterval) {
+        this.intervals.push(this.minutesToTime(m));
       }
+      this.intervals.push(this.company.endTime);
     }
-    this.intervals.push(`${endHour.toString().padStart(2, '0')}:00`);
   }
 
   loadBookings(): void {
@@ -76,12 +86,13 @@ export class BookingsResultsComponent {
 
   calculateEventStyle(booking: Booking): { [key: string]: string } {
     const [startHourStr, startMinuteStr] = booking.selectedHour.split(':');
-    const startDate = new Date(this.selectedDate);
-    startDate.setHours(parseInt(startHourStr, 10), parseInt(startMinuteStr, 10), 0, 0);
+    const companyStartMinutes = this.timeToMinutes(this.company.startTime);
+    const bookingStartMinutes = this.timeToMinutes(booking.selectedHour);
+    const minutesSinceStart = bookingStartMinutes - companyStartMinutes;
     const duration = this.extractDuration(booking.selectedTask);
     const height = this.minutesToPixels(duration);
-    const minutesSinceStart = this.getMinutesSinceStart(startDate, 7);
     const topOffset = this.minutesToPixels(minutesSinceStart);
+
     return {
       top: `${topOffset}px`,
       height: `${height}px`
@@ -98,13 +109,18 @@ export class BookingsResultsComponent {
   }
 
   private minutesToPixels(minutes: number): number {
-    return minutes * this.pxPerMinute;
+    return Math.round(minutes * this.pxPerMinute);
   }
 
-  private getMinutesSinceStart(date: Date, startHour: number): number {
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    return (hours - startHour) * 60 + minutes;
+  private timeToMinutes(time: string): number {
+    const parts = time.split(':');
+    return Number(parts[0]) * 60 + Number(parts[1]);
+  }
+
+  private minutesToTime(minutes: number): string {
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
   }
 
   private extractDuration(taskStr: string): number {
@@ -117,31 +133,18 @@ export class BookingsResultsComponent {
   }
 
   editBooking(booking: Booking): void {
-    const customerName = (booking as any).user?.name || 'Cliente desconocido';
-    const task = booking.selectedTask;
-    const durationMatch = task.match(/\((\d+\s*min)\)/);
-    const duration = durationMatch ? durationMatch[1] : '';
-    const hour = booking.selectedHour;
-    const dateStr = new Date(booking.bookingDate).toLocaleDateString();
-
-    const data = {
-      customerName: customerName,
-      task: task,
-      duration: duration,
-      hour: hour,
-      date: dateStr,
-      booking: booking
-    };
-
     const dialogRef = this.dialog.open(BookingModalComponent, {
       width: '400px',
-      data: data
+      data: {
+        booking,
+        customerName: booking.user?.name || 'Cliente desconocido',
+        task: booking.selectedTask
+      }
     });
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (result.action === 'save') {
-          this.bookingService.updateBooking(result.bookingId, result.payload).subscribe(updatedBooking => {
+          this.bookingService.updateBooking(result.bookingId, result.payload).subscribe(() => {
             this.loadBookings();
           }, error => {
             console.error('Error al actualizar la reserva:', error);
@@ -152,18 +155,9 @@ export class BookingsResultsComponent {
           }, error => {
             console.error('Error al eliminar reserva:', error);
           });
-        } else if (result.action === 'call') {
-
         }
       }
     });
-  }
-
-  onIntervalClick(interval: string): void {
-    const booking = this.getBookingForInterval(interval);
-    if (booking) {
-      this.editBooking(booking);
-    }
   }
 
   goBack(): void {

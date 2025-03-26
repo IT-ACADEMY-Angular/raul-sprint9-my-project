@@ -41,11 +41,8 @@ export class BookingComponent {
   selectedDuration: number = 0;
 
   allSlots: string[] = [];
-
   availableSlots: string[] = [];
-
   reservedSlots: string[] = [];
-
   tasksForSelectedWorker: any[] = [];
 
   @ViewChild('slotsContainer') slotsContainer!: ElementRef;
@@ -196,7 +193,7 @@ export class BookingComponent {
         this.router.navigate(['/pending-booking']);
       },
       error => {
-        this.snackBar.open('No se pudo crear la reserva porque se solapa con otra cita.', 'Cerrar', {
+        this.snackBar.open('No te puedes dividir en 2 :) Ya tienes una cita reservada en este horario.', 'Cerrar', {
           duration: 8000,
           panelClass: ['snackbar-info']
         });
@@ -206,11 +203,11 @@ export class BookingComponent {
   }
 
   generateSlots(): void {
-    if (this.company && this.company.startTime && this.company.endTime && this.company.appointmentInterval) {
+    if (this.company && this.company.startTime && this.company.endTime) {
       this.allSlots = this.generateTimeSlots(
         this.company.startTime,
         this.company.endTime,
-        this.company.appointmentInterval,
+        5,
         this.company.breakStart,
         this.company.breakEnd
       );
@@ -274,21 +271,26 @@ export class BookingComponent {
           .forEach(app => {
             const appStart = this.timeToMinutes(app.selectedHour);
             const appDuration = app.duration || 0;
-            for (let m = appStart; m < appStart + appDuration; m += this.company.appointmentInterval) {
+            for (let m = appStart; m < appStart + appDuration; m += 5) {
               this.reservedSlots.push(this.minutesToTime(m));
             }
           });
 
         this.availableSlots = this.allSlots.filter(slot => {
-          const notReserved = !this.reservedSlots.includes(slot);
-          if (this.company.breakStart && this.selectedDuration > 0) {
-            const slotMinutes = this.timeToMinutes(slot);
-            const breakStartMinutes = this.timeToMinutes(this.company.breakStart);
-            if (slotMinutes < breakStartMinutes) {
-              return notReserved && ((slotMinutes + this.selectedDuration) <= breakStartMinutes);
+          const candidateStart = this.timeToMinutes(slot);
+          const candidateEnd = candidateStart + this.selectedDuration;
+          for (let m = candidateStart; m < candidateEnd; m += 5) {
+            if (this.reservedSlots.includes(this.minutesToTime(m))) {
+              return false;
             }
           }
-          return notReserved;
+          if (this.company.breakStart) {
+            const breakStartMinutes = this.timeToMinutes(this.company.breakStart);
+            if (candidateStart < breakStartMinutes && candidateEnd > breakStartMinutes) {
+              return false;
+            }
+          }
+          return true;
         });
       });
     }

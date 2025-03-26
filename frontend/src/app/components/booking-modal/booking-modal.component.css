@@ -1,11 +1,36 @@
 .booking-modal-container {
   padding: 20px;
   text-align: left;
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #777;
 }
 
 .booking-details p {
   margin: 5px 0;
   font-size: 0.9rem;
+}
+
+.modal-input {
+  border-radius: 10px;
+  padding: 5px 15px;
+  border: 1px solid #c6c6c6;
+  width: 100%;
+}
+
+.error-message {
+  margin-top: 10px;
+  color: #f44336;
+  font-size: 0.85rem;
 }
 
 .modal-actions {
@@ -31,6 +56,13 @@
   background-color: #B5FFC2;
   border: 1px solid #c6c6c6;
   border-radius: 15px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-save:disabled {
+  background-color: #e0e0e0 !important;
+  color: #9e9e9e !important;
+  cursor: not-allowed;
 }
 
 .modal-call {
@@ -67,29 +99,4 @@
   justify-content: center;
   font-size: 24px;
   cursor: pointer;
-}
-
-
-.modal-input {
-  border-radius: 10px;
-  padding: 5px 15px;
-  border: 1px solid #c6c6c6;
-  width: 100%;
-}
-
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #777;
-}
-
-.btn-save:disabled {
-  background-color: #e0e0e0 !important;
-  color: #9e9e9e !important;
-  cursor: not-allowed;
 }

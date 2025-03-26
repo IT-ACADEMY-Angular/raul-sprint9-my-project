@@ -45,6 +45,4 @@ export class AuthService {
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }
-
-  // Los métodos updateProfile y deleteAccount se han movido a UsersService
 }

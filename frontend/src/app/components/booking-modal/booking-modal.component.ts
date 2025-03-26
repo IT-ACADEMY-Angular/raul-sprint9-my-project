@@ -20,6 +20,9 @@ export class BookingModalComponent {
   originalDate: string;
   originalTime: string;
 
+  modificationError: string = '';
+  isModificationValid: boolean = false;
+
   constructor(
     public dialogRef: MatDialogRef<BookingModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: BookingModalData,
@@ -36,27 +39,67 @@ export class BookingModalComponent {
     this.originalTime = this.editableTime;
   }
 
+  ngOnInit(): void {
+    this.validateModification();
+  }
+
   get isModified(): boolean {
     return this.editableDate !== this.originalDate || this.editableTime !== this.originalTime;
   }
 
-  onDelete(): void {
-    const confirmData: ConfirmDialogData = {
-      title: 'Confirmar eliminación',
-      message: '¿Estás seguro de que deseas eliminar la cita?'
-    };
-    const confirmDialogRef = this.dialog.open(ModalConfirmDialogComponent, {
-      width: '300px',
-      data: confirmData
-    });
-    confirmDialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
-        this.dialogRef.close({ action: 'delete', booking: this.data.booking });
+  validateModification(): void {
+    this.modificationError = '';
+
+    if (this.data.booking.company && this.data.booking.company.workingDays) {
+      const newDate = new Date(this.editableDate);
+      const dayName = newDate.toLocaleDateString('en-US', { weekday: 'long' });
+      if (!this.data.booking.company.workingDays.includes(dayName)) {
+        this.modificationError = 'El día seleccionado no es laborable.';
       }
-    });
+    }
+
+    const serviceDuration = this.extractDuration(this.data.task);
+    const newStart = this.timeToMinutes(this.editableTime);
+    const newEnd = newStart + serviceDuration;
+
+    if (!this.modificationError && this.data.booking.company && this.editableDate) {
+      this.bookingService.getAppointments(this.data.booking.company.id, new Date(this.editableDate))
+        .subscribe(appointments => {
+          const otherAppointments = appointments.filter(app =>
+            app.selectedWorker.trim().toLowerCase() === this.data.booking.selectedWorker.trim().toLowerCase() &&
+            app.id !== this.data.booking.id
+          );
+          for (const app of otherAppointments) {
+            const appStart = this.timeToMinutes(app.selectedHour);
+            const appDuration = app.duration || this.extractDuration(app.selectedTask);
+            const appEnd = appStart + appDuration;
+            if (newStart < appEnd && newEnd > appStart) {
+              this.modificationError = 'La modificación solapa con otra cita.';
+              break;
+            }
+          }
+          this.isModificationValid = this.isModified && this.modificationError === '';
+        });
+    } else {
+      this.isModificationValid = this.isModified && this.modificationError === '';
+    }
+  }
+
+  private extractDuration(taskStr: string): number {
+    const match = taskStr.match(/\((\d+)\s*min\)/);
+    return match ? parseInt(match[1], 10) : 0;
+  }
+
+  private timeToMinutes(time: string): number {
+    const parts = time.split(':');
+    return Number(parts[0]) * 60 + Number(parts[1]);
   }
 
   onSave(): void {
+    this.validateModification();
+    if (!this.isModificationValid) {
+      return;
+    }
     const confirmData: ConfirmDialogData = {
       title: 'Confirmar guardado',
       message: '¿Estás seguro de que deseas guardar los cambios?'
@@ -72,6 +115,22 @@ export class BookingModalComponent {
           selectedHour: this.editableTime
         };
         this.dialogRef.close({ action: 'save', bookingId: this.data.booking.id, payload: updatedPayload });
+      }
+    });
+  }
+
+  onDelete(): void {
+    const confirmData: ConfirmDialogData = {
+      title: 'Confirmar eliminación',
+      message: '¿Estás seguro de que deseas eliminar la cita?'
+    };
+    const confirmDialogRef = this.dialog.open(ModalConfirmDialogComponent, {
+      width: '300px',
+      data: confirmData
+    });
+    confirmDialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.dialogRef.close({ action: 'delete', booking: this.data.booking });
       }
     });
   }
