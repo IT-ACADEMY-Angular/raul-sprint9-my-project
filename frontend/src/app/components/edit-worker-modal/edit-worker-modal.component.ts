@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { WorkerData } from '../../models/worker.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -15,6 +15,8 @@ export class EditWorkerModalComponent {
   @Output() closeModal = new EventEmitter<WorkerData>();
   @Output() cancelModal = new EventEmitter<void>();
 
+  @ViewChild('modalBody') modalBody!: ElementRef;
+
   newTaskName: string = '';
   newTaskDuration: number | null = null;
 
@@ -27,8 +29,8 @@ export class EditWorkerModalComponent {
     { label: 'Sábado', value: 'Saturday', selected: false },
     { label: 'Domingo', value: 'Sunday', selected: false },
   ];
-  startTime: string = '08:00';
-  endTime: string = '17:00';
+  startTime: string = '';
+  endTime: string = '';
   breakStart: string = '';
   breakEnd: string = '';
 
@@ -40,6 +42,13 @@ export class EditWorkerModalComponent {
       this.worker.tasks.push({ name: this.newTaskName.trim(), duration: this.newTaskDuration });
       this.newTaskName = '';
       this.newTaskDuration = null;
+
+      setTimeout(() => {
+        const container = this.modalBody?.nativeElement;
+        if (container) {
+          container.scrollTop = container.scrollHeight;
+        }
+      }, 300);
     }
   }
 
@@ -48,8 +57,8 @@ export class EditWorkerModalComponent {
       workingDays: this.workingDays.filter(day => day.selected).map(day => day.value),
       startTime: this.startTime,
       endTime: this.endTime,
-      breakStart: this.breakStart || undefined,
-      breakEnd: this.breakEnd || undefined
+      breakStart: this.breakStart,
+      breakEnd: this.breakEnd
     };
     this.closeModal.emit(this.worker);
   }
@@ -65,6 +74,13 @@ export class EditWorkerModalComponent {
   }
 
   get isSaveEnabled(): boolean {
-    return (this.worker.tasks?.length || 0) > 0;
+    const hasName = !!this.worker.name && this.worker.name.trim().length > 0;
+    const hasWorkingDays = this.workingDays.some(day => day.selected);
+    const hasStartTime = !!this.startTime && this.startTime.trim().length > 0;
+    const hasEndTime = !!this.endTime && this.endTime.trim().length > 0;
+    const hasBreakStart = !!this.breakStart && this.breakStart.trim().length > 0;
+    const hasBreakEnd = !!this.breakEnd && this.breakEnd.trim().length > 0;
+    const hasTask = !!this.worker.tasks && this.worker.tasks.length > 0;
+    return hasName && hasWorkingDays && hasStartTime && hasEndTime && hasBreakStart && hasBreakEnd && hasTask;
   }
 }

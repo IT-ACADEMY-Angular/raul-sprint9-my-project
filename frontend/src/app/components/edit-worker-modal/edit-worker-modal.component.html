@@ -2,52 +2,58 @@
   <div class="modal-content">
     <h3 class="modal-title">Editar trabajador</h3>
 
-    <div class="form-group">
-      <label class="form-label">Nombre del trabajador</label>
-      <input type="text" [(ngModel)]="worker.name" class="form-control" required>
-    </div>
+    <div class="modal-body" #modalBody>
+      <div class="form-group">
+        <label class="form-label">Nombre del trabajador *</label>
+        <input type="text" [(ngModel)]="worker.name" class="form-control" required>
+      </div>
 
-    <div class="form-group">
-      <label class="form-label">Días laborables</label>
-      <div class="d-flex flex-wrap">
-        <div class="form-check me-3" *ngFor="let day of workingDays">
-          <input type="checkbox" class="form-check-input" [id]="day.value" [(ngModel)]="day.selected">
-          <label class="form-check-label" [for]="day.value">{{ day.label }}</label>
+      <div class="form-group">
+        <label class="form-label">Días laborables *</label>
+        <div class="d-flex flex-wrap">
+          <div class="form-check me-3" *ngFor="let day of workingDays">
+            <input type="checkbox" class="form-check-input" [id]="day.value" [(ngModel)]="day.selected" required>
+            <label class="form-check-label" [for]="day.value">{{ day.label }}</label>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Hora de inicio de trabajo</label>
-      <input type="time" class="form-control" [(ngModel)]="startTime">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Hora de fin de trabajo</label>
-      <input type="time" class="form-control" [(ngModel)]="endTime">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Hora de descanso (opcional)</label>
-      <div class="d-flex">
-        <input type="time" class="form-control me-2" [(ngModel)]="breakStart" placeholder="Inicio">
-        <input type="time" class="form-control" [(ngModel)]="breakEnd" placeholder="Fin">
-      </div>
-    </div>
 
-    <div class="form-group">
-      <label class="form-label">Añade tarea y duración</label>
-      <div class="vertical-input-group">
-        <div class="input-fields">
-          <input type="text" placeholder="Nombre de la tarea" [(ngModel)]="newTaskName" class="form-control">
-          <input type="number" placeholder="Minutos" [(ngModel)]="newTaskDuration" class="form-control">
+      <div class="form-group">
+        <label class="form-label">Hora de inicio de jornada *</label>
+        <input type="time" class="form-control" [(ngModel)]="startTime" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Hora de fin de jornada *</label>
+        <input type="time" class="form-control" [(ngModel)]="endTime" required>
+      </div>
+      <div class="form-group">
+        <div class="mb-2">
+          <label class="form-label">Inicio de descanso *</label>
+          <input type="time" class="form-control" [(ngModel)]="breakStart" placeholder="Inicio" required>
         </div>
-        <button class="btn btn-outline-secondary btn-add-task" type="button" (click)="addTask()">
-          <i class="fa-solid fa-plus"></i>
-        </button>
+        <div>
+          <label class="form-label">Fin de descanso *</label>
+          <input type="time" class="form-control" [(ngModel)]="breakEnd" placeholder="Fin" required>
+        </div>
       </div>
+
+      <div class="form-group">
+        <label class="form-label">Añade tarea y duración *</label>
+        <div class="vertical-input-group">
+          <div class="input-fields">
+            <input type="text" placeholder="Nombre de la tarea" [(ngModel)]="newTaskName" class="form-control">
+            <input type="number" placeholder="Minutos" [(ngModel)]="newTaskDuration" class="form-control">
+          </div>
+          <button class="btn btn-outline-secondary btn-add-task" type="button" (click)="addTask()">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+      </div>
+
+      <task-list-component [tasks]="worker.tasks || []" (removeTask)="onRemoveTask($event)"></task-list-component>
     </div>
 
-    <task-list-component [tasks]="worker.tasks || []" (removeTask)="onRemoveTask($event)"></task-list-component>
-
-    <div class="d-flex justify-content-center mt-4">
+    <div class="modal-footer d-flex justify-content-center mt-4">
       <button class="btn custom-cancel-btn me-2" (click)="cancel()">Cancelar</button>
       <button class="btn custom-confirm-btn" (click)="save()" [disabled]="!isSaveEnabled">Guardar</button>
     </div>
