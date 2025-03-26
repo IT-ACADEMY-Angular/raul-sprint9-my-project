@@ -84,13 +84,81 @@
 }
 
 .btn-dark {
-  background-color: #3498DB !important;
-  border: none;
-  border-radius: 15px;
+  background: linear-gradient(45deg, #3498DB, #2C80B4);
+  color: white;
+  border: 1px solid white;
+  border-radius: 20px;
+  padding: 10px 20px;
+  transition: background-color 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-dark:hover {
+  background: linear-gradient(45deg, #2C80B4, #3498DB);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn-dark:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .btn-success {
-  background-color: #002741 !important;
-  border: none;
-  border-radius: 15px;
+  background: linear-gradient(45deg, #002741, #003346);
+  color: white;
+  border: 1px solid white;
+  border-radius: 20px;
+  padding: 10px 20px;
+  transition: background-color 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-success:hover {
+  background: linear-gradient(45deg, #003346, #002741);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn-success:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.notification-badge.bg-danger {
+  animation: bounce 11s infinite;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+
+  1% {
+    transform: translateY(-5px);
+  }
+
+  2% {
+    transform: translateY(0);
+  }
+
+  3% {
+    transform: translateY(-5px);
+  }
+
+  4% {
+    transform: translateY(0);
+  }
+
+  5% {
+    transform: translateY(-5px);
+  }
+
+  6% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
 }

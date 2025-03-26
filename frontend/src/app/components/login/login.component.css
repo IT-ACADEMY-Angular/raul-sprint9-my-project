@@ -15,9 +15,44 @@
 
 .login-title {
   font-size: 50px;
-  color: white;
-  margin-bottom: 20px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 4px;
   text-align: center;
+  color: #fff;
+  position: relative;
+}
+
+.login-title::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: linear-gradient(120deg,
+      transparent 40%,
+      #00334667 50%,
+      transparent 60%);
+
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  animation: shimmer 6s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -10% center;
+  }
+
+  100% {
+    background-position: 190% center;
+  }
 }
 
 .login-container {
@@ -29,13 +64,26 @@
 }
 
 .btn-login {
-  background-color: #002741;
+  background: linear-gradient(45deg, #003346, #004054);
   color: white;
   border: 1px solid white;
-  width: 50%;
   border-radius: 20px;
+  padding: 10px 20px;
   margin: 0 auto;
   display: block;
+  transition: background-color 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-login:hover {
+  background: linear-gradient(45deg, #004054, #003346);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn-login:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .register-link {

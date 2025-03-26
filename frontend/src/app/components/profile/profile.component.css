@@ -1,21 +1,10 @@
 .custom-icon-profile {
   color: #3498DB;
+  transition: transform 0.3s ease;
 }
 
-.btn-login {
-  background-color: #002741;
-  color: white;
-  border: 1px solid white;
-  width: 50%;
-  border-radius: 20px;
-}
-
-.btn-close-session {
-  background-color: #FFAEAE;
-  color: black;
-  border: 1px solid white;
-  width: 50%;
-  border-radius: 20px;
+.custom-icon-profile:hover {
+  transform: scale(1.05);
 }
 
 .custom-photo {
@@ -23,19 +12,78 @@
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #3498db88;
+  border: 3px solid rgba(52, 152, 219, 0.53);
+  transition: transform 0.3s ease;
 }
 
-.custom-icon-profile {
-  color: #3498DB;
+.custom-photo:hover {
+  transform: scale(1.05);
 }
 
-.btn-delete-company {
-  background-color: #744c1e;
+.btn-login {
+  background: linear-gradient(45deg, #003346, #004054);
   color: white;
   border: 1px solid white;
   width: 50%;
   border-radius: 20px;
+  padding: 10px 20px;
+  transition: background-color 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-login:hover {
+  background: linear-gradient(45deg, #004054, #003346);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn-login:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-close-session {
+  background: linear-gradient(45deg, #ffb3b5, #ff9ea0);
+  color: black;
+  border: 1px solid white;
+  width: 50%;
+  border-radius: 20px;
+  padding: 10px 20px;
+  transition: background-color 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-close-session:hover {
+  background: linear-gradient(45deg, #ff9ea0, #ffb3b5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn-close-session:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-delete-company {
+  background: linear-gradient(45deg, #7f5a2c, #8a6440);
+  color: white;
+  border: 1px solid white;
+  width: 50%;
+  border-radius: 20px;
+  padding: 10px 20px;
+  transition: background-color 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-delete-company:hover {
+  background: linear-gradient(45deg, #8a6440, #7f5a2c);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn-delete-company:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .btn-delete-company:disabled {
@@ -46,11 +94,25 @@
 }
 
 .btn-delete-account {
-  background-color: #8B0000;
+  background: linear-gradient(45deg, #8b0000, #9a1a1a);
   color: white;
   border: 1px solid white;
   width: 50%;
   border-radius: 20px;
+  padding: 10px 20px;
+  transition: background-color 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-delete-account:hover {
+  background: linear-gradient(45deg, #9a1a1a, #8b0000);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn-delete-account:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .btn-delete-account:disabled {
@@ -58,4 +120,17 @@
   border-color: #cccccc !important;
   color: #666666 !important;
   cursor: not-allowed;
+}
+
+.btn-delete-company:disabled,
+.btn-delete-account:disabled,
+.btn-login:disabled,
+.btn-close-session:disabled {
+  background: #cccccc !important;
+  background-image: none !important;
+  border-color: #cccccc !important;
+  color: #666666 !important;
+  cursor: not-allowed !important;
+  pointer-events: none;
+  opacity: 0.8;
 }

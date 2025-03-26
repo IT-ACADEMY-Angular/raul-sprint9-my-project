@@ -6,7 +6,7 @@
 
 <div class="main-container">
   <div class="form-wrapper text-center">
-    <h1 class="login-title">{{ title }}</h1>
+    <h1 class="login-title" [attr.data-text]="title">{{ title }}</h1>
 
     <div class="login-container mt-5">
       <form (ngSubmit)="onLogin()">
