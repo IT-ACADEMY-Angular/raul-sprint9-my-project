@@ -25,50 +25,51 @@
   </div>
 
   <div class="flex-grow-1 text-center mt-3">
-    <p class="mb-0">Rellena el formulario para ver disponibilidad!</p>
+    <p class="mb-0">Selecciona un trabajador para ver la disponibilidad.</p>
   </div>
 
   <div class="mt-3" *ngIf="company">
-    <mat-calendar [(selected)]="selectedDate" (selectedChange)="dateChanged($event!)" [minDate]="minDate"
-      [dateFilter]="dateFilter">
-    </mat-calendar>
+    <div *ngIf="workers && workers.length > 0; else noWorkers" class="mb-3 dropdown" #workerDropdownContainer>
+      <button class="btn form-select dropdown-toggle" type="button" id="workerDropdown" data-bs-toggle="dropdown"
+        aria-expanded="false" [ngStyle]="{'color': selectedWorker ? '#000000' : '#9b9b9b'}">
+        {{ selectedWorker || 'Selecciona un trabajador...' }}
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="workerDropdown">
+        <li *ngFor="let worker of workers">
+          <a class="dropdown-item" (click)="selectWorker(worker.name)">{{ worker.name }}</a>
+        </li>
+      </ul>
+    </div>
+    <ng-template #noWorkers>
+      <p>No hay trabajadores asignados a esta empresa.</p>
+    </ng-template>
   </div>
 
-  <div *ngIf="selectedDate">
-    <div class="profile-info px-4 pt-4">
-      <div *ngIf="workers && workers.length > 0; else noWorkers" class="mb-3 dropdown" #workerDropdownContainer>
-        <button class="btn form-select dropdown-toggle" type="button" id="workerDropdown" data-bs-toggle="dropdown"
-          aria-expanded="false" [ngStyle]="{'color': selectedWorker ? '#000000' : '#9b9b9b'}">
-          {{ selectedWorker || 'Selecciona un trabajador...' }}
+  <div *ngIf="selectedWorker">
+    <div class="mt-3" *ngIf="showCalendar">
+      <mat-calendar [(selected)]="selectedDate" (selectedChange)="dateChanged($event!)" [minDate]="minDate"
+        [dateFilter]="dateFilter">
+      </mat-calendar>
+    </div>
+
+    <div *ngIf="selectedDate" class="profile-info px-4 pt-4">
+      <div *ngIf="tasksForSelectedWorker && tasksForSelectedWorker.length > 0; else noTasks" class="mb-3 dropdown"
+        #extraDropdownsContainer>
+        <button class="btn form-select dropdown-toggle" type="button" id="taskDropdown" data-bs-toggle="dropdown"
+          aria-expanded="false" [ngStyle]="{'color': selectedTask ? '#000000' : '#9b9b9b'}">
+          {{ selectedTask || 'Selecciona una tarea...' }}
         </button>
-        <ul class="dropdown-menu" aria-labelledby="workerDropdown">
-          <li *ngFor="let worker of workers">
-            <a class="dropdown-item" (click)="selectWorker(worker.name)">{{ worker.name }}</a>
+        <ul class="dropdown-menu" aria-labelledby="taskDropdown">
+          <li *ngFor="let task of tasksForSelectedWorker">
+            <a class="dropdown-item" (click)="selectTask(task)">
+              <strong>{{ task.name }}</strong> ({{ task.duration }} min)
+            </a>
           </li>
         </ul>
       </div>
-      <ng-template #noWorkers>
-        <p>No hay trabajadores asignados a esta empresa.</p>
+      <ng-template #noTasks>
+        <p>No hay tareas para este trabajador.</p>
       </ng-template>
-
-      <div *ngIf="selectedWorker" #extraDropdownsContainer>
-        <div *ngIf="tasksForSelectedWorker && tasksForSelectedWorker.length > 0; else noTasks" class="mb-3 dropdown">
-          <button class="btn form-select dropdown-toggle" type="button" id="taskDropdown" data-bs-toggle="dropdown"
-            aria-expanded="false" [ngStyle]="{'color': selectedTask ? '#000000' : '#9b9b9b'}">
-            {{ selectedTask || 'Selecciona una tarea...' }}
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="taskDropdown">
-            <li *ngFor="let task of tasksForSelectedWorker">
-              <a class="dropdown-item" (click)="selectTask(task)">
-                <strong>{{ task.name }}</strong> ({{ task.duration }} min)
-              </a>
-            </li>
-          </ul>
-        </div>
-        <ng-template #noTasks>
-          <p>No hay tareas para este trabajador.</p>
-        </ng-template>
-      </div>
 
       <div *ngIf="selectedTask && availableSlots.length > 0" #slotsContainer>
         <p class="fw-bold">Selecciona una hora:</p>

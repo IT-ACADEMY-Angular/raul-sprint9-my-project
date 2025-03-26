@@ -22,7 +22,6 @@ export class BookingsResultsComponent {
   datePipe: DatePipe = new DatePipe('en-US');
 
   intervals: string[] = [];
-
   private pxPerMinute: number = 25 / 5;
 
   constructor(
@@ -44,7 +43,7 @@ export class BookingsResultsComponent {
         this.selectedWorker = worker;
         this.companyService.getCompany(companyId).subscribe(company => {
           this.company = company;
-          this.generateIntervalsFromCompany();
+          this.generateIntervalsFromWorker();
           this.loadBookings();
         }, error => {
           console.error('Error al obtener la empresa:', error);
@@ -57,16 +56,17 @@ export class BookingsResultsComponent {
     });
   }
 
-  private generateIntervalsFromCompany(): void {
-    if (this.company && this.company.startTime && this.company.endTime) {
+  private generateIntervalsFromWorker(): void {
+    const worker = this.company.workers.find((w: any) => w.name === this.selectedWorker);
+    if (worker && worker.startTime && worker.endTime) {
       const fixedInterval = 5;
       this.intervals = [];
-      const startMinutes = this.timeToMinutes(this.company.startTime);
-      const endMinutes = this.timeToMinutes(this.company.endTime);
+      const startMinutes = this.timeToMinutes(worker.startTime);
+      const endMinutes = this.timeToMinutes(worker.endTime);
       for (let m = startMinutes; m + fixedInterval <= endMinutes; m += fixedInterval) {
         this.intervals.push(this.minutesToTime(m));
       }
-      this.intervals.push(this.company.endTime);
+      this.intervals.push(worker.endTime);
     }
   }
 
@@ -85,10 +85,17 @@ export class BookingsResultsComponent {
   }
 
   calculateEventStyle(booking: Booking): { [key: string]: string } {
+    if (!booking.selectedHour) {
+      return { top: '0px', height: '0px' };
+    }
+    const worker = this.company.workers.find((w: any) => w.name === this.selectedWorker);
+    if (!worker || !worker.startTime) {
+      return { top: '0px', height: '0px' };
+    }
     const [startHourStr, startMinuteStr] = booking.selectedHour.split(':');
-    const companyStartMinutes = this.timeToMinutes(this.company.startTime);
+    const workerStartMinutes = this.timeToMinutes(worker.startTime);
     const bookingStartMinutes = this.timeToMinutes(booking.selectedHour);
-    const minutesSinceStart = bookingStartMinutes - companyStartMinutes;
+    const minutesSinceStart = bookingStartMinutes - workerStartMinutes;
     const duration = this.extractDuration(booking.selectedTask);
     const height = this.minutesToPixels(duration);
     const topOffset = this.minutesToPixels(minutesSinceStart);
@@ -100,6 +107,9 @@ export class BookingsResultsComponent {
   }
 
   calculateEndTime(booking: Booking): string {
+    if (!booking.selectedHour) {
+      return '';
+    }
     const [startHourStr, startMinuteStr] = booking.selectedHour.split(':');
     const startDate = new Date(this.selectedDate);
     startDate.setHours(parseInt(startHourStr, 10), parseInt(startMinuteStr, 10), 0, 0);

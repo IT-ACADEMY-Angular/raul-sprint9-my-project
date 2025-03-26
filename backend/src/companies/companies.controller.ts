@@ -17,7 +17,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage, StorageEngine, File as MulterFile } from 'multer';
 import { CreateCompanyDto } from './dto/create-company-dto';
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
 const storage: StorageEngine = diskStorage({
   destination: './uploads',
   filename: (
@@ -37,30 +36,13 @@ export class CompaniesController {
 
   @Post()
   async createCompany(@Body() createCompanyDto: CreateCompanyDto) {
-    const {
-      ownerId,
-      name,
-      photoUrl,
-      workerData,
-      workingDays,
-      startTime,
-      endTime,
-      appointmentInterval,
-      breakStart,
-      breakEnd,
-    } = createCompanyDto;
-
+    const { ownerId, name, photoUrl, workerData, appointmentInterval } = createCompanyDto;
     return this.companiesService.createCompany(
       ownerId,
       name,
       photoUrl || '',
       workerData || [],
-      workingDays,
-      startTime,
-      endTime,
       appointmentInterval,
-      breakStart,
-      breakEnd
     );
   }
 
@@ -75,19 +57,17 @@ export class CompaniesController {
   }
 
   @Put('photo')
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   @UseInterceptors(FileInterceptor('file', { storage }))
   uploadCompanyPhoto(@UploadedFile() file: MulterFile) {
     if (!file) {
       throw new NotFoundException('No se encontró archivo');
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     const photoUrl = `http://localhost:3000/uploads/${file.filename}`;
     return { photoUrl };
   }
 
   @Get('user/:userId')
-  async getCompanyByUser(@Param('userId') userId: number) {
+  async getCompanyByUser(@Param('userId', ParseIntPipe) userId: number) {
     return this.companiesService.getCompanyByUserId(userId);
   }
 

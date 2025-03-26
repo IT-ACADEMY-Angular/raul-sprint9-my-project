@@ -32,32 +32,13 @@ export class NewCompanyComponent {
   workerData: WorkerData[] = [];
   newWorkerName: string = '';
 
-  startTime: string = '08:00';
-  endTime: string = '21:00';
   appointmentInterval: number = 5;
-
-  breakStart: string = '';
-  breakEnd: string = '';
 
   showEditWorkerModal: boolean = false;
   workerToEdit!: WorkerData;
   workerToEditIndex: number = -1;
 
   @ViewChild('fileInput') fileInput!: ElementRef;
-
-  weekDays = [
-    { label: 'Lunes', value: 'Monday', selected: false },
-    { label: 'Martes', value: 'Tuesday', selected: false },
-    { label: 'Miércoles', value: 'Wednesday', selected: false },
-    { label: 'Jueves', value: 'Thursday', selected: false },
-    { label: 'Viernes', value: 'Friday', selected: false },
-    { label: 'Sábado', value: 'Saturday', selected: false },
-    { label: 'Domingo', value: 'Sunday', selected: false },
-  ];
-
-  get workingDays(): string[] {
-    return this.weekDays.filter(day => day.selected).map(day => day.value);
-  }
 
   constructor(
     private router: Router,
@@ -116,7 +97,7 @@ export class NewCompanyComponent {
 
   addWorker(): void {
     if (this.newWorkerName.trim() !== '') {
-      this.workerData.push({ name: this.newWorkerName.trim(), tasks: [] });
+      this.workerData.push({ name: this.newWorkerName.trim() });
       this.newWorkerName = '';
     }
   }
@@ -155,8 +136,7 @@ export class NewCompanyComponent {
     const hasPhoto = !!this.selectedFile || !!this.companyPhotoUrl;
     const hasWorkers = this.workerData.length > 0;
     const atLeastOneWorkerHasTask = this.workerData.some(worker => worker.tasks && worker.tasks.length > 0);
-    return hasName && hasPhoto && hasWorkers && atLeastOneWorkerHasTask && this.workingDays.length > 0
-      && this.startTime !== '' && this.endTime !== '';
+    return hasName && hasPhoto && hasWorkers && atLeastOneWorkerHasTask;
   }
 
   registrarEmpresa(): void {
@@ -173,12 +153,7 @@ export class NewCompanyComponent {
         name: this.companyName,
         photoUrl: this.companyPhotoUrl || '',
         workerData: this.workerData,
-        workingDays: this.workingDays,
-        startTime: this.startTime,
-        endTime: this.endTime,
-        appointmentInterval: 5,
-        breakStart: this.breakStart || undefined,
-        breakEnd: this.breakEnd || undefined
+        appointmentInterval: this.appointmentInterval
       };
       return this.companyService.createCompany(payload);
     };

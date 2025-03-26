@@ -45,6 +45,8 @@ export class BookingComponent {
   reservedSlots: string[] = [];
   tasksForSelectedWorker: any[] = [];
 
+  showCalendar: boolean = false;
+
   @ViewChild('slotsContainer') slotsContainer!: ElementRef;
   @ViewChild('workerDropdownContainer') workerDropdownContainer!: ElementRef;
   @ViewChild('extraDropdownsContainer') extraDropdownsContainer!: ElementRef;
@@ -67,8 +69,6 @@ export class BookingComponent {
     if (nav?.extras?.state && (nav.extras.state as any).company) {
       this.company = (nav.extras.state as any).company;
       this.workers = this.company.workers || [];
-      this.generateSlots();
-      this.fetchReservedSlots();
     } else {
       this.route.paramMap.subscribe(params => {
         const id = params.get('id');
@@ -76,8 +76,6 @@ export class BookingComponent {
           this.companyService.getCompany(+id).subscribe(company => {
             this.company = company;
             this.workers = company.workers || [];
-            this.generateSlots();
-            this.fetchReservedSlots();
           }, error => {
             console.error('Error al obtener la empresa:', error);
             this.router.navigate(['/']);
@@ -107,12 +105,10 @@ export class BookingComponent {
     }
     this.selectedTask = '';
     this.selectedHour = '';
-
+    this.selectedDate = null;
+    this.showCalendar = false;
     setTimeout(() => {
-      if (this.extraDropdownsContainer) {
-        this.extraDropdownsContainer.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
-      }
-      this.fetchReservedSlots();
+      this.showCalendar = true;
       this.checkFormCompletionAndScroll();
     }, 0);
   }
@@ -193,8 +189,8 @@ export class BookingComponent {
         this.router.navigate(['/pending-booking']);
       },
       error => {
-        this.snackBar.open('No te puedes dividir en 2 :) Ya tienes una cita reservada en este horario.', 'Cerrar', {
-          duration: 8000,
+        this.snackBar.open('Ya tienes una cita reservada justo en este horario en otra empresa/trabajador.', 'Cerrar', {
+          duration: 5000,
           panelClass: ['snackbar-info']
         });
         console.error('Error al crear la reserva:', error);
@@ -203,14 +199,23 @@ export class BookingComponent {
   }
 
   generateSlots(): void {
-    if (this.company && this.company.startTime && this.company.endTime) {
-      this.allSlots = this.generateTimeSlots(
-        this.company.startTime,
-        this.company.endTime,
-        5,
-        this.company.breakStart,
-        this.company.breakEnd
-      );
+    let startTime = '';
+    let endTime = '';
+    let breakStart = '';
+    let breakEnd = '';
+
+    if (this.selectedWorker) {
+      const worker = this.workers.find(w => w.name === this.selectedWorker);
+      if (worker) {
+        startTime = worker.startTime;
+        endTime = worker.endTime;
+        breakStart = worker.breakStart;
+        breakEnd = worker.breakEnd;
+      }
+    }
+
+    if (startTime && endTime) {
+      this.allSlots = this.generateTimeSlots(startTime, endTime, 5, breakStart, breakEnd);
       this.availableSlots = [...this.allSlots];
     }
   }
@@ -250,11 +255,18 @@ export class BookingComponent {
   }
 
   applyDurationFilter(): void {
-    if (this.company && this.company.breakStart && this.selectedDuration > 0) {
-      const breakStartMinutes = this.timeToMinutes(this.company.breakStart);
+    if (this.selectedDuration > 0) {
+      const breakStartMinutes = (() => {
+        const worker = this.workers.find(w => w.name === this.selectedWorker);
+        if (worker && worker.breakStart) {
+          return this.timeToMinutes(worker.breakStart);
+        }
+        return null;
+      })();
+
       this.availableSlots = this.allSlots.filter(slot => {
         const slotMinutes = this.timeToMinutes(slot);
-        if (slotMinutes < breakStartMinutes) {
+        if (breakStartMinutes !== null) {
           return (slotMinutes + this.selectedDuration) <= breakStartMinutes;
         }
         return true;
@@ -284,8 +296,9 @@ export class BookingComponent {
               return false;
             }
           }
-          if (this.company.breakStart) {
-            const breakStartMinutes = this.timeToMinutes(this.company.breakStart);
+          const worker = this.workers.find(w => w.name === this.selectedWorker);
+          if (worker && worker.breakStart) {
+            const breakStartMinutes = this.timeToMinutes(worker.breakStart);
             if (candidateStart < breakStartMinutes && candidateEnd > breakStartMinutes) {
               return false;
             }
@@ -325,10 +338,14 @@ export class BookingComponent {
   }
 
   dateFilter = (d: Date | null): boolean => {
-    if (!d || !this.company || !this.company.workingDays) {
+    if (!d || !this.selectedWorker) {
+      return false;
+    }
+    const worker = this.workers.find(w => w.name === this.selectedWorker);
+    if (!worker || !worker.workingDays) {
       return false;
     }
     const day = d.toLocaleDateString('en-US', { weekday: 'long' });
-    return this.company.workingDays.includes(day);
+    return worker.workingDays.includes(day);
   };
 }

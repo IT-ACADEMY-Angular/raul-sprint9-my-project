@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOneOptions, Like, Repository } from 'typeorm';
+import { Repository, FindOneOptions, Like } from 'typeorm';
 import { Company } from './company.entity';
 import { Worker } from './worker.entity';
 
@@ -18,31 +18,26 @@ export class CompaniesService {
     name: string,
     photoUrl: string,
     workerData: any[],
-    workingDays: string[],
-    startTime: string,
-    endTime: string,
     appointmentInterval: number,
-    breakStart?: string,
-    breakEnd?: string
   ): Promise<Company> {
     const company = this.companyRepository.create({
       name,
       photoUrl,
-      workingDays,
-      startTime,
-      endTime,
       appointmentInterval,
-      breakStart,
-      breakEnd,
     });
     company.owner = { id: ownerId } as any;
     if (workerData && workerData.length > 0) {
       company.workers = workerData.map(worker => {
-        const newWorker = this.workerRepository.create({ name: worker.name });
+        const newWorker = this.workerRepository.create({
+          name: worker.name,
+          workingDays: worker.schedule ? worker.schedule.workingDays : [],
+          startTime: worker.schedule ? worker.schedule.startTime : '',
+          endTime: worker.schedule ? worker.schedule.endTime : '',
+          breakStart: worker.schedule ? worker.schedule.breakStart : '',
+          breakEnd: worker.schedule ? worker.schedule.breakEnd : '',
+        });
         if (worker.tasks && worker.tasks.length > 0) {
-          newWorker.tasks = worker.tasks.map(task => {
-            return { name: task.name, duration: task.duration } as any;
-          });
+          newWorker.tasks = worker.tasks.map(task => ({ name: task.name, duration: task.duration }));
         }
         return newWorker;
       });
@@ -75,18 +70,22 @@ export class CompaniesService {
   }
 
   async getCompanyByUserId(userId: number): Promise<Company | null> {
-    const options: FindOneOptions<Company> = {
-      where: { owner: { id: userId } },
-    };
-    const company = await this.companyRepository.findOne(options);
-    return company || null;
+    try {
+      const options: FindOneOptions<Company> = {
+        where: { owner: { id: userId } },
+      };
+      const company = await this.companyRepository.findOne(options);
+      return company || null;
+    } catch (error) {
+      console.error('Error en getCompanyByUserId:', error);
+      throw error;
+    }
   }
 
   async deleteCompanyByOwnerId(ownerId: number): Promise<boolean> {
     const company = await this.companyRepository.findOne({
       where: { owner: { id: ownerId } },
     });
-
     if (!company) {
       return false;
     }

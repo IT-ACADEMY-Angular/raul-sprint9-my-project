@@ -25,16 +25,10 @@
   </div>
 
   <div class="flex-grow-1 text-center mt-3">
-    <p class="mb-0">Selecciona la fecha y el trabajador para ver las reservas existentes.</p>
+    <p class="mb-0">Selecciona el trabajador y la fecha para ver las reservas existentes.</p>
   </div>
 
   <div class="mt-3" *ngIf="company">
-    <mat-calendar [(selected)]="selectedDate" (selectedChange)="dateChanged($event!)" [minDate]="minDate"
-      [dateFilter]="dateFilter">
-    </mat-calendar>
-  </div>
-
-  <div *ngIf="selectedDate" class="profile-info px-4 pt-4">
     <div *ngIf="workers && workers.length > 0; else noWorkers" class="mb-3 dropdown">
       <button class="btn form-select dropdown-toggle" type="button" id="workerDropdown" data-bs-toggle="dropdown"
         aria-expanded="false" [ngStyle]="{'color': selectedWorker ? '#000000' : '#9b9b9b'}">
@@ -49,6 +43,14 @@
     <ng-template #noWorkers>
       <p>No hay trabajadores asignados a esta empresa.</p>
     </ng-template>
+  </div>
+
+  <div *ngIf="selectedWorker">
+    <div class="mt-3" *ngIf="showCalendar">
+      <mat-calendar [(selected)]="selectedDate" (selectedChange)="dateChanged($event!)" [minDate]="minDate"
+        [dateFilter]="dateFilter">
+      </mat-calendar>
+    </div>
   </div>
 
   <div *ngIf="selectedDate" class="text-center mt-4">

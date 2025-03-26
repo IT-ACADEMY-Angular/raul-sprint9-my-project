@@ -8,6 +8,31 @@
     </div>
 
     <div class="form-group">
+      <label class="form-label">Días laborables</label>
+      <div class="d-flex flex-wrap">
+        <div class="form-check me-3" *ngFor="let day of workingDays">
+          <input type="checkbox" class="form-check-input" [id]="day.value" [(ngModel)]="day.selected">
+          <label class="form-check-label" [for]="day.value">{{ day.label }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Hora de inicio de trabajo</label>
+      <input type="time" class="form-control" [(ngModel)]="startTime">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Hora de fin de trabajo</label>
+      <input type="time" class="form-control" [(ngModel)]="endTime">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Hora de descanso (opcional)</label>
+      <div class="d-flex">
+        <input type="time" class="form-control me-2" [(ngModel)]="breakStart" placeholder="Inicio">
+        <input type="time" class="form-control" [(ngModel)]="breakEnd" placeholder="Fin">
+      </div>
+    </div>
+
+    <div class="form-group">
       <label class="form-label">Añade tarea y duración</label>
       <div class="vertical-input-group">
         <div class="input-fields">

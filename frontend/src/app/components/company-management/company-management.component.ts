@@ -23,15 +23,21 @@ export class CompanyManagementComponent implements OnInit {
   company: any = null;
   workers: any[] = [];
   selectedWorker: string = '';
-  selectedDate: Date | null = new Date();
+  selectedDate: Date | null = null;
   minDate: Date = new Date();
 
+  showCalendar: boolean = false;
+
   dateFilter = (d: Date | null): boolean => {
-    if (!d || !this.company || !this.company.workingDays) {
+    if (!d || !this.selectedWorker) {
+      return false;
+    }
+    const worker = this.workers.find(w => w.name === this.selectedWorker);
+    if (!worker || !worker.workingDays) {
       return false;
     }
     const day = d.toLocaleDateString('en-US', { weekday: 'long' });
-    return this.company.workingDays.includes(day);
+    return worker.workingDays.includes(day);
   };
 
   constructor(
@@ -74,13 +80,22 @@ export class CompanyManagementComponent implements OnInit {
 
   selectWorker(name: string): void {
     this.selectedWorker = name;
+    this.selectedDate = null;
+    this.showCalendar = false;
+    setTimeout(() => {
+      this.showCalendar = true;
+    }, 0);
   }
 
   viewBookings(): void {
+    if (!this.selectedDate) {
+      console.error('Seleccione una fecha.');
+      return;
+    }
     this.router.navigate(['/bookings-results'], {
       queryParams: {
         companyId: this.company.id,
-        date: this.selectedDate!.toISOString(),
+        date: this.selectedDate.toISOString(),
         worker: this.selectedWorker
       }
     });

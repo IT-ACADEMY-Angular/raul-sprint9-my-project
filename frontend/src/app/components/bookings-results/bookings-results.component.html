@@ -1,5 +1,4 @@
 <div class="profile-container p-3">
-
   <div class="d-flex justify-content-between align-items-center">
     <div class="back-arrow">
       <button class="btn btn-link text-black p-0" (click)="goBack()">
@@ -27,8 +26,9 @@
       <div *ngFor="let booking of bookings" class="event" [ngStyle]="calculateEventStyle(booking)"
         (click)="editBooking(booking)">
         <span>
-          {{ booking.selectedTask }} - Cliente: <span class="fw-bold">{{ booking['user']?.name ? booking['user']?.name :
-            'Sin nombre' }}</span>
+          {{ booking.selectedTask }} - Cliente: <span class="fw-bold">
+            {{ booking['user']?.name ? booking['user']?.name : 'Sin nombre' }}
+          </span>
         </span>
 
         <div class="event-time">

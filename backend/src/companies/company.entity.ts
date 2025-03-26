@@ -19,21 +19,6 @@ export class Company {
   @OneToMany(() => Worker, worker => worker.company, { cascade: true, eager: true })
   workers: Worker[];
 
-  @Column('simple-array', { nullable: true })
-  workingDays: string[];
-
-  @Column({ nullable: true })
-  startTime?: string;
-
-  @Column({ nullable: true })
-  endTime?: string;
-
   @Column({ nullable: true, type: 'int' })
   appointmentInterval?: number;
-
-  @Column({ nullable: true })
-  breakStart?: string;
-
-  @Column({ nullable: true })
-  breakEnd?: string;
 }

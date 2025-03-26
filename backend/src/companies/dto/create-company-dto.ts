@@ -17,28 +17,7 @@ export class CreateCompanyDto {
   @IsOptional()
   workerData?: any[];
 
-  @IsArray()
-  @ArrayNotEmpty()
-  @IsString({ each: true })
-  workingDays: string[];
-
-  @IsString()
-  @IsNotEmpty()
-  startTime: string;
-
-  @IsString()
-  @IsNotEmpty()
-  endTime: string;
-
   @IsNumber()
   @IsNotEmpty()
   appointmentInterval: number;
-
-  @IsString()
-  @IsOptional()
-  breakStart?: string;
-
-  @IsString()
-  @IsOptional()
-  breakEnd?: string;
 }

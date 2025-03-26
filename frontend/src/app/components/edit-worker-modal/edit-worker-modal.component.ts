@@ -18,6 +18,20 @@ export class EditWorkerModalComponent {
   newTaskName: string = '';
   newTaskDuration: number | null = null;
 
+  workingDays = [
+    { label: 'Lunes', value: 'Monday', selected: false },
+    { label: 'Martes', value: 'Tuesday', selected: false },
+    { label: 'Miércoles', value: 'Wednesday', selected: false },
+    { label: 'Jueves', value: 'Thursday', selected: false },
+    { label: 'Viernes', value: 'Friday', selected: false },
+    { label: 'Sábado', value: 'Saturday', selected: false },
+    { label: 'Domingo', value: 'Sunday', selected: false },
+  ];
+  startTime: string = '08:00';
+  endTime: string = '17:00';
+  breakStart: string = '';
+  breakEnd: string = '';
+
   addTask(): void {
     if (this.newTaskName.trim() && this.newTaskDuration) {
       if (!this.worker.tasks) {
@@ -30,6 +44,13 @@ export class EditWorkerModalComponent {
   }
 
   save(): void {
+    this.worker.schedule = {
+      workingDays: this.workingDays.filter(day => day.selected).map(day => day.value),
+      startTime: this.startTime,
+      endTime: this.endTime,
+      breakStart: this.breakStart || undefined,
+      breakEnd: this.breakEnd || undefined
+    };
     this.closeModal.emit(this.worker);
   }
 

@@ -38,32 +38,6 @@
     </div>
 
     <div class="mb-3">
-      <label class="fw-bold">Selecciona los días laborables de tu empresa</label>
-      <div class="d-flex flex-wrap">
-        <div class="form-check me-3" *ngFor="let day of weekDays">
-          <input type="checkbox" class="form-check-input" [id]="day.value" [(ngModel)]="day.selected">
-          <label class="form-check-label" [for]="day.value">{{ day.label }}</label>
-        </div>
-      </div>
-    </div>
-
-    <div class="mb-3">
-      <label class="fw-bold">Hora de inicio de trabajo</label>
-      <input type="time" class="form-control" [(ngModel)]="startTime" required>
-    </div>
-    <div class="mb-3">
-      <label class="fw-bold">Hora de fin de trabajo</label>
-      <input type="time" class="form-control" [(ngModel)]="endTime" required>
-    </div>
-    <div class="mb-3">
-      <label class="fw-bold">Hora de descanso (opcional)</label>
-      <div class="d-flex">
-        <input type="time" class="form-control me-2" [(ngModel)]="breakStart" placeholder="Inicio">
-        <input type="time" class="form-control" [(ngModel)]="breakEnd" placeholder="Fin">
-      </div>
-    </div>
-
-    <div class="mb-3">
       <label class="fw-bold">Añade trabajadores</label>
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Escribe nombre del trabajador" [(ngModel)]="newWorkerName">
@@ -74,8 +48,7 @@
     </div>
 
     <worker-list-component [workers]="workerData" (workersChange)="updateWorkers($event)"
-      (editWorker)="editWorker($event)">
-    </worker-list-component>
+      (editWorker)="editWorker($event)"></worker-list-component>
 
     <button type="button" class="btn btn-login mt-4 d-block mx-auto" (click)="registrarEmpresa()"
       [disabled]="!isFormComplete">

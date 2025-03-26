@@ -50,31 +50,45 @@ export class BookingModalComponent {
   validateModification(): void {
     this.modificationError = '';
 
-    if (this.data.booking.company && this.data.booking.company.workingDays) {
-      const newDate = new Date(this.editableDate);
-      const dayName = newDate.toLocaleDateString('en-US', { weekday: 'long' });
-      if (!this.data.booking.company.workingDays.includes(dayName)) {
-        this.modificationError = 'El día seleccionado no es laborable.';
+    if (this.data.booking.company && this.data.booking.company.workers) {
+      const worker = this.data.booking.company.workers.find((w: any) => w.name === this.data.booking.selectedWorker);
+      if (worker) {
+        if (worker.workingDays) {
+          const newDate = new Date(this.editableDate);
+          const dayName = newDate.toLocaleDateString('en-US', { weekday: 'long' });
+          if (!worker.workingDays.includes(dayName)) {
+            this.modificationError = 'El día seleccionado no es laborable para el trabajador.';
+          }
+        }
+        const serviceDuration = this.extractDuration(this.data.task);
+        const newTime = this.timeToMinutes(this.editableTime);
+        const workerStart = this.timeToMinutes(worker.startTime);
+        const workerEnd = this.timeToMinutes(worker.endTime);
+        if (newTime < workerStart || (newTime + serviceDuration) > workerEnd) {
+          this.modificationError = 'El horario seleccionado está fuera de la jornada laboral del trabajador.';
+        }
+      } else {
+        this.modificationError = 'Trabajador no encontrado en la empresa.';
       }
     }
 
-    const serviceDuration = this.extractDuration(this.data.task);
-    const newStart = this.timeToMinutes(this.editableTime);
-    const newEnd = newStart + serviceDuration;
-
     if (!this.modificationError && this.data.booking.company && this.editableDate) {
+      const serviceDuration = this.extractDuration(this.data.task);
+      const newStart = this.timeToMinutes(this.editableTime);
+      const newEnd = newStart + serviceDuration;
       this.bookingService.getAppointments(this.data.booking.company.id, new Date(this.editableDate))
         .subscribe(appointments => {
-          const otherAppointments = appointments.filter(app =>
-            app.selectedWorker.trim().toLowerCase() === this.data.booking.selectedWorker.trim().toLowerCase() &&
-            app.id !== this.data.booking.id
-          );
+          const currentUserId = this.data.booking.user ? this.data.booking.user.id : null;
+          const otherAppointments = appointments.filter(app => {
+            const appUserId = app.user && app.user.id ? app.user.id : currentUserId;
+            return app.id !== this.data.booking.id && appUserId === currentUserId;
+          });
           for (const app of otherAppointments) {
             const appStart = this.timeToMinutes(app.selectedHour);
             const appDuration = app.duration || this.extractDuration(app.selectedTask);
             const appEnd = appStart + appDuration;
             if (newStart < appEnd && newEnd > appStart) {
-              this.modificationError = 'La modificación solapa con otra cita.';
+              this.modificationError = 'No te puedes dividir en 2 :) Ya tienes una cita reservada en este horario.';
               break;
             }
           }
