@@ -4,12 +4,12 @@
 
     <div class="modal-body" #modalBody>
       <div class="form-group">
-        <label class="form-label">Nombre del trabajador *</label>
+        <label class="form-label">Nombre del trabajador</label>
         <input type="text" [(ngModel)]="worker.name" class="form-control" required>
       </div>
 
       <div class="form-group">
-        <label class="form-label">Días laborables *</label>
+        <label class="form-label">Días laborables</label>
         <div class="d-flex flex-wrap">
           <div class="form-check me-3" *ngFor="let day of workingDays">
             <input type="checkbox" class="form-check-input" [id]="day.value" [(ngModel)]="day.selected" required>
@@ -19,26 +19,26 @@
       </div>
 
       <div class="form-group">
-        <label class="form-label">Hora de inicio de jornada *</label>
+        <label class="form-label">Hora de inicio de jornada</label>
         <input type="time" class="form-control" [(ngModel)]="startTime" required>
       </div>
       <div class="form-group">
-        <label class="form-label">Hora de fin de jornada *</label>
+        <label class="form-label">Hora de fin de jornada</label>
         <input type="time" class="form-control" [(ngModel)]="endTime" required>
       </div>
       <div class="form-group">
         <div class="mb-2">
-          <label class="form-label">Inicio de descanso *</label>
+          <label class="form-label">Inicio de descanso</label>
           <input type="time" class="form-control" [(ngModel)]="breakStart" placeholder="Inicio" required>
         </div>
         <div>
-          <label class="form-label">Fin de descanso *</label>
+          <label class="form-label">Fin de descanso</label>
           <input type="time" class="form-control" [(ngModel)]="breakEnd" placeholder="Fin" required>
         </div>
       </div>
 
       <div class="form-group">
-        <label class="form-label">Añade tarea y duración *</label>
+        <label class="form-label">Añade tarea y duración</label>
         <div class="vertical-input-group">
           <div class="input-fields">
             <input type="text" placeholder="Nombre de la tarea" [(ngModel)]="newTaskName" class="form-control">
