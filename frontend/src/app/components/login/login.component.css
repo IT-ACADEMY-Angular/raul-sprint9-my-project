@@ -1,5 +1,5 @@
 .main-container {
-  background-color: #3498db;
+  background: linear-gradient(to right, #3498DB, #36a9f5);
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -33,7 +33,7 @@
 
   background: linear-gradient(120deg,
       transparent 40%,
-      #00334667 50%,
+      #8db1c9 50%,
       transparent 60%);
 
   background-size: 200% auto;
