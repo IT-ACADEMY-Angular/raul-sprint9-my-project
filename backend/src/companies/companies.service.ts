@@ -92,4 +92,9 @@ export class CompaniesService {
     await this.companyRepository.remove(company);
     return true;
   }
+
+  async getAllCompanies(): Promise<Company[]> {
+    // Obtiene todas las empresas
+    return await this.companyRepository.find();
+  }
 }

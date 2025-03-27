@@ -111,4 +111,13 @@ export class HomeComponent implements OnInit {
   goToLogin(): void {
     this.router.navigate(['/login']);
   }
+
+  onSearchFocus(): void {
+    const currentValue = this.searchControl.value?.trim();
+    if (!currentValue) {
+      this.companyService.getAllCompanies().subscribe((companies: Company[]) => {
+        this.searchResults = companies.sort((a, b) => a.name.localeCompare(b.name));
+      });
+    }
+  }
 }

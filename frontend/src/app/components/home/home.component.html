@@ -7,15 +7,16 @@
 
     <div class="search-container" #searchContainer>
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Nombre de la empresa..." [formControl]="searchControl">
-        <span class="input-group-text" (click)="searchBooking()" style="cursor: pointer;">
+        <input type="text" class="form-control" placeholder="Nombre de la empresa..." [formControl]="searchControl"
+          (focus)="onSearchFocus()" /> <span class="input-group-text" (click)="searchBooking()"
+          style="cursor: pointer;">
           <i class="fa-solid fa-magnifying-glass responsive-icon"></i>
         </span>
       </div>
       <div *ngIf="searchResults && searchResults.length > 0" class="search-results">
         <ul class="list-group">
           <li class="list-group-item" *ngFor="let company of searchResults" (click)="selectCompany(company)">
-            {{ company.name }}
+            {{ company.name | titlecase }}
           </li>
         </ul>
       </div>

@@ -38,6 +38,10 @@ export class CompanyService {
   deleteCompanyByOwnerId(ownerId: number): Observable<{ message: string }> {
     return this.http.delete<{ message: string }>(`${this.baseUrl}/owner/${ownerId}`);
   }
+
+  getAllCompanies(): Observable<Company[]> {
+    return this.http.get<Company[]>(this.baseUrl);
+  }
 }
 
 export type { Company };

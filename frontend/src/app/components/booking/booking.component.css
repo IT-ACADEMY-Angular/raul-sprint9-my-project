@@ -78,7 +78,6 @@
 .dropdown-item {
   white-space: normal;
   word-break: break-word;
-  padding: 0.75rem 1.25rem;
 }
 
 ul.dropdown-menu>li>a.dropdown-item {
@@ -189,4 +188,15 @@ mat-calendar .mat-calendar-header .mat-calendar-next-button {
   border-color: #cccccc !important;
   color: #666666 !important;
   cursor: not-allowed;
+}
+
+.dropdown-menu {
+  max-height: 179px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  box-sizing: border-box;
+  margin-top: 4px;
+  padding: 4px 0;
 }

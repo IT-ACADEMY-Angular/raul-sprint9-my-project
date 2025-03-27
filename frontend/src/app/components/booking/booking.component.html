@@ -20,7 +20,7 @@
       </ng-template>
     </div>
     <div class="ms-3">
-      <h2 class="m-0 fw-bold text-break">{{ company?.name }}</h2>
+      <h2 class="m-0 fw-bold text-break">{{ company?.name | titlecase }}</h2>
     </div>
   </div>
 
@@ -32,11 +32,11 @@
     <div *ngIf="workers && workers.length > 0; else noWorkers" class="mb-3 dropdown" #workerDropdownContainer>
       <button class="btn form-select dropdown-toggle" type="button" id="workerDropdown" data-bs-toggle="dropdown"
         aria-expanded="false" [ngStyle]="{'color': selectedWorker ? '#000000' : '#9b9b9b'}">
-        {{ selectedWorker || 'Selecciona un trabajador...' }}
+        {{ (selectedWorker | titlecase) || 'Selecciona un trabajador...' }}
       </button>
       <ul class="dropdown-menu" aria-labelledby="workerDropdown">
         <li *ngFor="let worker of workers">
-          <a class="dropdown-item" (click)="selectWorker(worker.name)">{{ worker.name }}</a>
+          <a class="dropdown-item" (click)="selectWorker(worker.name)">{{ worker.name | titlecase }}</a>
         </li>
       </ul>
     </div>
@@ -57,12 +57,12 @@
         #extraDropdownsContainer>
         <button class="btn form-select dropdown-toggle" type="button" id="taskDropdown" data-bs-toggle="dropdown"
           aria-expanded="false" [ngStyle]="{'color': selectedTask ? '#000000' : '#9b9b9b'}">
-          {{ selectedTask || 'Selecciona una tarea...' }}
+          {{ (selectedTask | titlecase) || 'Selecciona una tarea...' }}
         </button>
         <ul class="dropdown-menu" aria-labelledby="taskDropdown">
           <li *ngFor="let task of tasksForSelectedWorker">
             <a class="dropdown-item" (click)="selectTask(task)">
-              <strong>{{ task.name }}</strong> ({{ task.duration }} min)
+              <strong>{{ task.name | titlecase }}</strong> ({{ task.duration }} min)
             </a>
           </li>
         </ul>
