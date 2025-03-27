@@ -24,7 +24,6 @@
   background: linear-gradient(45deg, #003346, #004054);
   color: white;
   border: 1px solid white;
-  width: 50%;
   border-radius: 20px;
   padding: 10px 20px;
   transition: background-color 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
@@ -46,7 +45,6 @@
   background: linear-gradient(45deg, #ffb3b5, #ff9ea0);
   color: black;
   border: 1px solid white;
-  width: 50%;
   border-radius: 20px;
   padding: 10px 20px;
   transition: background-color 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
@@ -68,7 +66,6 @@
   background: linear-gradient(45deg, #7f5a2c, #8a6440);
   color: white;
   border: 1px solid white;
-  width: 50%;
   border-radius: 20px;
   padding: 10px 20px;
   transition: background-color 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
@@ -94,10 +91,9 @@
 }
 
 .btn-delete-account {
-  background: linear-gradient(45deg, #8b0000, #9a1a1a);
+  background: linear-gradient(45deg, #dd1a2e, #e03042);
   color: white;
   border: 1px solid white;
-  width: 50%;
   border-radius: 20px;
   padding: 10px 20px;
   transition: background-color 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
@@ -105,7 +101,7 @@
 }
 
 .btn-delete-account:hover {
-  background: linear-gradient(45deg, #9a1a1a, #8b0000);
+  background: linear-gradient(45deg, #e03042, #dd1a2e);
   transform: translateY(-1px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
@@ -133,4 +129,8 @@
   cursor: not-allowed !important;
   pointer-events: none;
   opacity: 0.8;
+}
+
+.btn-full {
+  width: 100% !important;
 }

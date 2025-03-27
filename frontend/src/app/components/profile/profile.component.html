@@ -38,19 +38,17 @@
     </div>
   </div>
 
-  <div class="d-flex justify-content-center mt-5">
-    <button type="button" class="btn btn-login mx-2" routerLink="/edit-profile">EDITAR PERFIL</button>
-    <button type="button" class="btn btn-close-session mx-2" (click)="logout()">CERRAR SESIÓN</button>
-  </div>
-
-  <div class="text-center mt-4">
-    <button type="button" class="btn btn-delete-company" (click)="deleteCompany()" [disabled]="!company">
+  <div class="d-flex flex-column align-items-center mt-5">
+    <button type="button" class="btn btn-login btn-full mb-3" routerLink="/edit-profile">
+      EDITAR PERFIL
+    </button>
+    <button type="button" class="btn btn-close-session btn-full mb-3" (click)="logout()">
+      CERRAR SESIÓN
+    </button>
+    <button type="button" class="btn btn-delete-account btn-full mb-3" (click)="deleteCompany()" [disabled]="!company">
       ELIMINAR EMPRESA
     </button>
-  </div>
-
-  <div class="text-center mt-3">
-    <button type="button" class="btn btn-delete-account" (click)="deleteAccount()">
+    <button type="button" class="btn btn-delete-account btn-full" (click)="deleteAccount()">
       ELIMINAR CUENTA
     </button>
   </div>
