@@ -21,7 +21,7 @@
 }
 
 .btn-login {
-  background: linear-gradient(45deg, #003346, #004054);
+  background: linear-gradient(45deg, #003346d3, #004054da);
   color: white;
   border: 1px solid white;
   border-radius: 20px;
@@ -31,7 +31,7 @@
 }
 
 .btn-login:hover {
-  background: linear-gradient(45deg, #004054, #003346);
+  background: linear-gradient(45deg, #004054da, #003346d3);
   transform: translateY(-1px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
@@ -91,7 +91,7 @@
 }
 
 .btn-delete-account {
-  background: linear-gradient(45deg, #dd1a2e, #e03042);
+  background: linear-gradient(45deg, #dd1a2ed5, #e03042d5);
   color: white;
   border: 1px solid white;
   border-radius: 20px;
@@ -101,7 +101,7 @@
 }
 
 .btn-delete-account:hover {
-  background: linear-gradient(45deg, #e03042, #dd1a2e);
+  background: linear-gradient(45deg, #e03042d5, #dd1a2ed5);
   transform: translateY(-1px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
