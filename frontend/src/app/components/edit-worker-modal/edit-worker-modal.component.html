@@ -41,12 +41,16 @@
         <label class="form-label">Añade tarea y duración</label>
         <div class="vertical-input-group">
           <div class="input-fields">
-            <input type="text" placeholder="Nombre de la tarea" [(ngModel)]="newTaskName" class="form-control">
+            <input type="text" placeholder="Nombre de la tarea" [(ngModel)]="newTaskName"
+              (ngModelChange)="validateTaskName()" class="form-control">
             <input type="number" placeholder="Minutos" [(ngModel)]="newTaskDuration" class="form-control">
           </div>
           <button class="btn btn-outline-secondary btn-add-task" type="button" (click)="addTask()">
             <i class="fa-solid fa-plus"></i>
           </button>
+        </div>
+        <div *ngIf="taskNameDuplicate" style="color: red; margin-top: 5px;">
+          Ya hay una tarea que se llama así, por favor llámala diferente para diferenciarlas
         </div>
       </div>
 

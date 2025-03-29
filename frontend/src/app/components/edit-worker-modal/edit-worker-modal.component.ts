@@ -19,6 +19,7 @@ export class EditWorkerModalComponent {
 
   newTaskName: string = '';
   newTaskDuration: number | null = null;
+  taskNameDuplicate: boolean = false;
 
   workingDays = [
     { label: 'Lunes', value: 'Monday', selected: false },
@@ -71,14 +72,33 @@ export class EditWorkerModalComponent {
     }
   }
 
+  validateTaskName(): void {
+    const trimmedName = this.newTaskName.trim();
+    if (!trimmedName) {
+      this.taskNameDuplicate = false;
+      return;
+    }
+    if (this.worker.tasks && this.worker.tasks.some(task => task.name.trim().toLowerCase() === trimmedName.toLowerCase())) {
+      this.taskNameDuplicate = true;
+    } else {
+      this.taskNameDuplicate = false;
+    }
+  }
+
   addTask(): void {
-    if (this.newTaskName.trim() && this.newTaskDuration) {
+    const trimmedName = this.newTaskName.trim();
+    if (trimmedName && this.newTaskDuration) {
+      if (this.worker.tasks && this.worker.tasks.some(task => task.name.trim().toLowerCase() === trimmedName.toLowerCase())) {
+        this.taskNameDuplicate = true;
+        return;
+      }
       if (!this.worker.tasks) {
         this.worker.tasks = [];
       }
-      this.worker.tasks.push({ name: this.newTaskName.trim(), duration: this.newTaskDuration });
+      this.worker.tasks.push({ name: trimmedName, duration: this.newTaskDuration });
       this.newTaskName = '';
       this.newTaskDuration = null;
+      this.taskNameDuplicate = false;
 
       setTimeout(() => {
         const container = this.modalBody?.nativeElement;
