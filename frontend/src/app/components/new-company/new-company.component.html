@@ -43,15 +43,20 @@
     <div class="mb-3">
       <label class="fw-bold">Añade trabajadores</label>
       <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Escribe nombre del trabajador" [(ngModel)]="newWorkerName">
+        <input type="text" class="form-control" placeholder="Escribe nombre del trabajador" [(ngModel)]="newWorkerName"
+          (ngModelChange)="validateWorkerName()">
         <span class="input-group-text" (click)="addWorker()" style="cursor: pointer;">
           <i class="fa-solid fa-plus"></i>
         </span>
       </div>
+      <div *ngIf="workerNameDuplicate" style="color: red; margin-top: 5px;">
+        Ya hay un trabajador que se llama así, por favor, llámalo diferente para poder diferenciarlos
+      </div>
     </div>
 
     <worker-list-component [workers]="workerData" (workersChange)="updateWorkers($event)"
-      (editWorker)="editWorker($event)"></worker-list-component>
+      (editWorker)="editWorker($event)">
+    </worker-list-component>
 
     <button type="button" class="btn btn-login mt-4 d-block mx-auto" (click)="registrarEmpresa()"
       [disabled]="!isFormComplete || companyNameTaken">

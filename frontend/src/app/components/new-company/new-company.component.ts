@@ -31,6 +31,7 @@ export class NewCompanyComponent {
 
   workerData: WorkerData[] = [];
   newWorkerName: string = '';
+  workerNameDuplicate: boolean = false;
 
   appointmentInterval: number = 5;
 
@@ -121,10 +122,27 @@ export class NewCompanyComponent {
     return this.photoService.uploadPhoto(file, uploadUrl);
   }
 
+  validateWorkerName(): void {
+    const trimmedName = this.newWorkerName.trim();
+    if (!trimmedName) {
+      this.workerNameDuplicate = false;
+      return;
+    }
+    this.workerNameDuplicate = this.workerData.some(worker =>
+      worker.name.trim().toLowerCase() === trimmedName.toLowerCase()
+    );
+  }
+
   addWorker(): void {
-    if (this.newWorkerName.trim() !== '') {
-      this.workerData.push({ name: this.newWorkerName.trim() });
+    const trimmedName = this.newWorkerName.trim();
+    if (trimmedName !== '') {
+      if (this.workerData.some(worker => worker.name.trim().toLowerCase() === trimmedName.toLowerCase())) {
+        this.workerNameDuplicate = true;
+        return;
+      }
+      this.workerData.push({ name: trimmedName });
       this.newWorkerName = '';
+      this.workerNameDuplicate = false;
     }
   }
 
