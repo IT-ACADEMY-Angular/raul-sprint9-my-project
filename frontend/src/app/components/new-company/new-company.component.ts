@@ -5,7 +5,7 @@ import { WorkerListComponent } from '../worker-list/worker-list.component';
 import { Router } from '@angular/router';
 import { CompanyService, CreateCompanyPayload, Company } from '../../services/company.service';
 import { WorkerData } from '../../models/worker.model';
-import { Observable, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Observable, Subject, switchMap } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { EditWorkerModalComponent } from '../edit-worker-modal/edit-worker-modal.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -38,6 +38,9 @@ export class NewCompanyComponent {
   workerToEdit!: WorkerData;
   workerToEditIndex: number = -1;
 
+  companyNameTaken: boolean = false;
+  companyNameChange$ = new Subject<string>();
+
   @ViewChild('fileInput') fileInput!: ElementRef;
 
   constructor(
@@ -47,6 +50,29 @@ export class NewCompanyComponent {
     private dialog: MatDialog,
     private photoService: PhotoService
   ) { }
+
+  ngOnInit(): void {
+    this.companyNameChange$.pipe(
+      debounceTime(500),
+      distinctUntilChanged()
+    ).subscribe((name: string) => {
+      if (!name) {
+        this.companyNameTaken = false;
+        return;
+      }
+      this.companyService.searchCompanies(name).subscribe(
+        (companies) => {
+          this.companyNameTaken = companies.some(
+            company => company.name.trim().toLowerCase() === name.toLowerCase()
+          );
+        },
+        (error) => {
+          console.error('Error al verificar el nombre de la empresa:', error);
+          this.companyNameTaken = false;
+        }
+      );
+    });
+  }
 
   goBack(): void {
     if (this.isFormModified()) {
@@ -139,7 +165,16 @@ export class NewCompanyComponent {
     return hasName && hasPhoto && hasWorkers && atLeastOneWorkerHasTask;
   }
 
+  onCompanyNameChange(): void {
+    const trimmedName = this.companyName.trim();
+    this.companyNameChange$.next(trimmedName);
+  }
+
   registrarEmpresa(): void {
+    if (this.companyNameTaken) {
+      alert('Ya hay una empresa con este nombre.');
+      return;
+    }
     const currentUser = this.authService.getCurrentUser();
     if (!currentUser) {
       alert('Debes estar logueado para registrar una empresa.');
@@ -200,7 +235,6 @@ export class NewCompanyComponent {
     const dialogRef = this.dialog.open(PhotoCropModalComponent, {
       width: '600px'
     });
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const file = this.base64ToFile(result, 'cropped-image.png');
