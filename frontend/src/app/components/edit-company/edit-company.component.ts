@@ -139,7 +139,6 @@ export class EditCompanyComponent {
     if (this.workerToEditIndex > -1) {
       this.workerData[this.workerToEditIndex] = updatedWorker;
     }
-    this.originalWorkersSnapshot = JSON.stringify(this.workerData);
     this.showEditWorkerModal = false;
   }
 
