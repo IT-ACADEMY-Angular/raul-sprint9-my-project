@@ -73,9 +73,13 @@
   overflow: hidden;
 }
 
-.event-time {
-  display: block;
-  font-size: 0.7rem;
-  color: #333;
-  margin-top: 4px;
+.break-zone {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  background-color: rgba(255, 0, 0, 0.116);
+  border: 1px dashed rgba(255, 0, 0, 0.5);
+  border-radius: 4px;
+  padding: 5px;
+  overflow: hidden;
 }

@@ -60,12 +60,21 @@ export class BookingModalComponent {
             this.modificationError = 'El día seleccionado no es laborable para el trabajador.';
           }
         }
+
         const serviceDuration = this.extractDuration(this.data.task);
         const newTime = this.timeToMinutes(this.editableTime);
         const workerStart = this.timeToMinutes(worker.startTime);
         const workerEnd = this.timeToMinutes(worker.endTime);
         if (newTime < workerStart || (newTime + serviceDuration) > workerEnd) {
           this.modificationError = 'El horario seleccionado está fuera de la jornada laboral del trabajador.';
+        }
+
+        if (!this.modificationError && worker.breakStart && worker.breakEnd) {
+          const breakStart = this.timeToMinutes(worker.breakStart);
+          const breakEnd = this.timeToMinutes(worker.breakEnd);
+          if (newTime < breakEnd && (newTime + serviceDuration) > breakStart) {
+            this.modificationError = 'El trabajador tiene su descanso a esta hora, por favor elige otra.';
+          }
         }
       } else {
         this.modificationError = 'Trabajador no encontrado en la empresa.';

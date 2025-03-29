@@ -118,6 +118,27 @@ export class BookingsResultsComponent {
     return endDate.toTimeString().slice(0, 5);
   }
 
+  calculateBreakStyle(): { [key: string]: string } {
+    const worker = this.company.workers.find((w: any) => w.name === this.selectedWorker);
+    if (!worker || !worker.breakStart || !worker.breakEnd || !worker.startTime) {
+      return {};
+    }
+    const workerStartMinutes = this.timeToMinutes(worker.startTime);
+    const breakStartMinutes = this.timeToMinutes(worker.breakStart);
+    const breakEndMinutes = this.timeToMinutes(worker.breakEnd);
+    const topOffset = this.minutesToPixels(breakStartMinutes - workerStartMinutes);
+    const height = this.minutesToPixels(breakEndMinutes - breakStartMinutes);
+    return {
+      top: `${topOffset}px`,
+      height: `${height}px`
+    };
+  }
+
+  hasBreak(): boolean {
+    const worker = this.company?.workers?.find((w: any) => w.name === this.selectedWorker);
+    return !!(worker && worker.breakStart && worker.breakEnd);
+  }
+
   private minutesToPixels(minutes: number): number {
     return Math.round(minutes * this.pxPerMinute);
   }
@@ -172,5 +193,13 @@ export class BookingsResultsComponent {
 
   goBack(): void {
     this.router.navigate(['/company-management']);
+  }
+
+  getWorkerBreakTime(): string {
+    const worker = this.company?.workers?.find((w: any) => w.name === this.selectedWorker);
+    if (worker && worker.breakStart && worker.breakEnd) {
+      return `${worker.breakStart} - ${worker.breakEnd}`;
+    }
+    return '';
   }
 }

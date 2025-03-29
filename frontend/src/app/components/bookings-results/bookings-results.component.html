@@ -11,7 +11,7 @@
   </div>
 
   <p class="text-center mt-5">
-    Trabajador: <span class="fw-bold fs-5">{{ selectedWorker }}</span> -
+    Trabajador: <span class="fw-bold fs-5">{{ selectedWorker | titlecase }}</span> -
     Fecha: <span class="fw-bold fs-5">{{ selectedDate | date:'dd/MM/yyyy' }}</span>
   </p>
 
@@ -23,10 +23,17 @@
     </div>
 
     <div class="events-area">
-      <div *ngFor="let booking of bookings" class="event" [ngStyle]="calculateEventStyle(booking)"
+      <div *ngIf="hasBreak()" class="break-zone" [ngStyle]="calculateBreakStyle()">
+        <div class="break-info text-center">
+          <span>Descanso: <span class="fw-bold">{{ selectedWorker | titlecase }}</span></span><br>
+          <span>{{ getWorkerBreakTime() }}</span>
+        </div>
+      </div>
+
+      <div *ngFor="let booking of bookings" class="text-center event" [ngStyle]="calculateEventStyle(booking)"
         (click)="editBooking(booking)">
         <span>
-          {{ booking.selectedTask }} - Cliente: <span class="fw-bold">
+          {{ booking.selectedTask | titlecase }} - Cliente: <span class="fw-bold">
             {{ booking['user']?.name ? booking['user']?.name : 'Sin nombre' }}
           </span>
         </span>
