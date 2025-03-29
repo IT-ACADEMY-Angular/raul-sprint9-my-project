@@ -1,0 +1,62 @@
+<div class="profile-container p-3">
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="back-arrow">
+      <button class="btn btn-link text-black p-0" (click)="goBack()">
+        <i class="fa-solid fa-arrow-left fs-1"></i>
+      </button>
+    </div>
+    <div class="flex-grow-1 text-end">
+      <p class="mb-0 fw-bold">{{ breadcrumb }}</p>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-center mt-3">
+    <div class="position-relative d-inline-block">
+      <ng-container *ngIf="previewPhotoUrl; else showCurrentPhoto">
+        <img [src]="previewPhotoUrl" alt="Foto de empresa" class="custom-photo">
+      </ng-container>
+      <ng-template #showCurrentPhoto>
+        <ng-container *ngIf="companyPhotoUrl; else defaultPhoto">
+          <img [src]="companyPhotoUrl" alt="Foto de empresa" class="custom-photo" (error)="onImageError($event)">
+        </ng-container>
+        <ng-template #defaultPhoto>
+          <i class="fa-solid fa-circle-user fa-7x custom-icon-profile"></i>
+        </ng-template>
+      </ng-template>
+      <button class="btn btn-link position-absolute camera-button" (click)="openCropModal()">
+        <i class="fa-solid fa-camera fs-3 text-black"></i>
+      </button>
+      <input type="file" #fileInput (change)="onFileSelected($event)" hidden>
+    </div>
+  </div>
+
+  <div class="profile-info px-4 pt-4">
+    <div class="mb-3">
+      <label class="fw-bold">Nombre de la empresa</label>
+      <input type="text" class="form-control" [(ngModel)]="companyName" placeholder="Escribe el nombre de tu empresa"
+        required>
+    </div>
+
+    <div class="mb-3">
+      <label class="fw-bold">Editar trabajadores</label>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Escribe nombre del trabajador" [(ngModel)]="newWorkerName">
+        <span class="input-group-text" (click)="addWorker()" style="cursor: pointer;">
+          <i class="fa-solid fa-plus"></i>
+        </span>
+      </div>
+    </div>
+
+    <worker-list-component [workers]="workerData" (workersChange)="updateWorkers($event)"
+      (editWorker)="editWorker($event)"></worker-list-component>
+
+    <button type="button" class="btn btn-login mt-4 d-block mx-auto" (click)="updateCompany()"
+      [disabled]="!isFormModified() || !isFormComplete">
+      GUARDAR CAMBIOS
+    </button>
+
+    <edit-worker-modal-component *ngIf="showEditWorkerModal" [worker]="workerToEdit"
+      (closeModal)="onWorkerModalClose($event)" (cancelModal)="onWorkerModalCancel()">
+    </edit-worker-modal-component>
+  </div>
+</div>

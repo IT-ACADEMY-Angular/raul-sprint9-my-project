@@ -47,11 +47,10 @@ export class CompaniesController {
   }
 
   @Get()
-async getAllCompanies() {
-  const companies = await this.companiesService.getAllCompanies();
-  // Ordenamos alfabéticamente por el nombre de la empresa
-  return companies.sort((a, b) => a.name.localeCompare(b.name));
-}
+  async getAllCompanies() {
+    const companies = await this.companiesService.getAllCompanies();
+    return companies.sort((a, b) => a.name.localeCompare(b.name));
+  }
 
   @Get('search')
   async searchCompanies(@Query('q') query: string) {
@@ -71,6 +70,14 @@ async getAllCompanies() {
     }
     const photoUrl = `http://localhost:3000/uploads/${file.filename}`;
     return { photoUrl };
+  }
+  
+  @Put(':id')
+  async updateCompany(
+    @Param('id') id: number,
+    @Body() updateCompanyDto: CreateCompanyDto
+  ) {
+    return this.companiesService.updateCompany(id, updateCompanyDto);
   }
 
   @Get('user/:userId')

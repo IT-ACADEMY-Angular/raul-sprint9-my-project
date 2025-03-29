@@ -19,8 +19,9 @@ export class HomeComponent implements OnInit {
   citasPendientes: number = 0;
   crearEmpresa: string = '¡ REGISTRA TU EMPRESA !';
   userHasCompany: boolean = false;
+  userCompanyName: string = '';
   user: User | null = null;
-  citasPendientesText: string = 'CITAS PENDIENTES';
+  citasPendientesText: string = 'TUS CITAS PENDIENTES';
   isLoggedIn: boolean = false;
 
   searchControl = new FormControl('');
@@ -54,6 +55,9 @@ export class HomeComponent implements OnInit {
         this.companyService.getCompanyByUserId(user.id)
           .then(company => {
             this.userHasCompany = !!company;
+            if (company) {
+              this.userCompanyName = company.name;
+            }
           })
           .catch(error => {
             console.error('Error al obtener la empresa del usuario:', error);
@@ -119,5 +123,9 @@ export class HomeComponent implements OnInit {
         this.searchResults = companies.sort((a, b) => a.name.localeCompare(b.name));
       });
     }
+  }
+
+  goToEditCompany(): void {
+    this.router.navigate(['/edit-company']);
   }
 }

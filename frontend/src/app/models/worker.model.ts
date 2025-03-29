@@ -10,5 +10,9 @@ export interface WorkerData {
   name: string;
   tasks?: { name: string; duration: number }[];
   photoUrl?: string;
-  schedule?: WorkerSchedule;
+  workingDays?: string[];
+  startTime?: string;
+  endTime?: string;
+  breakStart?: string;
+  breakEnd?: string;
 }

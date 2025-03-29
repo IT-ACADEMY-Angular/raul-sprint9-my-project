@@ -10,6 +10,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { AuthGuard } from './guards/auth.guard';
 import { CompanyManagementComponent } from './components/company-management/company-management.component';
 import { BookingsResultsComponent } from './components/bookings-results/bookings-results.component';
+import { EditCompanyComponent } from './components/edit-company/edit-company.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, data: { hideProfileIcon: false, title: 'ZYTAPP' } },
@@ -22,4 +23,5 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent, data: { hideProfileIcon: true } },
   { path: 'company-management', component: CompanyManagementComponent, data: { hideProfileIcon: true } },
   { path: 'bookings-results', component: BookingsResultsComponent, data: { hideProfileIcon: true } },
+  { path: 'edit-company', component: EditCompanyComponent, data: { hideProfileIcon: true } },
 ];

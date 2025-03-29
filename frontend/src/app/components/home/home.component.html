@@ -8,8 +8,8 @@
     <div class="search-container" #searchContainer>
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Nombre de la empresa..." [formControl]="searchControl"
-          (focus)="onSearchFocus()" /> <span class="input-group-text" (click)="searchBooking()"
-          style="cursor: pointer;">
+          (focus)="onSearchFocus()" />
+        <span class="input-group-text" (click)="searchBooking()" style="cursor: pointer;">
           <i class="fa-solid fa-magnifying-glass responsive-icon"></i>
         </span>
       </div>
@@ -34,11 +34,18 @@
       </div>
       <ng-container *ngIf="userHasCompany; else noCompany">
         <div class="bg-success-subtle py-3 shadow">
-          <p class="fs-5 text-dark mb-2 px-2">¡ OBSERVA Y EDITA LAS CITAS QUE HAY EN <span class="fw-bold">TU
-              EMPRESA</span> !</p>
-          <button class="btn btn-success text-white px-4 py-2 fw-bold shadow" (click)="goToManageCompany()">
-            GESTIONAR MI EMPRESA
-          </button>
+          <p class="fs-5 text-dark mb-2 px-2">
+            <span class="fw-bold d-block">SECCIÓN DE EMPRESA:</span>
+            <span class="d-block">{{ userCompanyName }}</span>
+          </p>
+          <div class="d-grid gap-2  px-3">
+            <button class="btn btn-success text-white px-4 py-2 fw-bold shadow" (click)="goToManageCompany()">
+              GESTIONAR AGENDA
+            </button>
+            <button class="btn btn-edit text-white px-4 py-2 fw-bold shadow" (click)="goToEditCompany()">
+              EDITAR EMPRESA
+            </button>
+          </div>
         </div>
       </ng-container>
       <ng-template #noCompany>

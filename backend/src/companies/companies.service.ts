@@ -30,11 +30,11 @@ export class CompaniesService {
       company.workers = workerData.map(worker => {
         const newWorker = this.workerRepository.create({
           name: worker.name,
-          workingDays: worker.schedule ? worker.schedule.workingDays : [],
-          startTime: worker.schedule ? worker.schedule.startTime : '',
-          endTime: worker.schedule ? worker.schedule.endTime : '',
-          breakStart: worker.schedule ? worker.schedule.breakStart : '',
-          breakEnd: worker.schedule ? worker.schedule.breakEnd : '',
+          workingDays: worker.schedule ? worker.schedule.workingDays : (worker.workingDays || []),
+          startTime: worker.schedule ? worker.schedule.startTime : (worker.startTime || ''),
+          endTime: worker.schedule ? worker.schedule.endTime : (worker.endTime || ''),
+          breakStart: worker.schedule ? worker.schedule.breakStart : (worker.breakStart || ''),
+          breakEnd: worker.schedule ? worker.schedule.breakEnd : (worker.breakEnd || ''),
         });
         if (worker.tasks && worker.tasks.length > 0) {
           newWorker.tasks = worker.tasks.map(task => ({ name: task.name, duration: task.duration }));
@@ -59,6 +59,36 @@ export class CompaniesService {
       throw new NotFoundException('Empresa no encontrada');
     }
     company.photoUrl = photoUrl;
+    return this.companyRepository.save(company);
+  }
+
+  async updateCompany(id: number, payload: any): Promise<Company> {
+    const company = await this.companyRepository.findOne({ where: { id } });
+    if (!company) {
+      throw new NotFoundException('Empresa no encontrada');
+    }
+    company.name = payload.name;
+    company.photoUrl = payload.photoUrl;
+    company.appointmentInterval = payload.appointmentInterval;
+
+    if (payload.workerData && payload.workerData.length > 0) {
+      company.workers = payload.workerData.map(worker => {
+        const newWorker = this.workerRepository.create({
+          name: worker.name,
+          workingDays: worker.schedule ? worker.schedule.workingDays : (worker.workingDays || []),
+          startTime: worker.schedule ? worker.schedule.startTime : (worker.startTime || ''),
+          endTime: worker.schedule ? worker.schedule.endTime : (worker.endTime || ''),
+          breakStart: worker.schedule ? worker.schedule.breakStart : (worker.breakStart || ''),
+          breakEnd: worker.schedule ? worker.schedule.breakEnd : (worker.breakEnd || ''),
+        });
+        if (worker.tasks && worker.tasks.length > 0) {
+          newWorker.tasks = worker.tasks.map(task => ({ name: task.name, duration: task.duration }));
+        }
+        return newWorker;
+      });
+    } else {
+      company.workers = [];
+    }
     return this.companyRepository.save(company);
   }
 
@@ -94,7 +124,6 @@ export class CompaniesService {
   }
 
   async getAllCompanies(): Promise<Company[]> {
-    // Obtiene todas las empresas
     return await this.companyRepository.find();
   }
 }

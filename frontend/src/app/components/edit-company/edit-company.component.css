@@ -1,0 +1,63 @@
+.custom-icon-profile {
+  color: #3498DB;
+}
+
+.btn-login {
+  background-color: #002741;
+  color: white;
+  border: 1px solid white;
+  width: 50%;
+  border-radius: 20px;
+  display: block;
+  margin: 0 auto;
+  padding: 10px 20px;
+}
+
+.btn-login:disabled {
+  background-color: #cccccc;
+  border-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+.custom-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.custom-icon-profile {
+  color: #3498DB;
+}
+
+.camera-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.camera-button i {
+  color: black;
+  text-shadow:
+    -1px -1px 0 white,
+    1px -1px 0 white,
+    -1px 1px 0 white,
+    1px 1px 0 white;
+}
+
+.profile-container {
+  padding: 15px;
+}
+
+.profile-info {
+  padding: 20px;
+}
+
+.form-control {
+  border-radius: 20px;
+}

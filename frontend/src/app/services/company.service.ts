@@ -42,6 +42,10 @@ export class CompanyService {
   getAllCompanies(): Observable<Company[]> {
     return this.http.get<Company[]>(this.baseUrl);
   }
+
+  updateCompany(id: number, payload: CreateCompanyPayload): Observable<Company> {
+    return this.http.put<Company>(`${this.baseUrl}/${id}`, payload);
+  }
 }
 
 export type { Company };
