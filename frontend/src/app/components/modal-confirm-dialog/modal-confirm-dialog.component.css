@@ -1,9 +1,14 @@
 .custom-cancel-btn {
   background-color: #FFAEAE;
   border: 1px solid #c6c6c6;
+  padding: 10px 20px;
+  border-radius: 20px;
 }
 
 .custom-confirm-btn {
   background-color: #B5FFC2;
   border: 1px solid #c6c6c6;
+  padding: 10px 20px;
+  border-radius: 20px;
+
 }

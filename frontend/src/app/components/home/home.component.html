@@ -38,11 +38,11 @@
             <span class="fw-bold d-block">SECCIÓN DE EMPRESA:</span>
             <span class="d-block">{{ userCompanyName }}</span>
           </p>
-          <div class="d-grid gap-2  px-3">
-            <button class="btn btn-success text-white px-4 py-2 fw-bold shadow" (click)="goToManageCompany()">
+          <div class="d-grid gap-2  px-4">
+            <button class="btn btn-success text-white fw-bold shadow" (click)="goToManageCompany()">
               GESTIONAR AGENDA
             </button>
-            <button class="btn btn-edit text-white px-4 py-2 fw-bold shadow" (click)="goToEditCompany()">
+            <button class="btn btn-edit text-white fw-bold shadow" (click)="goToEditCompany()">
               EDITAR EMPRESA
             </button>
           </div>
@@ -51,7 +51,7 @@
       <ng-template #noCompany>
         <div class="bg-success-subtle py-3 shadow">
           <p class="fw-bold fs-5 text-dark mb-2 px-2">{{ crearEmpresa }}</p>
-          <button class="btn btn-dark text-white px-4 py-2 fw-bold shadow" (click)="goToNewCompany()">
+          <button class="btn btn-dark text-white fw-bold shadow" (click)="goToNewCompany()">
             9,99 €
           </button>
         </div>
@@ -59,7 +59,7 @@
     </ng-container>
 
     <ng-template #showLogin>
-      <button class="btn btn-dark text-white px-4 py-2 fw-bold shadow" (click)="goToLogin()">
+      <button class="btn btn-dark text-white fw-bold shadow" (click)="goToLogin()">
         LOGIN
       </button>
     </ng-template>
