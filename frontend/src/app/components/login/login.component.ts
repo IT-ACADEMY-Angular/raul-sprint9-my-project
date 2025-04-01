@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -16,12 +16,16 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   errorMessage: string = '';
-
   keepLoggedIn: boolean = false;
+  submitted: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) { }
 
-  onLogin(): void {
+  onLogin(form: NgForm): void {
+    this.submitted = true;
+    if (form.invalid) {
+      return;
+    }
     this.authService.login(this.email, this.password).subscribe(
       (response: any) => {
         this.errorMessage = '';
