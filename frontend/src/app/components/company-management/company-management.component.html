@@ -29,9 +29,9 @@
   </div>
 
   <div class="mt-3" *ngIf="company">
-    <div *ngIf="workers && workers.length > 0; else noWorkers" class="mb-3 dropdown">
-      <button class="btn form-select dropdown-toggle" type="button" id="workerDropdown" data-bs-toggle="dropdown"
-        aria-expanded="false" [ngStyle]="{'color': selectedWorker ? '#000000' : '#9b9b9b'}">
+    <div *ngIf="workers && workers.length > 0; else noWorkers" class="mb-3 dropdown text-center">
+      <button class="btn form-select dropdown-toggle custom-width" type="button" id="workerDropdown"
+        data-bs-toggle="dropdown" aria-expanded="false" [ngStyle]="{'color': selectedWorker ? '#000000' : '#9b9b9b'}">
         {{ selectedWorker || 'Selecciona un trabajador...' }}
       </button>
       <ul class="dropdown-menu" aria-labelledby="workerDropdown">
@@ -45,16 +45,14 @@
     </ng-template>
   </div>
 
-  <div *ngIf="selectedWorker">
-    <div class="mt-3" *ngIf="showCalendar">
-      <mat-calendar [(selected)]="selectedDate" (selectedChange)="dateChanged($event!)" [minDate]="minDate"
-        [dateFilter]="dateFilter">
-      </mat-calendar>
-    </div>
+  <div *ngIf="selectedWorker && showCalendar" class="calendar-container mt-3">
+    <mat-calendar [(selected)]="selectedDate" (selectedChange)="dateChanged($event!)" [minDate]="minDate"
+      [dateFilter]="dateFilter">
+    </mat-calendar>
   </div>
 
-  <div *ngIf="selectedDate" class="text-center mt-4">
-    <button class="btn btn-login" (click)="viewBookings()" [disabled]="!selectedWorker">
+  <div *ngIf="selectedWorker" class="button-container text-center mt-4">
+    <button class="btn btn-login" (click)="viewBookings()" [disabled]="!selectedDate">
       VER
     </button>
   </div>

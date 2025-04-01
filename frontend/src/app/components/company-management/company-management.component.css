@@ -2,9 +2,8 @@
   background-color: #002741;
   color: white;
   border: 1px solid white;
-  width: 50%;
   border-radius: 20px;
-  padding: 10px 20px;
+  padding: 10px 30px;
 }
 
 .dropdown-toggle::after {
@@ -62,17 +61,17 @@
   padding: 0.75rem 1.25rem;
 }
 
-ul.dropdown-menu > li > a.dropdown-item {
+ul.dropdown-menu>li>a.dropdown-item {
   border-bottom: 1px solid #c5c5c5 !important;
 }
 
-ul.dropdown-menu > li:last-child > a.dropdown-item {
+ul.dropdown-menu>li:last-child>a.dropdown-item {
   border-bottom: none !important;
 }
 
 mat-calendar {
   display: block;
-  max-width: 400px;
+  max-width: 95%;
   margin: 0 auto 1rem auto;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -145,4 +144,8 @@ mat-calendar .mat-calendar-header .mat-calendar-next-button {
   border-color: #cccccc !important;
   color: #666666 !important;
   cursor: not-allowed;
+}
+
+.custom-width {
+  max-width: 95%;
 }

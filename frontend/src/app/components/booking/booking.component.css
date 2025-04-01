@@ -91,7 +91,7 @@ ul.dropdown-menu>li:last-child>a.dropdown-item {
 
 mat-calendar {
   display: block;
-  max-width: 400px;
+  max-width: 93%;
   margin: 0 auto 1rem auto;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -200,4 +200,8 @@ mat-calendar .mat-calendar-header .mat-calendar-next-button {
   box-sizing: border-box;
   margin-top: 4px;
   padding: 4px 0;
+}
+
+.custom-width {
+  max-width: 95%;
 }
