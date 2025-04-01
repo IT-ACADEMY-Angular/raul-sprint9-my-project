@@ -18,23 +18,32 @@ export class RegisterComponent {
   lastName: string = '';
   email: string = '';
   password: string = '';
+  confirmPassword: string = '';
   phone: string = '';
   dataProtectionAccepted: boolean = false;
   submitted: boolean = false;
 
   emailError: string = '';
+  passwordError: string = '';
 
   constructor(private authService: AuthService, private router: Router) { }
 
   onRegister(form: NgForm): void {
     this.submitted = true;
     this.emailError = '';
+    this.passwordError = '';
+
     if (!this.dataProtectionAccepted) {
       return;
     }
     if (form.invalid) {
       return;
     }
+    if (this.password !== this.confirmPassword) {
+      this.passwordError = 'Las contraseñas no coinciden.';
+      return;
+    }
+
     const payload: RegisterPayload = {
       name: this.name,
       lastName: this.lastName,

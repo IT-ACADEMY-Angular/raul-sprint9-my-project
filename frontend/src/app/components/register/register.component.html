@@ -31,7 +31,7 @@
 
         <div class="mb-3">
           <input type="email" class="form-control" placeholder="Mail" [(ngModel)]="email" name="email" required
-                 pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #emailInput="ngModel" />
+            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #emailInput="ngModel" />
           <div *ngIf="submitted && emailInput.invalid" class="alert alert-danger mt-1">
             <div *ngIf="emailInput.errors?.['required']">El mail es obligatorio.</div>
             <div *ngIf="emailInput.errors?.['pattern']">
@@ -51,6 +51,20 @@
             <div *ngIf="passwordInput.errors?.['minlength']">La contraseña debe tener al menos 6 carácteres.</div>
           </div>
         </div>
+
+        <div class="mb-3">
+          <input type="password" class="form-control" placeholder="Confirmar Contraseña" [(ngModel)]="confirmPassword"
+            name="confirmPassword" required minlength="6" #confirmPasswordInput="ngModel" />
+          <div *ngIf="submitted && confirmPasswordInput.invalid" class="alert alert-danger mt-1">
+            <div *ngIf="confirmPasswordInput.errors?.['required']">La confirmación de contraseña es obligatoria.</div>
+            <div *ngIf="confirmPasswordInput.errors?.['minlength']">La confirmación debe tener al menos 6 carácteres.
+            </div>
+          </div>
+          <div *ngIf="submitted && passwordError" class="alert alert-danger mt-1">
+            {{ passwordError }}
+          </div>
+        </div>
+
 
         <div class="mb-3">
           <input type="tel" class="form-control" placeholder="Teléfono" [(ngModel)]="phone" name="phone" required
