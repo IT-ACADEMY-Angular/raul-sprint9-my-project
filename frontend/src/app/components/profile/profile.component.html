@@ -12,7 +12,7 @@
 
   <div class="d-flex justify-content-center mt-3">
     <ng-container *ngIf="user?.photoUrl; else defaultPhoto">
-      <img [src]="user?.photoUrl" alt="Foto de perfil" class="custom-photo">
+      <img [src]="user?.photoUrl" alt="Foto de perfil" class="custom-photo shadow" />
     </ng-container>
     <ng-template #defaultPhoto>
       <i class="fa-solid fa-circle-user fa-7x custom-icon-profile"></i>

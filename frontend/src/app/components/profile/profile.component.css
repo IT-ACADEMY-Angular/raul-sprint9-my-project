@@ -12,7 +12,6 @@
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid rgba(52, 152, 219, 0.53);
   transition: transform 0.3s ease;
 }
 

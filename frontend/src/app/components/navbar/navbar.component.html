@@ -8,7 +8,7 @@
     </div>
     <div class="d-flex align-items-center clickable-icon" *ngIf="showProfileIcon" routerLink="/profile">
       <ng-container *ngIf="user?.photoUrl; else defaultIcon">
-        <img [src]="user?.photoUrl" alt="Perfil" class="navbar-photo">
+        <img [src]="user?.photoUrl" alt="Perfil" class="navbar-photo shadow">
       </ng-container>
       <ng-template #defaultIcon>
         <i class="fa-solid fa-circle-user responsive-icon"></i>

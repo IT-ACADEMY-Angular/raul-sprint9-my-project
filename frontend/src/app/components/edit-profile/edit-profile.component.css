@@ -23,7 +23,11 @@
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #3498db88;
+  transition: transform 0.3s ease;
+}
+
+.custom-photo:hover {
+  transform: scale(1.05);
 }
 
 .camera-button {
@@ -34,6 +38,11 @@
   border: none;
   cursor: pointer;
   font-size: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.camera-button:hover {
+  transform: scale(1.05);
 }
 
 .camera-button i {
