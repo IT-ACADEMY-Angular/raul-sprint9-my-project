@@ -117,9 +117,10 @@
 }
 
 .modal-body {
-  overflow-y: visible;
+  overflow-y: auto;
   flex: 1;
   margin-bottom: 20px;
+  padding: 0 5px;
 }
 
 .modal-footer {
