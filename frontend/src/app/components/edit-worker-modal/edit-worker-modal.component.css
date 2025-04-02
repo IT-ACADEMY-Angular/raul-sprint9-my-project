@@ -117,7 +117,7 @@
 }
 
 .modal-body {
-  overflow-y: auto;
+  overflow-y: visible;
   flex: 1;
   margin-bottom: 20px;
 }
