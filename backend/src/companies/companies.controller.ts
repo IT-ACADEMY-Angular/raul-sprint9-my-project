@@ -16,6 +16,7 @@ import { CompaniesService } from './companies.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage, StorageEngine, File as MulterFile } from 'multer';
 import { CreateCompanyDto } from './dto/create-company-dto';
+import { cloudinaryStorage } from 'src/config/cloudinary-storage.config';
 
 const storage: StorageEngine = diskStorage({
   destination: './uploads',
@@ -63,12 +64,12 @@ export class CompaniesController {
   }
 
   @Put('photo')
-  @UseInterceptors(FileInterceptor('file', { storage }))
+  @UseInterceptors(FileInterceptor('file', { storage: cloudinaryStorage }))
   uploadCompanyPhoto(@UploadedFile() file: MulterFile) {
     if (!file) {
       throw new NotFoundException('No se encontró archivo');
     }
-    const photoUrl = `http://localhost:3000/uploads/${file.filename}`;
+    const photoUrl = file.path;
     return { photoUrl };
   }
   

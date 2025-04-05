@@ -16,6 +16,7 @@ import { CreateUserDto } from '../auth/dto/register.dto';
 import { UpdateUserDto } from 'src/auth/dto/update-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage, StorageEngine, File as MulterFile } from 'multer';
+import { cloudinaryStorage } from 'src/config/cloudinary-storage.config';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
 const storage: StorageEngine = diskStorage({
@@ -57,14 +58,12 @@ export class UsersController {
   }
 
   @Put(':id/photo')
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  @UseInterceptors(FileInterceptor('file', { storage }))
+  @UseInterceptors(FileInterceptor('file', { storage: cloudinaryStorage }))
   async updatePhoto(@Param('id') id: number, @UploadedFile() file: MulterFile) {
     if (!file) {
       throw new NotFoundException('No se encontró archivo');
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const photoUrl = `http://localhost:3000/uploads/${file.filename}`;
+    const photoUrl = file.path;
     return this.usersService.updatePhoto(id, photoUrl);
   }
 
