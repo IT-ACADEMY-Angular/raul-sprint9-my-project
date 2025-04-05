@@ -12,6 +12,7 @@ import { ConfirmDialogData } from '../../interfaces/confirm-dialog-data.interfac
 import { PhotoService } from '../../services/photo.service';
 import { PhotoCropModalComponent } from '../photo-crop-modal/photo-crop-modal.component';
 import { UsersService } from '../../services/users.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'edit-profile-component',
@@ -41,7 +42,8 @@ export class EditProfileComponent {
     private http: HttpClient,
     private dialog: MatDialog,
     private photoService: PhotoService,
-    private usersService: UsersService
+    private usersService: UsersService,
+        private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -139,6 +141,16 @@ export class EditProfileComponent {
         switchMap(() => updateProfile$())
       ).subscribe(
         () => {
+          this.toastr.success(
+            'Guardado correctamente',
+            '',
+            {
+              timeOut: 5000,
+              positionClass: 'toast-bottom-full-width',
+              progressBar: true,
+              progressAnimation: 'increasing'
+            }
+          );
           this.router.navigate(['/profile']);
         },
         (error) => {
@@ -148,6 +160,16 @@ export class EditProfileComponent {
     } else {
       updateProfile$().subscribe(
         () => {
+          this.toastr.success(
+            'Guardado correctamente',
+            '',
+            {
+              timeOut: 5000,
+              positionClass: 'toast-bottom-full-width',
+              progressBar: true,
+              progressAnimation: 'increasing'
+            }
+          );
           this.router.navigate(['/profile']);
         },
         (error) => {

@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confirm-dialog.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyService } from '../../services/company.service';
 import { Booking } from '../../interfaces/booking.interface';
@@ -61,7 +61,7 @@ export class BookingComponent {
     private dialog: MatDialog,
     private bookingService: BookingService,
     private authService: AuthService,
-    private snackBar: MatSnackBar
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -189,10 +189,16 @@ export class BookingComponent {
         this.router.navigate(['/pending-booking']);
       },
       error => {
-        this.snackBar.open('Ya tienes una cita reservada justo en este horario en otra empresa/trabajador.', 'Cerrar', {
-          duration: 5000,
-          panelClass: ['snackbar-info']
-        });
+        this.toastr.error(
+          'Ya tienes una cita reservada justo en este horario en otra empresa.',
+          'ERROR',
+          {
+            timeOut: 5000,
+            positionClass: 'toast-bottom-full-width',
+            progressBar: true,
+            progressAnimation: 'increasing',
+          }
+        );
         console.error('Error al crear la reserva:', error);
       }
     );
