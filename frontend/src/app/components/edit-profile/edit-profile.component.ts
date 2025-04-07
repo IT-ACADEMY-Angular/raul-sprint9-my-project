@@ -13,6 +13,7 @@ import { PhotoService } from '../../services/photo.service';
 import { PhotoCropModalComponent } from '../photo-crop-modal/photo-crop-modal.component';
 import { UsersService } from '../../services/users.service';
 import { ToastrService } from 'ngx-toastr';
+import { UpdateUserDto } from '../../interfaces/update-user-dto';
 
 @Component({
   selector: 'edit-profile-component',
@@ -122,7 +123,8 @@ export class EditProfileComponent {
     }
 
     const updateProfile$ = () => {
-      const payload = {
+      const payload: UpdateUserDto = {
+        id: this.user!.id,
         name: this.nombre,
         lastName: this.apellidos,
         email: this.mail,

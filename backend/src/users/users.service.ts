@@ -34,12 +34,13 @@ export class UsersService {
   }
 
   async updateProfile(updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.findByEmail(updateUserDto.email);
+    const user = await this.usersRepository.findOne({ where: { id: updateUserDto.id } });
     if (!user) {
       throw new NotFoundException('Usuario no encontrado');
     }
     user.name = updateUserDto.name;
     user.lastName = updateUserDto.lastName;
+    user.email = updateUserDto.email;
     user.phone = updateUserDto.phone;
     if (updateUserDto.password && updateUserDto.password.trim() !== '') {
       const hashedPassword = await bcrypt.hash(updateUserDto.password, 10);
