@@ -102,6 +102,7 @@
   border-radius: 15px;
   border: 1px solid #dbdbdb6f;
   display: inline-block;
+  cursor: pointer;
 }
 
 .btn-dark {

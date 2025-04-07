@@ -53,3 +53,9 @@
     -1px 1px 0 white,
     1px 1px 0 white;
 }
+
+.alert.alert-danger {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}

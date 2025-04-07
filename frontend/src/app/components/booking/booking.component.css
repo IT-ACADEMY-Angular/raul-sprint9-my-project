@@ -79,6 +79,7 @@
 .dropdown-item {
   white-space: normal;
   word-break: break-word;
+  cursor: pointer;
 }
 
 ul.dropdown-menu>li>a.dropdown-item {

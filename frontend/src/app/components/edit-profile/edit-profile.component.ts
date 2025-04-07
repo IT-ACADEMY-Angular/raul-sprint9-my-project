@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from '../../interfaces/user.interface';
 import { AuthService } from '../../services/auth.service';
@@ -34,6 +34,8 @@ export class EditProfileComponent {
 
   selectedFile: File | null = null;
   previewPhotoUrl: string | null = null;
+
+  submitted: boolean = false;
 
   @ViewChild('fileInput') fileInput!: ElementRef;
 
@@ -114,7 +116,13 @@ export class EditProfileComponent {
     return this.photoService.uploadPhoto(file, uploadUrl);
   }
 
-  guardarCambios(): void {
+  guardarCambios(form: NgForm): void {
+    this.submitted = true;
+
+    if (!form.valid) {
+      return;
+    }
+
     if (this.newPassword || this.confirmPassword) {
       if (this.newPassword !== this.confirmPassword) {
         alert('Las contraseñas no coinciden.');

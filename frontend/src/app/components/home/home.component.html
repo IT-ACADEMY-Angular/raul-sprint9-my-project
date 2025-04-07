@@ -35,8 +35,7 @@
       <ng-container *ngIf="userHasCompany; else noCompany">
         <div class="bg-success-subtle py-3 shadow">
           <p class="fs-5 text-dark mb-2 px-2">
-            <span class="fw-bold d-block">SECCIÓN DE EMPRESA:</span>
-            <span class="d-block">{{ userCompanyName }}</span>
+            <span class="fw-bold d-block fs-1">{{ userCompanyName | uppercase}}</span>
           </p>
           <div class="d-grid gap-2  px-4">
             <button class="btn btn-success text-white fw-bold shadow" (click)="goToManageCompany()">
