@@ -35,7 +35,7 @@
           <div *ngIf="submitted && emailInput.invalid" class="alert alert-danger mt-1">
             <div *ngIf="emailInput.errors?.['required']">El mail es obligatorio.</div>
             <div *ngIf="emailInput.errors?.['pattern']">
-              El mail debe tener el formato correcto: ejemplo&#64;mail.com.
+              El mail debe tener el formato correcto: ejemplo&#64;mail.com
             </div>
           </div>
           <div *ngIf="emailError" class="alert alert-danger mt-1">

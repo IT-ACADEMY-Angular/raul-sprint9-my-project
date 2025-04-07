@@ -60,7 +60,7 @@
           pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #mailInput="ngModel">
         <div *ngIf="submitted && mailInput.invalid" class="alert alert-danger mt-1">
           <div *ngIf="mailInput.errors?.['required']">El mail es obligatorio.</div>
-          <div *ngIf="mailInput.errors?.['pattern']">El mail debe tener el formato correcto: ejemplo&#64;mail.com.</div>
+          <div *ngIf="mailInput.errors?.['pattern']">El mail debe tener el formato correcto: ejemplo&#64;mail.com</div>
         </div>
       </div>
 
