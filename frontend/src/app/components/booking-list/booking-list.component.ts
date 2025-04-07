@@ -6,6 +6,7 @@ import { Booking } from '../../interfaces/booking.interface';
 import { CommonModule } from '@angular/common';
 import { BookingService } from '../../services/booking.service';
 import { ConfirmDialogData } from '../../interfaces/confirm-dialog-data.interface';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'booking-list-component',
@@ -38,7 +39,8 @@ export class BookingListComponent {
   constructor(
     private dialog: MatDialog,
     private router: Router,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private toastr: ToastrService
   ) { }
 
   deleteBooking(bookingId: number): void {
@@ -54,11 +56,34 @@ export class BookingListComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.bookingService.deleteBooking(bookingId).subscribe(() => {
-          this._bookings = this._bookings.filter(b => b.id !== bookingId);
-        }, error => {
-          console.error('Error al eliminar la reserva:', error);
-        });
+        this.bookingService.deleteBooking(bookingId).subscribe(
+          () => {
+            this._bookings = this._bookings.filter(b => b.id !== bookingId);
+            this.toastr.success(
+              'Cita eliminada correctamente',
+              '',
+              {
+                timeOut: 5000,
+                positionClass: 'toast-bottom-full-width',
+                progressBar: true,
+                progressAnimation: 'increasing'
+              }
+            );
+          },
+          error => {
+            console.error('Error al eliminar la reserva:', error);
+            this.toastr.error(
+              'Error al eliminar la reserva',
+              'Error',
+              {
+                timeOut: 5000,
+                positionClass: 'toast-bottom-full-width',
+                progressBar: true,
+                progressAnimation: 'increasing'
+              }
+            );
+          }
+        );
       }
     });
   }

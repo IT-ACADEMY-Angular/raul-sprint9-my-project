@@ -170,6 +170,7 @@ export class BookingComponent {
     const currentUser = this.authService.getCurrentUser();
     if (!currentUser) {
       console.error('Usuario no autenticado');
+      this.toastr.error('Debes iniciar sesión para reservar.', 'Error');
       return;
     }
 
@@ -186,6 +187,16 @@ export class BookingComponent {
 
     this.bookingService.createBooking(payload).subscribe(
       (booking: Booking) => {
+        this.toastr.success(
+          'Cita registrada correctamente',
+          '',
+          {
+            timeOut: 5000,
+            positionClass: 'toast-bottom-full-width',
+            progressBar: true,
+            progressAnimation: 'increasing'
+          }
+        );
         this.router.navigate(['/pending-booking']);
       },
       error => {

@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { BookingService } from '../../services/booking.service';
 import { ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confirm-dialog.component';
 import { ConfirmDialogData } from '../../interfaces/confirm-dialog-data.interface';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-booking-modal',
@@ -27,7 +28,8 @@ export class BookingModalComponent {
     public dialogRef: MatDialogRef<BookingModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: BookingModalData,
     private bookingService: BookingService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private toastr: ToastrService
   ) {
     const bookingDate = new Date(data.booking.bookingDate);
     const year = bookingDate.getFullYear();
@@ -133,6 +135,16 @@ export class BookingModalComponent {
     });
     confirmDialogRef.afterClosed().subscribe(result => {
       if (result === true) {
+        this.toastr.success(
+          'Booking modificado correctamente',
+          '',
+          {
+            timeOut: 5000,
+            positionClass: 'toast-bottom-full-width',
+            progressBar: true,
+            progressAnimation: 'increasing'
+          }
+        );
         const updatedPayload = {
           bookingDate: new Date(this.editableDate),
           selectedHour: this.editableTime
@@ -153,6 +165,16 @@ export class BookingModalComponent {
     });
     confirmDialogRef.afterClosed().subscribe(result => {
       if (result === true) {
+        this.toastr.success(
+          'Booking eliminado correctamente',
+          '',
+          {
+            timeOut: 5000,
+            positionClass: 'toast-bottom-full-width',
+            progressBar: true,
+            progressAnimation: 'increasing'
+          }
+        );
         this.dialogRef.close({ action: 'delete', booking: this.data.booking });
       }
     });

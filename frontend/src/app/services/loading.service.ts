@@ -7,10 +7,14 @@ export class LoadingService {
   public loading$ = this.loadingSubject.asObservable();
 
   show(): void {
-    this.loadingSubject.next(true);
+    setTimeout(() => {
+      this.loadingSubject.next(true);
+    });
   }
 
   hide(): void {
-    this.loadingSubject.next(false);
+    setTimeout(() => {
+      this.loadingSubject.next(false);
+    });
   }
 }
