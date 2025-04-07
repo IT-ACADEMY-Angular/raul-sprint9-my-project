@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { lastValueFrom, Observable } from 'rxjs';
 import { Company } from '../interfaces/company.interface';
 import { CreateCompanyPayload } from '../interfaces/create-company-payload.interface';
@@ -25,7 +25,8 @@ export class CompanyService {
   }
 
   searchCompanies(query: string): Observable<Company[]> {
-    return this.http.get<Company[]>(`${this.baseUrl}/search`, { params: { q: query } });
+    const headers = new HttpHeaders().set('X-Skip-Loading', 'true');
+    return this.http.get<Company[]>(`${this.baseUrl}/search`, { params: { q: query }, headers });
   }
 
   getCompanyByUserId(userId: number): Promise<Company | null> {
