@@ -13,6 +13,7 @@ import { ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confi
 import { ConfirmDialogData } from '../../interfaces/confirm-dialog-data.interface';
 import { PhotoService } from '../../services/photo.service';
 import { PhotoCropModalComponent } from '../photo-crop-modal/photo-crop-modal.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'new-company-component',
@@ -49,7 +50,8 @@ export class NewCompanyComponent {
     private companyService: CompanyService,
     private authService: AuthService,
     private dialog: MatDialog,
-    private photoService: PhotoService
+    private photoService: PhotoService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -105,7 +107,10 @@ export class NewCompanyComponent {
       const file = target.files[0];
       const allowedTypes = ['image/jpeg', 'image/png', 'image/bmp', 'image/gif', 'image/webp'];
       if (!allowedTypes.includes(file.type)) {
-        alert('Formato de imagen no permitido. Por favor sube un JPG, PNG, BMP, GIF o WEBP.');
+        this.toastr.error(
+          'Formato de imagen no permitido. Por favor sube un JPG, PNG, BMP, GIF o WEBP.',
+          'Error'
+        );
         return;
       }
       this.selectedFile = file;
@@ -177,10 +182,9 @@ export class NewCompanyComponent {
 
   get isFormComplete(): boolean {
     const hasName = this.companyName.trim().length > 0;
-    const hasPhoto = !!this.selectedFile || !!this.companyPhotoUrl;
     const hasWorkers = this.workerData.length > 0;
     const atLeastOneWorkerHasTask = this.workerData.some(worker => worker.tasks && worker.tasks.length > 0);
-    return hasName && hasPhoto && hasWorkers && atLeastOneWorkerHasTask;
+    return hasName && hasWorkers && atLeastOneWorkerHasTask;
   }
 
   onCompanyNameChange(): void {
@@ -190,12 +194,12 @@ export class NewCompanyComponent {
 
   registrarEmpresa(): void {
     if (this.companyNameTaken) {
-      alert('Ya hay una empresa con este nombre.');
+      this.toastr.error('Ya hay una empresa con este nombre.', 'Error');
       return;
     }
     const currentUser = this.authService.getCurrentUser();
     if (!currentUser) {
-      alert('Debes estar logueado para registrar una empresa.');
+      this.toastr.error('Debes estar logueado para registrar una empresa.', 'Error');
       return;
     }
     const ownerId = currentUser.id;
@@ -219,6 +223,16 @@ export class NewCompanyComponent {
         })
       ).subscribe(
         (company: Company) => {
+          this.toastr.success(
+            'Empresa creada correctamente',
+            '',
+            {
+              timeOut: 5000,
+              positionClass: 'toast-bottom-full-width',
+              progressBar: true,
+              progressAnimation: 'increasing'
+            }
+          );
           this.router.navigate(['/']);
         },
         (error) => {
@@ -228,6 +242,16 @@ export class NewCompanyComponent {
     } else {
       register$().subscribe(
         (company: Company) => {
+          this.toastr.success(
+            'Empresa creada correctamente',
+            '',
+            {
+              timeOut: 5000,
+              positionClass: 'toast-bottom-full-width',
+              progressBar: true,
+              progressAnimation: 'increasing'
+            }
+          );
           this.router.navigate(['/']);
         },
         (error) => {

@@ -43,7 +43,7 @@ export class EditProfileComponent {
     private dialog: MatDialog,
     private photoService: PhotoService,
     private usersService: UsersService,
-        private toastr: ToastrService
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
