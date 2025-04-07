@@ -13,6 +13,7 @@ import { ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confi
 import { ConfirmDialogData } from '../../interfaces/confirm-dialog-data.interface';
 import { PhotoService } from '../../services/photo.service';
 import { PhotoCropModalComponent } from '../photo-crop-modal/photo-crop-modal.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'edit-company-component',
@@ -36,6 +37,7 @@ export class EditCompanyComponent {
   workerToEditIndex: number = -1;
 
   private originalWorkersSnapshot: string = '';
+  isSaving: boolean = false;
 
   @ViewChild('fileInput') fileInput!: ElementRef;
 
@@ -44,13 +46,14 @@ export class EditCompanyComponent {
     private companyService: CompanyService,
     private authService: AuthService,
     private dialog: MatDialog,
-    private photoService: PhotoService
+    private photoService: PhotoService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
     const currentUser = this.authService.getCurrentUser();
     if (!currentUser) {
-      alert('Debes estar logueado para editar tu empresa.');
+      this.toastr.error('Debes estar logueado para editar tu empresa.', 'Error');
       this.router.navigate(['/']);
       return;
     }
@@ -62,7 +65,7 @@ export class EditCompanyComponent {
         this.workerData = company.workers ? [...company.workers] : [];
         this.originalWorkersSnapshot = JSON.stringify(this.workerData);
       } else {
-        alert('No se encontró empresa para el usuario.');
+        this.toastr.error('No se encontró empresa para el usuario.', 'Error');
         this.router.navigate(['/']);
       }
     }).catch(error => {
@@ -101,7 +104,7 @@ export class EditCompanyComponent {
       const file = target.files[0];
       const allowedTypes = ['image/jpeg', 'image/png', 'image/bmp', 'image/gif', 'image/webp'];
       if (!allowedTypes.includes(file.type)) {
-        alert('Formato de imagen no permitido.');
+        this.toastr.error('Formato de imagen no permitido.', 'Error');
         return;
       }
       this.selectedFile = file;
@@ -166,43 +169,87 @@ export class EditCompanyComponent {
     if (!this.company) return;
     const currentUser = this.authService.getCurrentUser();
     if (!currentUser) {
-      alert('Debes estar logueado para editar la empresa.');
+      this.toastr.error('Debes estar logueado para editar la empresa.', 'Error');
       return;
     }
-    const payload: CreateCompanyPayload = {
-      ownerId: currentUser.id,
-      name: this.companyName,
-      photoUrl: this.companyPhotoUrl || '',
-      workerData: this.workerData,
-      appointmentInterval: this.appointmentInterval
-    };
+
+    this.isSaving = true;
+
     if (this.selectedFile) {
       this.uploadPhoto(this.selectedFile).pipe(
         switchMap((result: string) => {
           this.companyPhotoUrl = result;
+          const payload: CreateCompanyPayload = {
+            ownerId: currentUser.id,
+            name: this.companyName,
+            photoUrl: this.companyPhotoUrl,
+            workerData: this.workerData,
+            appointmentInterval: this.appointmentInterval
+          };
           return this.companyService.updateCompany(this.company!.id, payload);
         })
       ).subscribe(
         (updatedCompany: Company) => {
           this.company = updatedCompany;
           this.workerData = updatedCompany.workers || [];
+          this.companyName = updatedCompany.name;
+          this.companyPhotoUrl = updatedCompany.photoUrl || '';
+          this.selectedFile = null;
+          this.previewPhotoUrl = null;
           this.originalWorkersSnapshot = JSON.stringify(this.workerData);
+          this.isSaving = false;
+          this.toastr.success(
+            'Guardado correctamente',
+            '',
+            {
+              timeOut: 5000,
+              positionClass: 'toast-bottom-full-width',
+              progressBar: true,
+              progressAnimation: 'increasing'
+            }
+          );
           this.router.navigate(['/edit-company']);
         },
         (error) => {
           console.error('Error al actualizar la empresa:', error);
+          this.isSaving = false;
+          this.toastr.error('Error al actualizar la empresa.', 'Error');
         }
       );
     } else {
+      const payload: CreateCompanyPayload = {
+        ownerId: currentUser.id,
+        name: this.companyName,
+        photoUrl: this.companyPhotoUrl || '',
+        workerData: this.workerData,
+        appointmentInterval: this.appointmentInterval
+      };
       this.companyService.updateCompany(this.company.id, payload).subscribe(
         (updatedCompany: Company) => {
           this.company = updatedCompany;
           this.workerData = updatedCompany.workers || [];
+          this.companyName = updatedCompany.name;
+          this.companyPhotoUrl = updatedCompany.photoUrl || '';
+          this.selectedFile = null;
+          this.previewPhotoUrl = null;
           this.originalWorkersSnapshot = JSON.stringify(this.workerData);
+          this.isSaving = false;
+          this.toastr.success(
+            'Guardado correctamente',
+            '',
+            {
+              timeOut: 5000,
+              positionClass: 'toast-bottom-full-width',
+              progressBar: true,
+              progressAnimation: 'increasing'
+            }
+          );
           this.router.navigate(['/edit-company']);
         },
         (error) => {
           console.error('Error al actualizar la empresa:', error);
+          this.isSaving = false;
+          this.toastr.error('Error al actualizar la empresa.', 'Error');
         }
       );
     }

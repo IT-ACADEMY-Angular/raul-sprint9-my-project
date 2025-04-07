@@ -51,7 +51,7 @@
       (editWorker)="editWorker($event)"></worker-list-component>
 
     <button type="button" class="btn btn-login mt-4 d-block mx-auto" (click)="updateCompany()"
-      [disabled]="!isFormModified() || !isFormComplete">
+      [disabled]="isSaving || !isFormModified() || !isFormComplete">
       GUARDAR CAMBIOS
     </button>
 
