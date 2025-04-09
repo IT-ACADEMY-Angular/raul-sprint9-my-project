@@ -112,7 +112,7 @@ export class EditProfileComponent {
     if (!this.user) {
       throw new Error('User not defined');
     }
-    const uploadUrl = `http://localhost:3000/users/${this.user.id}/photo`;
+    const uploadUrl = `http://localhost:3000/api/users/${this.user.id}/photo`;
     return this.photoService.uploadPhoto(file, uploadUrl);
   }
 

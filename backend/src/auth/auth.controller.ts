@@ -24,10 +24,14 @@ export class AuthController {
 
   @Get('verify')
   async verifyEmail(@Query('token') token: string, @Res() res: Response) {
+    console.log('--- In verifyEmail ---');
+    console.log('Token recibido:', token);
     try {
       const secret = process.env.JWT_SECRET || 'default_secret';
       const payload: any = jwt.verify(token, secret);
+      console.log('Payload obtenido:', payload);
       await this.usersService.markUserAsVerified(payload.email);
+      console.log('Usuario verificado:', payload.email);
       res.send(`
         <!DOCTYPE html>
         <html lang="es">
@@ -57,18 +61,22 @@ export class AuthController {
             p {
               color: #333;
             }
+            a {
+              color: red;
+            }
           </style>
         </head>
         <body>
           <div class="container">
             <h1>Email verificado</h1>
             <p>Gracias por verificar tu correo.</p>
-            <a href="#" onclick="window.close(); return false;" style="color: red;">Cerrar esta ventana</a>
+            <a href="#" onclick="window.close(); return false;">Cerrar esta ventana</a>
           </div>
         </body>
         </html>
       `);
     } catch (error) {
+      console.error('Error en verifyEmail:', error);
       res.status(400).send(`
         <!DOCTYPE html>
         <html lang="es">
@@ -98,13 +106,16 @@ export class AuthController {
             p {
               color: #333;
             }
+            a {
+              color: red;
+            }
           </style>
         </head>
         <body>
           <div class="container">
             <h1>Error de verificación</h1>
             <p>El token es inválido o ha expirado.</p>
-            <a href="#" onclick="window.close(); return false;" style="color: red;">Cerrar esta ventana</a>
+            <a href="#" onclick="window.close(); return false;">Cerrar esta ventana</a>
           </div>
         </body>
         </html>

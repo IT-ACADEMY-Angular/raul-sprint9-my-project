@@ -123,7 +123,7 @@ export class NewCompanyComponent {
   }
 
   uploadPhoto(file: File): Observable<string> {
-    const uploadUrl = 'http://localhost:3000/companies/photo';
+    const uploadUrl = 'http://localhost:3000/api/companies/photo';
     return this.photoService.uploadPhoto(file, uploadUrl);
   }
 

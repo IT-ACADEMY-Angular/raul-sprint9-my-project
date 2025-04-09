@@ -9,7 +9,7 @@ import { UpdateBookingPayload } from '../interfaces/update-booking-payload.inter
   providedIn: 'root'
 })
 export class BookingService {
-  private baseUrl = '/booking';
+  private baseUrl = '/api/booking';
 
   constructor(private http: HttpClient) { }
 

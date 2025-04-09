@@ -8,7 +8,7 @@ import { CreateCompanyPayload } from '../interfaces/create-company-payload.inter
   providedIn: 'root'
 })
 export class CompanyService {
-  private baseUrl = '/companies';
+  private baseUrl = '/api/companies';
 
   constructor(private http: HttpClient) { }
 

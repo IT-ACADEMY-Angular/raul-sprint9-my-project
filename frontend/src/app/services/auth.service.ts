@@ -8,7 +8,7 @@ import { User } from '../interfaces/user.interface';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl: string = '/auth';
+  private baseUrl: string = '/api/auth';
 
   private currentUserSubject: BehaviorSubject<User | null>;
   public currentUser$: Observable<User | null>;

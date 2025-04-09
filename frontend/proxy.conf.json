@@ -1,29 +1,5 @@
 {
-  "/auth": {
-    "target": "http://localhost:3000",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/users": {
-    "target": "http://localhost:3000",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/companies": {
-    "target": "http://localhost:3000",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/uploads": {
-    "target": "http://localhost:3000",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/booking": {
+  "/api": {
     "target": "http://localhost:3000",
     "secure": false,
     "changeOrigin": true,

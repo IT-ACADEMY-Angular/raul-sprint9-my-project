@@ -8,7 +8,7 @@ import { UpdateUserDto } from '../interfaces/update-user-dto';
   providedIn: 'root'
 })
 export class UsersService {
-  private baseUrl: string = '/users';
+  private baseUrl: string = '/api/users';
 
   constructor(private http: HttpClient) { }
 
