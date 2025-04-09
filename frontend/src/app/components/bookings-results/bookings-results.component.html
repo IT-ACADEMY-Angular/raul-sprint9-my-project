@@ -32,15 +32,11 @@
 
       <div *ngFor="let booking of bookings" class="text-center event" [ngStyle]="calculateEventStyle(booking)"
         (click)="editBooking(booking)">
-        <span>
-          {{ booking.selectedTask | titlecase }} - Cliente: <span class="fw-bold">
-            {{ booking['user']?.name ? booking['user']?.name : 'Sin nombre' }}
-          </span>
-        </span>
-
-        <div class="event-time">
-          {{ booking.selectedHour }} - {{ calculateEndTime(booking) }}
-        </div>
+        Tarea: <span class="fw-bold"> {{ booking.selectedTask | titlecase }} </span>
+        <br>
+        Tiempo: <span class="fw-bold"> {{ booking.selectedHour }} - {{ calculateEndTime(booking) }} </span>
+        <br>
+        Cliente: <span class="fw-bold"> {{ booking['user']?.name ? booking['user']?.name : 'Sin nombre' }} </span>
       </div>
     </div>
   </div>

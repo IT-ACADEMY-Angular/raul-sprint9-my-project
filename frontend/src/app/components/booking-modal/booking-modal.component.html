@@ -4,8 +4,8 @@
   </button>
 
   <div class="booking-details">
-    <p><strong>Cliente:</strong> {{ data.customerName }}</p>
-    <p><strong>Tarea:</strong> {{ data.task }}</p>
+    <p><strong>Cliente:</strong> {{ data.customerName | titlecase }}</p>
+    <p><strong>Tarea:</strong> {{ data.task | titlecase }}</p>
     <p>
       <strong>Fecha: </strong>
       <input type="date" [(ngModel)]="editableDate" class="modal-input" (ngModelChange)="validateModification()" />
