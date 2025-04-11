@@ -16,6 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 import { UpdateUserDto } from '../../interfaces/update-user-dto';
 import * as leoProfanity from 'leo-profanity';
 import spanishBadWords from '../../../typings/spanish-bad-words.json';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'edit-profile-component',
@@ -39,7 +40,6 @@ export class EditProfileComponent {
 
   submitted: boolean = false;
 
-  // Banderas para la validación de palabras malsonantes
   nombreProfanity: boolean = false;
   apellidosProfanity: boolean = false;
   mailProfanity: boolean = false;
@@ -126,7 +126,7 @@ export class EditProfileComponent {
     if (!this.user) {
       throw new Error('User not defined');
     }
-    const uploadUrl = `http://localhost:3000/api/users/${this.user.id}/photo`;
+    const uploadUrl = `${environment.apiUrl}/api/users/${this.user.id}/photo`;
     return this.photoService.uploadPhoto(file, uploadUrl);
   }
 

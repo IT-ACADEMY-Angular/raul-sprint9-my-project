@@ -14,6 +14,7 @@ import { ConfirmDialogData } from '../../interfaces/confirm-dialog-data.interfac
 import { PhotoService } from '../../services/photo.service';
 import { PhotoCropModalComponent } from '../photo-crop-modal/photo-crop-modal.component';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'edit-company-component',
@@ -117,7 +118,7 @@ export class EditCompanyComponent {
   }
 
   uploadPhoto(file: File) {
-    const uploadUrl = 'http://localhost:3000/api/companies/photo';
+    const uploadUrl = `${environment.apiUrl}/api/companies/photo`;
     return this.photoService.uploadPhoto(file, uploadUrl);
   }
 

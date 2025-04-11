@@ -78,7 +78,11 @@ export class AuthService {
       },
     });
 
-    const baseUrl = this.configService.get<string>('BASE_URL', 'http://localhost:3000');
+    const baseUrl = this.configService.get<string>('BASE_URL');
+    if (!baseUrl) {
+      throw new Error('La variable de entorno BASE_URL no está definida');
+    }
+
     const verificationUrl = `${baseUrl.replace(/\/+$/, '')}/api/auth/verify?token=${encodeURIComponent(token)}`;
 
     console.log('Verification URL:', verificationUrl);

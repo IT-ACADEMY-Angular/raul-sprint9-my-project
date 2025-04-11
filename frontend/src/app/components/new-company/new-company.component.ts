@@ -16,6 +16,7 @@ import { PhotoCropModalComponent } from '../photo-crop-modal/photo-crop-modal.co
 import { ToastrService } from 'ngx-toastr';
 import * as leoProfanity from 'leo-profanity';
 import spanishBadWords from '../../../typings/spanish-bad-words.json';
+import { environment } from '../../../environments/environment';
 
 
 
@@ -138,7 +139,7 @@ export class NewCompanyComponent {
   }
 
   uploadPhoto(file: File): Observable<string> {
-    const uploadUrl = 'http://localhost:3000/api/companies/photo';
+    const uploadUrl = `${environment.apiUrl}/api/companies/photo`;
     return this.photoService.uploadPhoto(file, uploadUrl);
   }
 

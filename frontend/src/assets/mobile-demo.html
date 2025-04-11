@@ -88,13 +88,17 @@
   <div class="iphone-frame">
     <div class="iphone-notch">
       <div class="iphone-camera"></div>
-
     </div>
-
     <div class="iphone-screen">
-      <iframe src="http://localhost:4200"></iframe>
+      <iframe id="mobileIframe"></iframe>
     </div>
   </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const iframe = document.getElementById("mobileIframe");
+      iframe.src = window.location.origin;
+    });
+  </script>
 </body>
 
 </html>
