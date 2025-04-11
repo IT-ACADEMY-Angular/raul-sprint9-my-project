@@ -3,6 +3,9 @@ import { WorkerData } from '../../models/worker.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TaskListComponent } from '../task-list/task-list.component';
+import * as leoProfanity from 'leo-profanity';
+import spanishBadWords from '../../../typings/spanish-bad-words.json';
+
 
 @Component({
   selector: 'edit-worker-modal-component',
@@ -20,6 +23,9 @@ export class EditWorkerModalComponent {
   newTaskName: string = '';
   newTaskDuration: number | null = null;
   taskNameDuplicate: boolean = false;
+  taskNameProfanity: boolean = false;
+
+  workerNameProfanity: boolean = false;
 
   workingDays = [
     { label: 'Lunes', value: 'Monday', selected: false },
@@ -39,7 +45,12 @@ export class EditWorkerModalComponent {
   private originalWorkerSnapshot: string = '';
 
   ngOnInit(): void {
-    this.loadWorkerData();
+    leoProfanity.loadDictionary();
+    leoProfanity.add(spanishBadWords);
+
+    leoProfanity.add(leoProfanity.getDictionary('en'));
+    leoProfanity.add(leoProfanity.getDictionary('fr'));
+    leoProfanity.add(leoProfanity.getDictionary('ru'));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -72,12 +83,19 @@ export class EditWorkerModalComponent {
     }
   }
 
+  validateWorkerName(): void {
+    const trimmedName = this.worker.name.trim();
+    this.workerNameProfanity = leoProfanity.check(trimmedName);
+  }
+
   validateTaskName(): void {
     const trimmedName = this.newTaskName.trim();
     if (!trimmedName) {
       this.taskNameDuplicate = false;
+      this.taskNameProfanity = false;
       return;
     }
+    this.taskNameProfanity = leoProfanity.check(trimmedName);
     if (this.worker.tasks && this.worker.tasks.some(task => task.name.trim().toLowerCase() === trimmedName.toLowerCase())) {
       this.taskNameDuplicate = true;
     } else {
@@ -88,6 +106,10 @@ export class EditWorkerModalComponent {
   addTask(): void {
     const trimmedName = this.newTaskName.trim();
     if (trimmedName && this.newTaskDuration) {
+      if (leoProfanity.check(trimmedName)) {
+        this.taskNameProfanity = true;
+        return;
+      }
       if (this.worker.tasks && this.worker.tasks.some(task => task.name.trim().toLowerCase() === trimmedName.toLowerCase())) {
         this.taskNameDuplicate = true;
         return;
@@ -99,6 +121,7 @@ export class EditWorkerModalComponent {
       this.newTaskName = '';
       this.newTaskDuration = null;
       this.taskNameDuplicate = false;
+      this.taskNameProfanity = false;
 
       setTimeout(() => {
         const container = this.modalBody?.nativeElement;
@@ -130,13 +153,16 @@ export class EditWorkerModalComponent {
 
   get isSaveEnabled(): boolean {
     const hasName = !!this.worker.name && this.worker.name.trim().length > 0;
+    const nameProfanity = leoProfanity.check(this.worker.name.trim());
+    const tasksValid = !!this.worker.tasks && this.worker.tasks.every(task => !leoProfanity.check(task.name.trim()));
+
     const hasWorkingDays = this.workingDays.some(day => day.selected);
     const hasStartTime = !!this.startTime && this.startTime.trim().length > 0;
     const hasEndTime = !!this.endTime && this.endTime.trim().length > 0;
     const hasBreakStart = !!this.breakStart && this.breakStart.trim().length > 0;
     const hasBreakEnd = !!this.breakEnd && this.breakEnd.trim().length > 0;
     const hasTask = !!this.worker.tasks && this.worker.tasks.length > 0;
-    return hasName && hasWorkingDays && hasStartTime && hasEndTime && hasBreakStart && hasBreakEnd && hasTask;
+    return hasName && !nameProfanity && hasWorkingDays && hasStartTime && hasEndTime && hasBreakStart && hasBreakEnd && hasTask && tasksValid;
   }
 
   get isModified(): boolean {

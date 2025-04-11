@@ -14,6 +14,10 @@ import { ConfirmDialogData } from '../../interfaces/confirm-dialog-data.interfac
 import { PhotoService } from '../../services/photo.service';
 import { PhotoCropModalComponent } from '../photo-crop-modal/photo-crop-modal.component';
 import { ToastrService } from 'ngx-toastr';
+import * as leoProfanity from 'leo-profanity';
+import spanishBadWords from '../../../typings/spanish-bad-words.json';
+
+
 
 @Component({
   selector: 'new-company-component',
@@ -41,6 +45,9 @@ export class NewCompanyComponent {
   workerToEditIndex: number = -1;
 
   companyNameTaken: boolean = false;
+  companyNameProfanity: boolean = false;
+  workerNameProfanity: boolean = false;
+
   companyNameChange$ = new Subject<string>();
 
   @ViewChild('fileInput') fileInput!: ElementRef;
@@ -55,6 +62,14 @@ export class NewCompanyComponent {
   ) { }
 
   ngOnInit(): void {
+    leoProfanity.loadDictionary();
+    leoProfanity.add(spanishBadWords);
+
+    leoProfanity.add(leoProfanity.getDictionary('en'));
+    leoProfanity.add(leoProfanity.getDictionary('fr'));
+    leoProfanity.add(leoProfanity.getDictionary('ru'));
+
+
     this.companyNameChange$.pipe(
       debounceTime(500),
       distinctUntilChanged()
@@ -127,12 +142,22 @@ export class NewCompanyComponent {
     return this.photoService.uploadPhoto(file, uploadUrl);
   }
 
+  onCompanyNameChange(): void {
+    const trimmedName = this.companyName.trim();
+    this.companyNameProfanity = leoProfanity.check(trimmedName);
+    if (!this.companyNameProfanity) {
+      this.companyNameChange$.next(trimmedName);
+    }
+  }
+
   validateWorkerName(): void {
     const trimmedName = this.newWorkerName.trim();
     if (!trimmedName) {
       this.workerNameDuplicate = false;
+      this.workerNameProfanity = false;
       return;
     }
+    this.workerNameProfanity = leoProfanity.check(trimmedName);
     this.workerNameDuplicate = this.workerData.some(worker =>
       worker.name.trim().toLowerCase() === trimmedName.toLowerCase()
     );
@@ -141,6 +166,10 @@ export class NewCompanyComponent {
   addWorker(): void {
     const trimmedName = this.newWorkerName.trim();
     if (trimmedName !== '') {
+      if (leoProfanity.check(trimmedName)) {
+        this.workerNameProfanity = true;
+        return;
+      }
       if (this.workerData.some(worker => worker.name.trim().toLowerCase() === trimmedName.toLowerCase())) {
         this.workerNameDuplicate = true;
         return;
@@ -148,6 +177,7 @@ export class NewCompanyComponent {
       this.workerData.push({ name: trimmedName });
       this.newWorkerName = '';
       this.workerNameDuplicate = false;
+      this.workerNameProfanity = false;
     }
   }
 
@@ -185,11 +215,6 @@ export class NewCompanyComponent {
     const hasWorkers = this.workerData.length > 0;
     const atLeastOneWorkerHasTask = this.workerData.some(worker => worker.tasks && worker.tasks.length > 0);
     return hasName && hasWorkers && atLeastOneWorkerHasTask;
-  }
-
-  onCompanyNameChange(): void {
-    const trimmedName = this.companyName.trim();
-    this.companyNameChange$.next(trimmedName);
   }
 
   registrarEmpresa(): void {

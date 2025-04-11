@@ -35,32 +35,43 @@
       <div class="mb-3">
         <label class="fw-bold">Nombre</label>
         <input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="nombre" name="nombre" required
-          minlength="3" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" #nombreInput="ngModel">
+          minlength="3" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" #nombreInput="ngModel" (ngModelChange)="validateNombre()">
         <div *ngIf="submitted && nombreInput.invalid" class="alert alert-danger mt-1">
           <div *ngIf="nombreInput.errors?.['required']">El nombre es obligatorio.</div>
           <div *ngIf="nombreInput.errors?.['minlength']">El nombre debe tener al menos 3 carácteres.</div>
           <div *ngIf="nombreInput.errors?.['pattern']">El nombre solo puede contener letras.</div>
+        </div>
+        <div *ngIf="nombreProfanity" class="alert alert-danger mt-1">
+          El nombre contiene palabras prohibidas.
         </div>
       </div>
 
       <div class="mb-3">
         <label class="fw-bold">Apellidos</label>
         <input type="text" class="form-control" placeholder="Apellidos" [(ngModel)]="apellidos" name="apellidos"
-          required minlength="3" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" #apellidosInput="ngModel">
+          required minlength="3" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" #apellidosInput="ngModel"
+          (ngModelChange)="validateApellidos()">
         <div *ngIf="submitted && apellidosInput.invalid" class="alert alert-danger mt-1">
           <div *ngIf="apellidosInput.errors?.['required']">Los apellidos son obligatorios.</div>
           <div *ngIf="apellidosInput.errors?.['minlength']">Los apellidos deben tener al menos 3 carácteres.</div>
           <div *ngIf="apellidosInput.errors?.['pattern']">Los apellidos solo pueden contener letras.</div>
+        </div>
+        <div *ngIf="apellidosProfanity" class="alert alert-danger mt-1">
+          Los apellidos contienen palabras prohibidas.
         </div>
       </div>
 
       <div class="mb-3">
         <label class="fw-bold">Mail</label>
         <input type="email" class="form-control" placeholder="example@mail.com" [(ngModel)]="mail" name="mail" required
-          pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #mailInput="ngModel">
+          pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #mailInput="ngModel"
+          (ngModelChange)="validateMail()">
         <div *ngIf="submitted && mailInput.invalid" class="alert alert-danger mt-1">
           <div *ngIf="mailInput.errors?.['required']">El mail es obligatorio.</div>
           <div *ngIf="mailInput.errors?.['pattern']">El mail debe tener el formato correcto: ejemplo&#64;mail.com</div>
+        </div>
+        <div *ngIf="mailProfanity" class="alert alert-danger mt-1">
+          El mail contiene palabras prohibidas.
         </div>
       </div>
 
@@ -99,7 +110,8 @@
       </div>
     </div>
 
-    <button type="submit" class="btn btn-login mt-4 d-block mx-auto" [disabled]="!isFormModified">
+    <button type="submit" class="btn btn-login mt-4 d-block mx-auto"
+      [disabled]="!isFormModified || nombreProfanity || apellidosProfanity || mailProfanity">
       GUARDAR
     </button>
   </form>

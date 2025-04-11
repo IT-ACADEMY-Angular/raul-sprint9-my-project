@@ -36,7 +36,10 @@
       <input type="text" class="form-control" [(ngModel)]="companyName" (ngModelChange)="onCompanyNameChange()"
         placeholder="Escribe el nombre de tu empresa" required>
       <div *ngIf="companyNameTaken" style="color: red; margin-top: 5px;">
-        Ya hay una empresa con este nombre
+        Ya hay una empresa con este nombre.
+      </div>
+      <div *ngIf="companyNameProfanity" style="color: red; margin-top: 5px;">
+        El nombre contiene palabras prohibidas.
       </div>
     </div>
 
@@ -52,6 +55,9 @@
       <div *ngIf="workerNameDuplicate" style="color: red; margin-top: 5px;">
         Ya hay un trabajador que se llama así, por favor, llámalo diferente para poder diferenciarlos
       </div>
+      <div *ngIf="workerNameProfanity" style="color: red; margin-top: 5px;">
+        El nombre del trabajador contiene palabras prohibidas.
+      </div>
     </div>
 
     <worker-list-component [workers]="workerData" (workersChange)="updateWorkers($event)"
@@ -59,7 +65,7 @@
     </worker-list-component>
 
     <button type="button" class="btn btn-login mt-4 d-block mx-auto" (click)="registrarEmpresa()"
-      [disabled]="!isFormComplete || companyNameTaken">
+      [disabled]="!isFormComplete || companyNameTaken || companyNameProfanity || workerNameProfanity">
       REGISTRAR EMPRESA
     </button>
 
