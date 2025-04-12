@@ -15,6 +15,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: process.env.NODE_ENV === 'production' ? '.env.production' : '.env',
+      ignoreEnvFile: process.env.NODE_ENV === 'production',
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'client/dist/client'),
