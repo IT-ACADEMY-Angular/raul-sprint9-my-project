@@ -25,9 +25,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
-        let mysqlUrl = configService.get<string>('MYSQL_URL');
+        let mysqlUrl = configService.get<string>('MYSQL_PUBLIC_URL');
         if (!mysqlUrl) {
-          mysqlUrl = configService.get<string>('MYSQL_PUBLIC_URL');
+          mysqlUrl = configService.get<string>('MYSQL_URL');
         }
         console.log('MYSQL connection URL:', mysqlUrl);
         if (mysqlUrl) {
