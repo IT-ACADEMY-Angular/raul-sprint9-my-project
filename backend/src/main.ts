@@ -3,6 +3,8 @@ if (!globalThis.crypto) {
   globalThis.crypto = webcrypto as unknown as Crypto;
 }
 
+console.log('ALL ENV:', process.env);
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { join } from 'path';
