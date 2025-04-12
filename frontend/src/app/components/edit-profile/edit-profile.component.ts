@@ -14,8 +14,6 @@ import { PhotoCropModalComponent } from '../photo-crop-modal/photo-crop-modal.co
 import { UsersService } from '../../services/users.service';
 import { ToastrService } from 'ngx-toastr';
 import { UpdateUserDto } from '../../interfaces/update-user-dto';
-import * as leoProfanity from 'leo-profanity';
-import spanishBadWords from '../../../typings/spanish-bad-words.json';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -40,10 +38,6 @@ export class EditProfileComponent {
 
   submitted: boolean = false;
 
-  nombreProfanity: boolean = false;
-  apellidosProfanity: boolean = false;
-  mailProfanity: boolean = false;
-
   @ViewChild('fileInput') fileInput!: ElementRef;
 
   constructor(
@@ -57,13 +51,6 @@ export class EditProfileComponent {
   ) { }
 
   ngOnInit(): void {
-    leoProfanity.loadDictionary();
-    leoProfanity.add(spanishBadWords);
-
-    leoProfanity.add(leoProfanity.getDictionary('en'));
-    leoProfanity.add(leoProfanity.getDictionary('fr'));
-    leoProfanity.add(leoProfanity.getDictionary('ru'));
-
     this.authService.currentUser$.subscribe((user: User | null) => {
       if (user) {
         this.user = user;
@@ -144,25 +131,6 @@ export class EditProfileComponent {
       }
     }
 
-    if (leoProfanity.check(this.nombre.trim())) {
-      this.nombreProfanity = true;
-      return;
-    } else {
-      this.nombreProfanity = false;
-    }
-    if (leoProfanity.check(this.apellidos.trim())) {
-      this.apellidosProfanity = true;
-      return;
-    } else {
-      this.apellidosProfanity = false;
-    }
-    if (leoProfanity.check(this.mail.trim())) {
-      this.mailProfanity = true;
-      return;
-    } else {
-      this.mailProfanity = false;
-    }
-
     const updateProfile$ = () => {
       const payload: UpdateUserDto = {
         id: this.user!.id,
@@ -226,10 +194,6 @@ export class EditProfileComponent {
     this.fileInput.nativeElement.click();
   }
 
-  onFileSelected(event: Event): void {
-    console.warn('File input seleccionado (fallback). Implementa lógica si lo requieres.');
-  }
-
   onImageError(event: Event): void {
     if (this.user) {
       this.user.photoUrl = undefined;
@@ -249,20 +213,5 @@ export class EditProfileComponent {
       this.newPassword.trim() !== '' ||
       this.confirmPassword.trim() !== ''
     );
-  }
-
-  validateNombre(): void {
-    const trimmed = this.nombre.trim();
-    this.nombreProfanity = leoProfanity.check(trimmed);
-  }
-
-  validateApellidos(): void {
-    const trimmed = this.apellidos.trim();
-    this.apellidosProfanity = leoProfanity.check(trimmed);
-  }
-
-  validateMail(): void {
-    const trimmed = this.mail.trim();
-    this.mailProfanity = leoProfanity.check(trimmed);
   }
 }

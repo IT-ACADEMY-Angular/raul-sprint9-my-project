@@ -26,7 +26,6 @@
       <button class="btn btn-link position-absolute camera-button" (click)="openCropModal()">
         <i class="fa-solid fa-camera fs-3 text-black"></i>
       </button>
-      <input type="file" #fileInput (change)="onFileSelected($event)" hidden>
     </div>
   </div>
 
@@ -37,9 +36,6 @@
         placeholder="Escribe el nombre de tu empresa" required>
       <div *ngIf="companyNameTaken" style="color: red; margin-top: 5px;">
         Ya hay una empresa con este nombre.
-      </div>
-      <div *ngIf="companyNameProfanity" style="color: red; margin-top: 5px;">
-        El nombre contiene palabras prohibidas.
       </div>
     </div>
 
@@ -55,9 +51,6 @@
       <div *ngIf="workerNameDuplicate" style="color: red; margin-top: 5px;">
         Ya hay un trabajador que se llama así, por favor, llámalo diferente para poder diferenciarlos
       </div>
-      <div *ngIf="workerNameProfanity" style="color: red; margin-top: 5px;">
-        El nombre del trabajador contiene palabras prohibidas.
-      </div>
     </div>
 
     <worker-list-component [workers]="workerData" (workersChange)="updateWorkers($event)"
@@ -65,7 +58,7 @@
     </worker-list-component>
 
     <button type="button" class="btn btn-login mt-4 d-block mx-auto" (click)="registrarEmpresa()"
-      [disabled]="!isFormComplete || companyNameTaken || companyNameProfanity || workerNameProfanity">
+      [disabled]="!isFormComplete || companyNameTaken">
       REGISTRAR EMPRESA
     </button>
 

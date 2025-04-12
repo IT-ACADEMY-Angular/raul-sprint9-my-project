@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -16,7 +17,37 @@ export class PhotoCropModalComponent {
   imageChangedEvent: any = '';
   croppedImage: string = '';
 
-  constructor(public dialogRef: MatDialogRef<PhotoCropModalComponent>) { }
+  selectedFile: File | null = null;
+  previewPhotoUrl: string | null = null;
+
+  constructor(
+    public dialogRef: MatDialogRef<PhotoCropModalComponent>,
+    private toastr: ToastrService
+  ) { }
+
+  onFileSelected(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+      const file = target.files[0];
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/bmp', 'image/gif', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        this.toastr.error(
+          'Formato de imagen no permitido. Por favor sube un JPG, PNG, BMP, GIF o WEBP.',
+          'Error',
+          {
+            timeOut: 5000,
+            positionClass: 'toast-bottom-full-width',
+            progressBar: true,
+            progressAnimation: 'increasing'
+          }
+        );
+        return;
+      }
+      this.selectedFile = file;
+      this.previewPhotoUrl = URL.createObjectURL(file);
+      this.fileChangeEvent(event);
+    }
+  }
 
   fileChangeEvent(event: any): void {
     this.imageChangedEvent = event;

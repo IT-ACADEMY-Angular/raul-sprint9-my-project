@@ -2,7 +2,7 @@
 <mat-dialog-content>
   <div class="mb-3">
     <label class="form-label">Selecciona una imagen:</label>
-    <input type="file" class="form-control" (change)="fileChangeEvent($event)" accept="image/*">
+    <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*">
   </div>
 
   <div *ngIf="imageChangedEvent" class="mb-3">
