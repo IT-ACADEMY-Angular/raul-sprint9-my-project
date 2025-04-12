@@ -29,7 +29,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         if (!mysqlUrl) {
           mysqlUrl = configService.get<string>('MYSQL_URL');
         }
-        console.log('MYSQL connection URL:', mysqlUrl);
         if (mysqlUrl) {
           return {
             type: 'mysql',
