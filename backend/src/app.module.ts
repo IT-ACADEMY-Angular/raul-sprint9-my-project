@@ -23,16 +23,27 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        type: 'mysql',
-        host: configService.get<string>('DB_HOST', 'localhost'),
-        port: Number(configService.get<number>('DB_PORT', 3306)),
-        username: configService.get<string>('DB_USER', 'root'),
-        password: configService.get<string>('DB_PASS', 'root'),
-        database: configService.get<string>('DB_NAME', 'zytapp'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true,
-      }),
+      useFactory: async (configService: ConfigService) => {
+        const mysqlUrl = configService.get<string>('MYSQL_URL');
+        if (mysqlUrl) {
+          return {
+            type: 'mysql',
+            url: mysqlUrl,
+            entities: [__dirname + '/**/*.entity{.ts,.js}'],
+            synchronize: true,
+          };
+        }
+        return {
+          type: 'mysql',
+          host: configService.get<string>('DB_HOST', 'localhost'),
+          port: Number(configService.get<number>('DB_PORT', 3306)),
+          username: configService.get<string>('DB_USER', 'root'),
+          password: configService.get<string>('DB_PASS', 'root'),
+          database: configService.get<string>('DB_NAME', 'zytapp'),
+          entities: [__dirname + '/**/*.entity{.ts,.js}'],
+          synchronize: true,
+        };
+      },
     }),
     AuthModule,
     UsersModule,
@@ -42,4 +53,4 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
