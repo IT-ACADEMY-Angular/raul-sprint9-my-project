@@ -1,5 +1,8 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/api/(.*)",
+      "destination": "https://raul-sprint9-my-project-production.up.railway.app/api/$1"
+    }
   ]
 }
