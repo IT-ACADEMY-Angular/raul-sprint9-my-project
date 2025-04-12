@@ -4,6 +4,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { RegisterPayload } from '../../interfaces/auth.interfaces';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'register-component',
@@ -26,7 +27,11 @@ export class RegisterComponent {
   emailError: string = '';
   passwordError: string = '';
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService
+  ) { }
 
   onRegister(form: NgForm): void {
     this.submitted = true;
@@ -54,6 +59,16 @@ export class RegisterComponent {
 
     this.authService.register(payload).subscribe(
       (response) => {
+        this.toastr.success(
+          'Registro completo. Revisa tu E-mail y verifica tu cuenta!',
+          '',
+          {
+            timeOut: 5000,
+            positionClass: 'toast-bottom-full-width',
+            progressBar: true,
+            progressAnimation: 'increasing'
+          }
+        );
         this.router.navigate(['/login']);
       },
       (error) => {
