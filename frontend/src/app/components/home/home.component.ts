@@ -108,7 +108,7 @@ export class HomeComponent implements OnInit {
   }
 
   goToNewCompany(): void {
-    alert("¡Pago realizado!");
+    alert("¡Pago realizado! (Simulacion de pasarela de pago)");
     this.router.navigate(['/new-company']);
   }
 
