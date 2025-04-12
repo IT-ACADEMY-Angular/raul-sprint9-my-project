@@ -23,7 +23,7 @@ export class PhotoService {
             const formData = new FormData();
             formData.append('file', optimizedFile);
             formData.append('hash', hash);
-            return this.http.put<{ photoUrl: string }>(uploadUrl, formData).pipe(
+            return this.http.post<{ photoUrl: string }>(uploadUrl, formData).pipe(
               map(response => response.photoUrl)
             );
           })
