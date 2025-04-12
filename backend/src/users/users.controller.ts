@@ -57,7 +57,7 @@ export class UsersController {
     return this.usersService.updateProfile(updateUserDto);
   }
 
-  @Post(':id/photo')
+  @Put(':id/photo')
   @UseInterceptors(FileInterceptor('file', { storage: cloudinaryStorage }))
   async updatePhoto(@Param('id') id: number, @UploadedFile() file: MulterFile) {
     if (!file) {
