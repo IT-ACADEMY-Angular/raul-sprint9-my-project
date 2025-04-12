@@ -4,13 +4,12 @@ import { Observable } from 'rxjs';
 import { CreateBookingPayload } from '../interfaces/create-booking-payload.interface';
 import { Booking } from '../interfaces/booking.interface';
 import { UpdateBookingPayload } from '../interfaces/update-booking-payload.interface';
-import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookingService {
-  private baseUrl: string = environment.apiUrl + '/api/users';
+  private baseUrl = '/api/booking';
 
   constructor(private http: HttpClient) { }
 

@@ -3,13 +3,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { lastValueFrom, Observable } from 'rxjs';
 import { Company } from '../interfaces/company.interface';
 import { CreateCompanyPayload } from '../interfaces/create-company-payload.interface';
-import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompanyService {
-  private baseUrl: string = environment.apiUrl + '/api/users';
+  private baseUrl = '/api/companies';
 
   constructor(private http: HttpClient) { }
 
