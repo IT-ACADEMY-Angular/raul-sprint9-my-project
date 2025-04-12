@@ -25,6 +25,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         const mysqlUrl = configService.get<string>('MYSQL_URL');
+        console.log('ESTOY AQUI: MYSQL_URL:', mysqlUrl);
+
         if (mysqlUrl) {
           return {
             type: 'mysql',
