@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.tu-dominio.com',
+  apiUrl: 'mysql://root:SCedQgZQkOUYkwzSeWIYkUNTRMvxSufX@mysql.railway.internal:3306/railway',
 };
