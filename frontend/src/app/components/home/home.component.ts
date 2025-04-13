@@ -7,10 +7,11 @@ import { User } from '../../models/user.model';
 import { debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
 import { Company, CompanyService } from '../../services/company.service';
 import { HomeData } from '../../resolvers/home.resolver';
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'home-component',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, LoadingSpinnerComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -23,10 +24,11 @@ export class HomeComponent implements OnInit {
   user: User | null = null;
   citasPendientesText: string = 'TUS CITAS PENDIENTES';
   isLoggedIn: boolean = false;
-
   searchControl = new FormControl('');
   searchResults: Company[] = [];
   bookingCount: number = 0;
+
+  isViewLoaded: boolean = false;
 
   @ViewChild('searchContainer') searchContainer!: ElementRef;
 
@@ -65,6 +67,12 @@ export class HomeComponent implements OnInit {
     ).subscribe((results: Company[]) => {
       this.searchResults = results;
     });
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.isViewLoaded = true;
+    }, 0);
   }
 
   @HostListener('document:click', ['$event'])

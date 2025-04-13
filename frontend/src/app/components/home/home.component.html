@@ -4,7 +4,6 @@
       Hola, <strong>{{ user?.name }}</strong>.
     </div>
     <h1 class="text-center fw-bold">{{ titulo }}</h1>
-
     <div class="search-container" #searchContainer>
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Nombre de la empresa..." [formControl]="searchControl"
@@ -22,7 +21,6 @@
       </div>
     </div>
   </div>
-
   <div class="footer text-center">
     <ng-container *ngIf="isLoggedIn; else showLogin">
       <div class="position-relative fs-5 fw-bold mb-3 appointment-edit shadow py-2 px-3 clickable"
@@ -56,11 +54,12 @@
         </div>
       </ng-template>
     </ng-container>
-
     <ng-template #showLogin>
       <button class="btn btn-dark text-white fw-bold shadow" (click)="goToLogin()">
         LOGIN
       </button>
     </ng-template>
   </div>
+
+  <app-loading-spinner *ngIf="!isViewLoaded"></app-loading-spinner>
 </div>
