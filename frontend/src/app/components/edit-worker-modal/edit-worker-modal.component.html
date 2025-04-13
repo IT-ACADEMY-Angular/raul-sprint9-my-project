@@ -55,12 +55,12 @@
       </div>
 
       <task-list-component [tasks]="worker.tasks || []" (removeTask)="onRemoveTask($event)"></task-list-component>
-    </div>
 
-    <div class="modal-footer d-flex justify-content-center">
-      <button class="btn custom-cancel-btn me-2" (click)="cancel()">Cancelar</button>
-      <button class="btn custom-confirm-btn" (click)="save()"
-        [disabled]="!isModified || !isSaveEnabled">Guardar</button>
+      <div class="modal-footer d-flex justify-content-center">
+        <button class="btn custom-cancel-btn me-2" (click)="cancel()">Cancelar</button>
+        <button class="btn custom-confirm-btn" (click)="save()"
+          [disabled]="!isModified || !isSaveEnabled">Guardar</button>
+      </div>
     </div>
   </div>
 </div>
