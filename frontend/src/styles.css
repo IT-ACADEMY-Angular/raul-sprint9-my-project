@@ -1,6 +1,7 @@
 body,
 html {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  /* font-family: Roboto, "Helvetica Neue", sans-serif; */
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   height: 100%;
   margin: 0;
   padding: 0;
