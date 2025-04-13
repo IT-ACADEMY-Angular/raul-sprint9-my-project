@@ -154,7 +154,9 @@ export class EditCompanyComponent {
 
   get isFormComplete(): boolean {
     const hasName = this.companyName.trim().length > 0;
-    const hasPhoto = !!this.selectedFile || !!this.companyPhotoUrl;
+    const wasPhotoProvidedOriginally = !!this.company?.photoUrl;
+    const hasPhoto = wasPhotoProvidedOriginally ? (!!this.selectedFile || !!this.companyPhotoUrl) : true;
+
     if (this.workerData.length === 0) {
       return hasName && hasPhoto;
     } else {
