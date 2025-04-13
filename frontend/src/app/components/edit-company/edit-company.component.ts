@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/co
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { WorkerListComponent } from '../worker-list/worker-list.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyService, CreateCompanyPayload, Company } from '../../services/company.service';
 import { WorkerData } from '../../models/worker.model';
 import { switchMap } from 'rxjs';
@@ -49,30 +49,22 @@ export class EditCompanyComponent {
     private dialog: MatDialog,
     private photoService: PhotoService,
     private toastr: ToastrService,
-    private cd: ChangeDetectorRef
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    const currentUser = this.authService.getCurrentUser();
-    if (!currentUser) {
-      this.toastr.error('Debes estar logueado para editar tu empresa.', 'Error');
-      this.router.navigate(['/']);
-      return;
-    }
-    this.companyService.getCompanyByUserId(currentUser.id).then(company => {
-      if (company) {
-        this.company = company;
-        this.companyName = company.name;
-        this.companyPhotoUrl = company.photoUrl || '';
-        this.workerData = company.workers ? [...company.workers] : [];
+    this.route.data.subscribe((data) => {
+      const resolvedData = data as { company: Company | null };
+      if (resolvedData.company) {
+        this.company = resolvedData.company;
+        this.companyName = resolvedData.company.name;
+        this.companyPhotoUrl = resolvedData.company.photoUrl || '';
+        this.workerData = resolvedData.company.workers ? [...resolvedData.company.workers] : [];
         this.originalWorkersSnapshot = JSON.stringify(this.workerData);
       } else {
         this.toastr.error('No se encontró empresa para el usuario.', 'Error');
         this.router.navigate(['/']);
       }
-    }).catch(error => {
-      console.error('Error al obtener la empresa:', error);
-      this.router.navigate(['/']);
     });
   }
 

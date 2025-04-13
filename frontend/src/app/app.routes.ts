@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { HomeResolver } from './resolvers/home.resolver';
+import { CompanyResolver } from './resolvers/company.resolver';
 
 export const routes: Routes = [
   {
@@ -92,6 +93,7 @@ export const routes: Routes = [
       import('./components/edit-company/edit-company.component').then(
         (m) => m.EditCompanyComponent
       ),
+    resolve: { company: CompanyResolver },
     data: { hideProfileIcon: true },
   },
 ];
