@@ -70,19 +70,9 @@ export class BookingComponent {
       this.company = (nav.extras.state as any).company;
       this.workers = this.company.workers || [];
     } else {
-      this.route.paramMap.subscribe(params => {
-        const id = params.get('id');
-        if (id) {
-          this.companyService.getCompany(+id).subscribe(company => {
-            this.company = company;
-            this.workers = company.workers || [];
-          }, error => {
-            console.error('Error al obtener la empresa:', error);
-            this.router.navigate(['/']);
-          });
-        } else {
-          this.router.navigate(['/']);
-        }
+      this.route.data.subscribe(data => {
+        this.company = data['companyData'];
+        this.workers = this.company.workers || [];
       });
     }
   }

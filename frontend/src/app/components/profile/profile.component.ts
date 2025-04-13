@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { CompanyService } from '../../services/company.service';
+import { Company, CompanyService } from '../../services/company.service';
 import { UsersService } from '../../services/users.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalConfirmDialogComponent } from '../modal-confirm-dialog/modal-confirm-dialog.component';
@@ -25,25 +25,21 @@ export class ProfileComponent {
     private companyService: CompanyService,
     private usersService: UsersService,
     private dialog: MatDialog,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private route: ActivatedRoute,
+
   ) { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {
       this.user = user;
-      if (user && user.id) {
-        this.companyService.getCompanyByUserId(user.id)
-          .then((company) => {
-            if (company && (company as any).message) {
-              this.company = null;
-            } else {
-              this.company = company;
-            }
-          })
-          .catch(error => {
-            console.error('Error al obtener la empresa del usuario:', error);
-            this.company = null;
-          });
+    });
+    this.route.data.subscribe((data) => {
+      const resolvedData = data as { company: Company | null };
+      if (resolvedData.company && (resolvedData.company as any).message) {
+        this.company = null;
+      } else {
+        this.company = resolvedData.company;
       }
     });
   }
@@ -90,7 +86,7 @@ export class ProfileComponent {
                 progressAnimation: 'increasing'
               }
             );
-            this.company = null;
+            this.router.navigate(['/'], { queryParams: { refresh: new Date().getTime() } });
           },
           error: (error) => {
             console.error('Error al eliminar la empresa:', error);

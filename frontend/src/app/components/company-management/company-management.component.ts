@@ -53,24 +53,15 @@ export class CompanyManagementComponent implements OnInit {
       this.company = (nav.extras.state as any).company;
       this.workers = this.company.workers || [];
     } else {
-      const currentUser = this.authService.getCurrentUser();
-      if (currentUser) {
-        this.companyService.getCompanyByUserId(currentUser.id)
-          .then((company: any | null) => {
-            if (company) {
-              this.company = company;
-              this.workers = company.workers || [];
-            } else {
-              console.error("No se encontró empresa para el usuario.");
-            }
-          })
-          .catch((error: any) => {
-            console.error('Error al obtener la empresa por usuario:', error);
-            this.router.navigate(['/']);
-          });
-      } else {
-        this.router.navigate(['/']);
-      }
+      this.route.data.subscribe((data) => {
+        const resolvedData = data as { company: any };
+        if (resolvedData.company) {
+          this.company = resolvedData.company;
+          this.workers = this.company.workers || [];
+        } else {
+          console.error("No se encontró empresa para el usuario.");
+        }
+      });
     }
   }
 

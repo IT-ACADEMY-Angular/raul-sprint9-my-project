@@ -6,7 +6,6 @@ import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user.model';
 import { debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
 import { Company, CompanyService } from '../../services/company.service';
-import { BookingService } from '../../services/booking.service';
 import { HomeData } from '../../resolvers/home.resolver';
 
 @Component({
@@ -36,7 +35,7 @@ export class HomeComponent implements OnInit {
     private authService: AuthService,
     private companyService: CompanyService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.data.subscribe((data: any) => {
@@ -75,7 +74,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  searchBooking(): void {}
+  searchBooking(): void { }
 
   selectCompany(company: Company): void {
     if (!this.isLoggedIn) {

@@ -2,6 +2,9 @@ import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { HomeResolver } from './resolvers/home.resolver';
 import { CompanyResolver } from './resolvers/company.resolver';
+import { BookingResolver } from './resolvers/booking.resolver';
+import { PendingBookingsResolver } from './resolvers/pending-bookings.resolver';
+import { BookingResultsResolver } from './resolvers/booking-results.resolver';
 
 export const routes: Routes = [
   {
@@ -20,6 +23,7 @@ export const routes: Routes = [
         (m) => m.ProfileComponent
       ),
     canActivate: [AuthGuard],
+    resolve: { company: CompanyResolver },
     data: { hideProfileIcon: true },
   },
   {
@@ -37,6 +41,7 @@ export const routes: Routes = [
       import('./components/booking/booking.component').then(
         (m) => m.BookingComponent
       ),
+    resolve: { companyData: BookingResolver },
     data: { hideProfileIcon: true },
   },
   {
@@ -53,6 +58,7 @@ export const routes: Routes = [
       import('./components/pending-bookings/pending-bookings.component').then(
         (m) => m.PendingBookingsComponent
       ),
+    resolve: { bookings: PendingBookingsResolver },
     data: { hideProfileIcon: true },
   },
   {
@@ -77,6 +83,7 @@ export const routes: Routes = [
       import('./components/company-management/company-management.component').then(
         (m) => m.CompanyManagementComponent
       ),
+    resolve: { company: CompanyResolver },
     data: { hideProfileIcon: true },
   },
   {
@@ -86,6 +93,8 @@ export const routes: Routes = [
         (m) => m.BookingsResultsComponent
       ),
     data: { hideProfileIcon: true },
+    resolve: { bookingData: BookingResultsResolver }
+
   },
   {
     path: 'edit-company',

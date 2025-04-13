@@ -1,8 +1,7 @@
-// home.resolver.ts
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { forkJoin, Observable, of, from } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Company } from '../interfaces/company.interface';
 import { Booking } from '../interfaces/booking.interface';
 import { CompanyService } from '../services/company.service';
@@ -22,7 +21,7 @@ export class HomeResolver implements Resolve<HomeData> {
     private authService: AuthService,
     private companyService: CompanyService,
     private bookingService: BookingService
-  ) {}
+  ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<HomeData> {
     const user = this.authService.getCurrentUser();
@@ -32,6 +31,12 @@ export class HomeResolver implements Resolve<HomeData> {
 
     return forkJoin({
       company: from(this.companyService.getCompanyByUserId(user.id)).pipe(
+        map((company: Company | null) => {
+          if (company && (company as any).message) {
+            return null;
+          }
+          return company;
+        }),
         catchError(err => {
           console.error('Error en HomeResolver al obtener compañía:', err);
           return of(null);

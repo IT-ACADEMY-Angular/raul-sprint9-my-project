@@ -33,26 +33,20 @@ export class BookingsResultsComponent {
   ) { }
 
   ngOnInit(): void {
-    this.route.queryParamMap.subscribe(params => {
-      const companyIdStr = params.get('companyId');
-      const dateStr = params.get('date');
-      const worker = params.get('worker');
-      if (companyIdStr && dateStr && worker) {
-        const companyId = +companyIdStr;
-        this.selectedDate = new Date(dateStr);
-        this.selectedWorker = worker;
-        this.companyService.getCompany(companyId).subscribe(company => {
-          this.company = company;
-          this.generateIntervalsFromWorker();
-          this.loadBookings();
-        }, error => {
-          console.error('Error al obtener la empresa:', error);
-          this.router.navigate(['/']);
-        });
-      } else {
-        console.error('Datos insuficientes en los query parameters');
-        this.router.navigate(['/']);
-      }
+    this.route.data.subscribe((data: any) => {
+      this.company = data.bookingData.company;
+      this.selectedDate = data.bookingData.selectedDate;
+      this.selectedWorker = data.bookingData.selectedWorker;
+
+      this.generateIntervalsFromWorker();
+
+      const selectedDateStr = this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd');
+      this.bookings = data.bookingData.bookings.filter((b: Booking) => {
+        const bookingDateStr = this.datePipe.transform(new Date(b.bookingDate), 'yyyy-MM-dd');
+        return b.company.id === this.company.id &&
+          bookingDateStr === selectedDateStr &&
+          b.selectedWorker === this.selectedWorker;
+      });
     });
   }
 

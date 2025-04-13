@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BookingListComponent } from '../booking-list/booking-list.component';
 import { Booking } from '../../interfaces/booking.interface';
 import { BookingService } from '../../services/booking.service';
@@ -19,23 +19,21 @@ export class PendingBookingsComponent {
   bookings: Booking[] = [];
   currentUser: User | null = null;
 
-  constructor(private router: Router, private bookingService: BookingService, private authService: AuthService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private authService: AuthService
+
+  ) { }
 
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
-    if (this.currentUser) {
-      this.bookingService.getBookingsByUser(this.currentUser.id).subscribe(
-        (bookings: Booking[]) => {
-          this.bookings = bookings;
-        },
-        error => {
-          console.error('Error al cargar las reservas:', error);
-        }
-      );
-    } else {
+    if (!this.currentUser) {
       console.error('Usuario no autenticado');
       this.router.navigate(['/login']);
+      return;
     }
+    this.bookings = this.route.snapshot.data['bookings'];
   }
 
   goBack(): void {
