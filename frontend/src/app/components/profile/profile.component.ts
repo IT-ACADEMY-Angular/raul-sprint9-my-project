@@ -34,7 +34,15 @@ export class ProfileComponent {
       if (user && user.id) {
         this.companyService.getCompanyByUserId(user.id)
           .then((company) => {
-            this.company = company;
+            if (company && (company as any).message) {
+              this.company = null;
+            } else {
+              this.company = company;
+            }
+          })
+          .catch(error => {
+            console.error('Error al obtener la empresa del usuario:', error);
+            this.company = null;
           });
       }
     });

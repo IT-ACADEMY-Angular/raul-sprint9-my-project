@@ -54,8 +54,10 @@ export class HomeComponent implements OnInit {
 
         this.companyService.getCompanyByUserId(user.id)
           .then(company => {
-            this.userHasCompany = !!company;
-            if (company) {
+            if (!company || ((company as any).message && (company as any).message !== '')) {
+              this.userHasCompany = false;
+            } else {
+              this.userHasCompany = true;
               this.userCompanyName = company.name;
             }
           })

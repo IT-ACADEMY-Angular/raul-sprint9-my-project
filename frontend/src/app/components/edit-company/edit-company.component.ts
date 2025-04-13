@@ -135,8 +135,7 @@ export class EditCompanyComponent {
   }
 
   editWorker(event: { worker: WorkerData; index: number }): void {
-    this.workerToEdit = { ...event.worker };
-    this.workerToEditIndex = event.index;
+    this.workerToEdit = JSON.parse(JSON.stringify(event.worker)); this.workerToEditIndex = event.index;
     this.showEditWorkerModal = true;
   }
 

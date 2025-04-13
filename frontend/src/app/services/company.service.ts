@@ -30,12 +30,14 @@ export class CompanyService {
   }
 
   getCompanyByUserId(userId: number): Promise<Company | null> {
-    return lastValueFrom(this.http.get<Company>(`${this.baseUrl}/user/${userId}`))
-      .catch(error => {
-        console.error('Error al obtener empresa por usuario:', error);
-        return null;
-      });
+    return lastValueFrom(
+      this.http.get<Company>(`${this.baseUrl}/user/${userId}`)
+    ).catch(error => {
+      console.error('Error al obtener empresa por usuario:', error);
+      return null;
+    });
   }
+  
   deleteCompanyByOwnerId(ownerId: number): Observable<{ message: string }> {
     return this.http.delete<{ message: string }>(`${this.baseUrl}/owner/${ownerId}`);
   }

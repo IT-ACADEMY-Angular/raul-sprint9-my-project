@@ -91,10 +91,10 @@ export class CompaniesController {
   }
 
   @Get('user/:userId')
-  async getCompanyByUser(@Param('userId', ParseIntPipe) userId: number): Promise<CompanyDto> {
+  async getCompanyByUser(@Param('userId', ParseIntPipe) userId: number): Promise<CompanyDto | { message: string }> {
     const company = await this.companiesService.getCompanyByUserId(userId);
     if (!company) {
-      throw new NotFoundException('Empresa no encontrada para este usuario');
+      return { message: 'El usuario no tiene una empresa registrada.' };
     }
     return plainToInstance(CompanyDto, company, { excludeExtraneousValues: true });
   }
