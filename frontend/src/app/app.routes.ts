@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
+import { HomeResolver } from './resolvers/home.resolver';
 
 export const routes: Routes = [
   {
@@ -8,6 +9,7 @@ export const routes: Routes = [
       import('./components/home/home.component').then(
         (m) => m.HomeComponent
       ),
+    resolve: { homeData: HomeResolver },
     data: { hideProfileIcon: false, title: 'ZYTAPP' },
   },
   {

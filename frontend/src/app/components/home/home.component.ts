@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user.model';
 import { debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
 import { Company, CompanyService } from '../../services/company.service';
 import { BookingService } from '../../services/booking.service';
+import { HomeData } from '../../resolvers/home.resolver';
 
 @Component({
   selector: 'home-component',
@@ -34,38 +35,22 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private companyService: CompanyService,
-    private bookingService: BookingService
-  ) { }
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
+    this.route.data.subscribe((data: any) => {
+      const { company, bookings } = data.homeData as HomeData;
+      this.userHasCompany = company !== null;
+      if (company) {
+        this.userCompanyName = company.name;
+      }
+      this.bookingCount = bookings.length;
+    });
+
     this.authService.currentUser$.subscribe(user => {
       this.isLoggedIn = !!user;
       this.user = user;
-
-      if (user) {
-        this.bookingService.getBookingsByUser(user.id).subscribe(
-          bookings => {
-            this.bookingCount = bookings.length;
-          },
-          error => {
-            console.error('Error al obtener reservas:', error);
-          }
-        );
-
-        this.companyService.getCompanyByUserId(user.id)
-          .then(company => {
-            if (!company || ((company as any).message && (company as any).message !== '')) {
-              this.userHasCompany = false;
-            } else {
-              this.userHasCompany = true;
-              this.userCompanyName = company.name;
-            }
-          })
-          .catch(error => {
-            console.error('Error al obtener la empresa del usuario:', error);
-            this.userHasCompany = false;
-          });
-      }
     });
 
     this.searchControl.valueChanges.pipe(
@@ -90,8 +75,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  searchBooking(): void {
-  }
+  searchBooking(): void {}
 
   selectCompany(company: Company): void {
     if (!this.isLoggedIn) {
@@ -110,7 +94,7 @@ export class HomeComponent implements OnInit {
   }
 
   goToNewCompany(): void {
-    alert("¡Pago realizado! (Simulacion de pasarela de pago)");
+    alert("¡Pago realizado! (Simulación de pasarela de pago)");
     this.router.navigate(['/new-company']);
   }
 
