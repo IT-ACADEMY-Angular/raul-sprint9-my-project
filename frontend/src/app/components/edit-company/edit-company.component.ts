@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { WorkerListComponent } from '../worker-list/worker-list.component';
@@ -48,7 +48,8 @@ export class EditCompanyComponent {
     private authService: AuthService,
     private dialog: MatDialog,
     private photoService: PhotoService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -151,8 +152,10 @@ export class EditCompanyComponent {
   }
 
   isFormModified(): boolean {
+    const currentName = (this.companyName || '').trim();
+    const originalName = ((this.company?.name) || '').trim();
     return (
-      this.companyName.trim() !== (this.company?.name || '').trim() ||
+      currentName !== originalName ||
       !!this.selectedFile ||
       JSON.stringify(this.workerData) !== this.originalWorkersSnapshot
     );
@@ -161,9 +164,12 @@ export class EditCompanyComponent {
   get isFormComplete(): boolean {
     const hasName = this.companyName.trim().length > 0;
     const hasPhoto = !!this.selectedFile || !!this.companyPhotoUrl;
-    const hasWorkers = this.workerData.length > 0;
-    const atLeastOneWorkerHasTask = this.workerData.some(worker => worker.tasks && worker.tasks.length > 0);
-    return hasName && hasPhoto && hasWorkers && atLeastOneWorkerHasTask;
+    if (this.workerData.length === 0) {
+      return hasName && hasPhoto;
+    } else {
+      const atLeastOneWorkerHasTask = this.workerData.some(worker => worker.tasks && worker.tasks.length > 0);
+      return hasName && hasPhoto && atLeastOneWorkerHasTask;
+    }
   }
 
   updateCompany(): void {

@@ -24,14 +24,10 @@ export class AuthController {
 
   @Get('verify')
   async verifyEmail(@Query('token') token: string, @Res() res: Response) {
-    console.log('--- In verifyEmail ---');
-    console.log('Token recibido:', token);
     try {
       const secret = process.env.JWT_SECRET || 'default_secret';
       const payload: any = jwt.verify(token, secret);
-      console.log('Payload obtenido:', payload);
       await this.usersService.markUserAsVerified(payload.email);
-      console.log('Usuario verificado:', payload.email);
       res.send(`
         <!DOCTYPE html>
         <html lang="es">

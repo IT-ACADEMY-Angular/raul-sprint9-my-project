@@ -85,8 +85,6 @@ export class AuthService {
 
     const verificationUrl = `${baseUrl.replace(/\/+$/, '')}/api/auth/verify?token=${encodeURIComponent(token)}`;
 
-    console.log('Verification URL:', verificationUrl);
-
     const mailOptions = {
       from: '"ZYTAPP" <zytapp.help@gmail.com>',
       to: user.email,

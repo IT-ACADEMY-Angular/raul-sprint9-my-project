@@ -11,12 +11,15 @@ import {
   Query,
   Delete,
   ParseIntPipe,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { CompaniesService } from './companies.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage, StorageEngine, File as MulterFile } from 'multer';
 import { CreateCompanyDto } from './dto/create-company-dto';
 import { cloudinaryStorage } from 'src/config/cloudinary-storage.config';
+import { plainToInstance } from 'class-transformer';
+import { CompanyDto } from './dto/company.dto';
 
 const storage: StorageEngine = diskStorage({
   destination: './uploads',
@@ -31,36 +34,41 @@ const storage: StorageEngine = diskStorage({
   },
 });
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('companies')
 export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) { }
 
   @Post()
-  async createCompany(@Body() createCompanyDto: CreateCompanyDto) {
+  async createCompany(@Body() createCompanyDto: CreateCompanyDto): Promise<CompanyDto> {
     const { ownerId, name, photoUrl, workerData, appointmentInterval } = createCompanyDto;
-    return this.companiesService.createCompany(
+    const company = await this.companiesService.createCompany(
       ownerId,
       name,
       photoUrl || '',
       workerData || [],
       appointmentInterval,
     );
+    return plainToInstance(CompanyDto, company, { excludeExtraneousValues: true });
   }
 
   @Get()
-  async getAllCompanies() {
+  async getAllCompanies(): Promise<CompanyDto[]> {
     const companies = await this.companiesService.getAllCompanies();
-    return companies.sort((a, b) => a.name.localeCompare(b.name));
+    companies.sort((a, b) => a.name.localeCompare(b.name));
+    return plainToInstance(CompanyDto, companies, { excludeExtraneousValues: true });
   }
 
   @Get('search')
-  async searchCompanies(@Query('q') query: string) {
-    return this.companiesService.searchCompanies(query);
+  async searchCompanies(@Query('q') query: string): Promise<CompanyDto[]> {
+    const companies = await this.companiesService.searchCompanies(query);
+    return plainToInstance(CompanyDto, companies, { excludeExtraneousValues: true });
   }
 
   @Get(':id')
-  async getCompany(@Param('id') id: number) {
-    return this.companiesService.findCompanyById(id);
+  async getCompany(@Param('id') id: number): Promise<CompanyDto> {
+    const company = await this.companiesService.findCompanyById(id);
+    return plainToInstance(CompanyDto, company, { excludeExtraneousValues: true });
   }
 
   @Put('photo')
@@ -72,18 +80,23 @@ export class CompaniesController {
     const photoUrl = file.path;
     return { photoUrl };
   }
-  
+
   @Put(':id')
   async updateCompany(
     @Param('id') id: number,
     @Body() updateCompanyDto: CreateCompanyDto
-  ) {
-    return this.companiesService.updateCompany(id, updateCompanyDto);
+  ): Promise<CompanyDto> {
+    const company = await this.companiesService.updateCompany(id, updateCompanyDto);
+    return plainToInstance(CompanyDto, company, { excludeExtraneousValues: true });
   }
 
   @Get('user/:userId')
-  async getCompanyByUser(@Param('userId', ParseIntPipe) userId: number) {
-    return this.companiesService.getCompanyByUserId(userId);
+  async getCompanyByUser(@Param('userId', ParseIntPipe) userId: number): Promise<CompanyDto> {
+    const company = await this.companiesService.getCompanyByUserId(userId);
+    if (!company) {
+      throw new NotFoundException('Empresa no encontrada para este usuario');
+    }
+    return plainToInstance(CompanyDto, company, { excludeExtraneousValues: true });
   }
 
   @Delete('owner/:ownerId')

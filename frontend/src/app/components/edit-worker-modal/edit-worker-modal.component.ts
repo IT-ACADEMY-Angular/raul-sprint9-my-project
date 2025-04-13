@@ -91,7 +91,10 @@ export class EditWorkerModalComponent {
       if (!this.worker.tasks) {
         this.worker.tasks = [];
       }
-      this.worker.tasks.push({ name: trimmedName, duration: this.newTaskDuration });
+      this.worker.tasks = [
+        ...this.worker.tasks,
+        { name: trimmedName, duration: this.newTaskDuration }
+      ];
       this.newTaskName = '';
       this.newTaskDuration = null;
       this.taskNameDuplicate = false;
@@ -120,7 +123,7 @@ export class EditWorkerModalComponent {
 
   onRemoveTask(index: number): void {
     if (this.worker.tasks) {
-      this.worker.tasks.splice(index, 1);
+      this.worker.tasks = this.worker.tasks.filter((_, i) => i !== index);
     }
   }
 
